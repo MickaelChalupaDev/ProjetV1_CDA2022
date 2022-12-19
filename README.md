@@ -3,7 +3,7 @@
 # Bienvenue dans notre premier projet de groupe de Concepteur Développeur d'Application
 
 #
-@autor : mickael, loïc, kamel
+@autor : mickael, loïc, kamel, willy
 #
 
 
