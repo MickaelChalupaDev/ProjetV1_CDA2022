@@ -1,25 +1,24 @@
-package fr.eni.encheres.bll;
+package fr.eni.enchere.bll;
+
+import fr.eni.enchere.bo.Article;
+import fr.eni.enchere.bo.Categorie;
+import fr.eni.enchere.dal.DAOFactory;
+import fr.eni.enchere.dal.EnchereDAO;
 
 import java.util.List;
 
-import fr.eni.encheres.bo.Article;
-import fr.eni.encheres.bo.Categorie;
-import fr.eni.encheres.dal.EnchereDAO;
-import fr.eni.encheres.dal.UtilisateurDAO;
-
 public class EnchereManager {
+	private final EnchereDAO daoEncheres;
 	
-private static EnchereDAO doaEncheres;
-	
-	public EnchereManager() {
-		daoEncheres= DAOFactory.getEnchereDAO();
+	public EnchereManager(EnchereDAO doaEncheres) {
+		this.daoEncheres = DAOFactory.getEnchereDAO();
 	}
 	
 	public List<Article> rechercherAchatEncheres(String nomArticle, Categorie categorie, int noUtilisateurEnchere, String dateEnchere){
-		return null;
+		return daoEncheres.rechercherAchatEncheres(nomArticle, categorie, noUtilisateurEnchere, dateEnchere);
 	}
 	public List<Article> rechercherMesVentesEncheres(String nomArticle, Categorie categorie,int noUtilisateurArticle, String dateDebut, String dateEnchere){
-		return null;
+		return daoEncheres.rechercherMesVentesEncheres(nomArticle, categorie, noUtilisateurArticle, dateDebut, dateEnchere);
 	}
 
 }

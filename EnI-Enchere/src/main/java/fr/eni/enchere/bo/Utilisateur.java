@@ -1,4 +1,4 @@
-package fr.eni.encheres.bo;
+package fr.eni.enchere.bo;
 
 public class Utilisateur {
 
@@ -13,16 +13,10 @@ public class Utilisateur {
 		private String motDePasse;
 		private String credit;
 		private int administrateur;
-		
-		public Utilisateur() {
-			super();
-		}
 
-		
 		public Utilisateur(int noUtilisateur, String pseudo, String prenom, String email, String telephone, String rue,
 				String codePostal, String ville, String motDePasse, String credit, int administrateur) {
-			super();
-			this.setNoUtlisateur(noUtilisateur);
+			this.setNoUtilisateur(noUtilisateur);
 			this.setPseudo(pseudo);
 			this.setPrenom(prenom);
 			this.setEmail(email);
@@ -40,8 +34,8 @@ public class Utilisateur {
 			return noUtilisateur;
 		}
 
-		public void setNoUtlisateur(int noUtlisateur) {
-			this.noUtilisateur = noUtlisateur;
+		public void setNoUtilisateur(int noUtilisateur) {
+			this.noUtilisateur = noUtilisateur;
 		}
 
 		public String getPseudo() {

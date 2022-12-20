@@ -1,29 +1,26 @@
-package fr.eni.encheres.bll;
+package fr.eni.enchere.bll;
 
-import fr.eni.encheres.bo.Article;
-import fr.eni.encheres.dal.ArticleDAO;
-import fr.eni.encheres.dal.UtilisateurDAO;
+import fr.eni.enchere.bo.Article;
+import fr.eni.enchere.dal.ArticleDAO;
+import fr.eni.enchere.dal.DAOFactory;
 
 public class ArticleManager {
-	
-private static ArticleDAO doaArticles;
+	private final ArticleDAO daoArticles;
 	
 	public ArticleManager() {
-		daoArticles= DAOFactory.getArticleDAO();
+		this.daoArticles = DAOFactory.getArticleDAO();
 	}
 	
 	public void creationArticle(Article article) {
-		
+		daoArticles.creationArticle(article);
 	}
 	public Article lireArticle(int noArticle) {
-		return null;
+		return daoArticles.lireArticle(noArticle);
 	}
-	public void supperimerArticle(int noArticle) {
-		
+	public void supprimerArticle(int noArticle) {
+		daoArticles.supprimerArticle(noArticle);
 	}
 	public void Annuler() {
-		
+		daoArticles.Annuler();
 	}
-	
-
 }

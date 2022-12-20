@@ -1,14 +1,13 @@
-package fr.eni.encheres.bo;
+package fr.eni.enchere.bo;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Article {
-
 	private int noArticle;
 	private String nomArticle;
-	private String descritpion;
+	private String description;
 	private Date dateDebutEncheres;
 	private Date dateFinEncheres;
 	private int miseAPrix;
@@ -19,112 +18,117 @@ public class Article {
 	private String nomPhoto;  // nom du fichier sur un dossier du serveur
 	
 	private List<String> adresse= new ArrayList<String>();
-	public Article() {
-		super();
-	}
-	
-	
-	public Article(int noArticle, String nomArticle, String descritpion, Date dateDebutEncheres, Date dateFinEncheres,
-			int miseAPrix, int prixVente, String etatVente, Categorie categorie, List<String> adresse, String nomPhoto, Utilisateur vendeur)
-	{
-		super();
-		this.setNoArticle(noArticle);
-		this.setNomArticle(nomArticle);
-		this.setDescritpion(descritpion);
-		this.setDateDebutEncheres(dateDebutEncheres);
-		this.setDateFinEncheres(dateFinEncheres);
-		this.setMiseAPrix(miseAPrix);
-		this.setPrixVente(prixVente);
-		this.setEtatVente(etatVente);
-		this.setCategorie(categorie);
-		this.setAdresse(adresse);
-		this.setNomPhoto(nomPhoto);
+
+	public Article(int noArticle, String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres,
+				   int miseAPrix, int prixVente, String etatVente, Utilisateur vendeur, Categorie categorie,
+				   String nomPhoto, List<String> adresse) {
+		this.noArticle = noArticle;
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.miseAPrix = miseAPrix;
+		this.prixVente = prixVente;
+		this.etatVente = etatVente;
+		this.vendeur = vendeur;
+		this.categorie = categorie;
+		this.nomPhoto = nomPhoto;
+		this.adresse = adresse;
 	}
 
+	public int getNoArticle() {
+		return noArticle;
+	}
+
+	public void setNoArticle(int noArticle) {
+		this.noArticle = noArticle;
+	}
+
+	public String getNomArticle() {
+		return nomArticle;
+	}
+
+	public void setNomArticle(String nomArticle) {
+		this.nomArticle = nomArticle;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Date getDateDebutEncheres() {
+		return dateDebutEncheres;
+	}
+
+	public void setDateDebutEncheres(Date dateDebutEncheres) {
+		this.dateDebutEncheres = dateDebutEncheres;
+	}
+
+	public Date getDateFinEncheres() {
+		return dateFinEncheres;
+	}
+
+	public void setDateFinEncheres(Date dateFinEncheres) {
+		this.dateFinEncheres = dateFinEncheres;
+	}
+
+	public int getMiseAPrix() {
+		return miseAPrix;
+	}
+
+	public void setMiseAPrix(int miseAPrix) {
+		this.miseAPrix = miseAPrix;
+	}
+
+	public int getPrixVente() {
+		return prixVente;
+	}
+
+	public void setPrixVente(int prixVente) {
+		this.prixVente = prixVente;
+	}
+
+	public String getEtatVente() {
+		return etatVente;
+	}
+
+	public void setEtatVente(String etatVente) {
+		this.etatVente = etatVente;
+	}
 
 	public Utilisateur getVendeur() {
 		return vendeur;
 	}
 
-
 	public void setVendeur(Utilisateur vendeur) {
 		this.vendeur = vendeur;
 	}
 
-
-	public int getNoArticle() {
-		return noArticle;
-	}
-	public void setNoArticle(int noArticle) {
-		this.noArticle = noArticle;
-	}
-	public String getNomArticle() {
-		return nomArticle;
-	}
-	public void setNomArticle(String nomArticle) {
-		this.nomArticle = nomArticle;
-	}
-	public String getDescritpion() {
-		return descritpion;
-	}
-	public void setDescritpion(String descritpion) {
-		this.descritpion = descritpion;
-	}
-	public Date getDateDebutEncheres() {
-		return dateDebutEncheres;
-	}
-	public void setDateDebutEncheres(Date dateDebutEncheres) {
-		this.dateDebutEncheres = dateDebutEncheres;
-	}
-	public Date getDateFinEncheres() {
-		return dateFinEncheres;
-	}
-	public void setDateFinEncheres(Date dateFinEncheres) {
-		this.dateFinEncheres = dateFinEncheres;
-	}
-	public int getMiseAPrix() {
-		return miseAPrix;
-	}
-	public void setMiseAPrix(int miseAPrix) {
-		this.miseAPrix = miseAPrix;
-	}
-	public int getPrixVente() {
-		return prixVente;
-	}
-	public void setPrixVente(int prixVente) {
-		this.prixVente = prixVente;
-	}
-	public String getEtatVente() {
-		return etatVente;
-	}
-	public void setEtatVente(String etatVente) {
-		this.etatVente = etatVente;
-	}
-	public Categorie getCategorie1() {
+	public Categorie getCategorie() {
 		return categorie;
 	}
+
 	public void setCategorie(Categorie categorie) {
 		this.categorie = categorie;
 	}
-	public List<String> getAdresse() {
-		return adresse;
-	}
-	public void setAdresse(List<String> adresse) {
-		this.adresse = adresse;
-	}
-	
+
 	public String getNomPhoto() {
 		return nomPhoto;
 	}
-
 
 	public void setNomPhoto(String nomPhoto) {
 		this.nomPhoto = nomPhoto;
 	}
 
-
-	public Categorie getCategorie() {
-		return categorie;
+	public List<String> getAdresse() {
+		return adresse;
 	}
-	
+
+	public void setAdresse(List<String> adresse) {
+		this.adresse = adresse;
+	}
 }
