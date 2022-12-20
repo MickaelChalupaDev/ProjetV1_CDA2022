@@ -65,7 +65,7 @@ height:80px; width:350px
 </table>
 <table class="table0">
 <tr>
-<form method="get" action="ServletConnexion">
+<form method="get" action="ServletCreationCompte">
 	<td> <input class="input3" type="submit" value="Créer un compte" /> </td>
 </form>
 </tr>
