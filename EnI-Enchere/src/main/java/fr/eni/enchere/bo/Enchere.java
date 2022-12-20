@@ -1,4 +1,4 @@
-package fr.eni.encheres.bo;
+package fr.eni.enchere.bo;
 
 import java.util.Date;
 
@@ -9,14 +9,9 @@ public class Enchere {
 	private String nomArticle;
 	private int montantEnchere;
 	private Date dateEnchere;
-	
-	public Enchere() {
-		super();
-	}
-	
+
 	public Enchere(int noEnchere, int noArticle, int noUtilisateur, String nomArticle, int montantEnchere,
 			Date dateEnchere) {
-		super();
 		this.setNoEnchere(noEnchere);
 		this.setNoArticle(noArticle);
 		this.setNoUtilisateur(noUtilisateur);
@@ -61,7 +56,4 @@ public class Enchere {
 	public void setDateEnchere(Date dateEnchere) {
 		this.dateEnchere = dateEnchere;
 	}
-	
-	
-
 }
