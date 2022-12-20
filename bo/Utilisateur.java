@@ -2,7 +2,7 @@ package fr.eni.encheres.bo;
 
 public class Utilisateur {
 
-		private int noUtlisateur;
+		private int noUtilisateur;
 		private String pseudo;
 		private String prenom;
 		private String email;
@@ -19,10 +19,10 @@ public class Utilisateur {
 		}
 
 		
-		public Utilisateur(int noUtlisateur, String pseudo, String prenom, String email, String telephone, String rue,
+		public Utilisateur(int noUtilisateur, String pseudo, String prenom, String email, String telephone, String rue,
 				String codePostal, String ville, String motDePasse, String credit, int administrateur) {
 			super();
-			this.setNoUtlisateur(noUtlisateur);
+			this.setNoUtilisateur(noUtilisateur);
 			this.setPseudo(pseudo);
 			this.setPrenom(prenom);
 			this.setEmail(email);
@@ -36,12 +36,12 @@ public class Utilisateur {
 		}
 
 
-		public int getNoUtlisateur() {
-			return noUtlisateur;
+		public int getNoUtilisateur() {
+			return noUtilisateur;
 		}
 
-		public void setNoUtlisateur(int noUtlisateur) {
-			this.noUtlisateur = noUtlisateur;
+		public void setNoUtilisateur(int noUtilisateur) {
+			this.noUtilisateur = noUtilisateur;
 		}
 
 		public String getPseudo() {
