@@ -8,7 +8,7 @@ public class Article {
 
 	private int noArticle;
 	private String nomArticle;
-	private String descritpion;
+	private String description;
 	private Date dateDebutEncheres;
 	private Date dateFinEncheres;
 	private int miseAPrix;

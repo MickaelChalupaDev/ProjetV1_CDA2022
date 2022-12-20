@@ -7,7 +7,7 @@ public interface ArticleDAO {
 
 	public void creationArticle(Article article);
 	public Article lireArticle(int noArticle);
-	public void supperimerArticle(int noArticle);
+	public void supprimerArticle(int noArticle);
 	public void Annuler();
 	
 	
