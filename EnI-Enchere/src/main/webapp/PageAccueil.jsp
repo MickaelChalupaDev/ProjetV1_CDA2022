@@ -274,10 +274,10 @@
                         </div>
                     </div>
                 </c:forEach>
-                <c:if test="${obj.articles.size() == 0}">
-                    <h3 class="titlePage">Aucun article trouvé</h3>
-                </c:if>
             </div>
+            <c:if test="${obj.articles.size() == 0}">
+                <h3 class="titlePage">Aucun article trouvé</h3>
+            </c:if>
         </main>
     </body>
     <footer>
