@@ -224,7 +224,7 @@
                                             <label for="mesEncheres">Mes enchères</label>
                                         </div>
                                         <div>
-                                            <input id="encheresRemportees" type="checkbox" name="encheresRemportees"/>
+                                            <input id="encheresRemportees" type="checkbox" name="encheresRemportees" <c:if test="${obj.checkedMesEncheresRemportees}">checked</c:if>/>
                                             <label for="encheresRemportees">Enchères Remportées</label>
                                         </div>
                                     </div>
