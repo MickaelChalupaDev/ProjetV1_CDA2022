@@ -15,7 +15,7 @@ public class Utilisateur {
 		private int administrateur;
 
 		public Utilisateur(int noUtilisateur, String pseudo, String prenom, String email, String telephone, String rue,
-				String codePostal, String ville, String motDePasse, String credit, int administrateur) {
+                           String codePostal, String ville, String motDePasse, String credit, int administrateur) {
 			this.setNoUtilisateur(noUtilisateur);
 			this.setPseudo(pseudo);
 			this.setPrenom(prenom);
@@ -118,5 +118,21 @@ public class Utilisateur {
 			this.administrateur = administrateur;
 		}
 		 
-		
+		public Utilisateur getPageUtilisateur(){
+			return new Utilisateur(this.getNoUtilisateur(),
+			this.getPseudo(),
+			this.getPrenom(),
+			this.getEmail(),
+			this.getTelephone(),
+			this.getRue(),
+			this.getCodePostal(),
+			this.getVille(),
+			null,
+			this.getCredit(),
+			this.getAdministrateur());
+		}
+
+		public boolean getIsValid(){
+			return this.getNoUtilisateur() >= 0;
+		}
 }
