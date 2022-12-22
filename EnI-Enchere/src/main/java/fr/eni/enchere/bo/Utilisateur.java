@@ -1,9 +1,10 @@
-package fr.eni.enchere.bo;
+package fr.eni.encheres.bo;
 
 public class Utilisateur {
 
 		private int noUtilisateur;
 		private String pseudo;
+		private String nom;
 		private String prenom;
 		private String email;
 		private String telephone;
@@ -11,13 +12,20 @@ public class Utilisateur {
 		private String codePostal;
 		private String ville;
 		private String motDePasse;
-		private String credit;
-		private int administrateur;
+		private int credit;
+		private Boolean administrateur;
+		
+		public Utilisateur() {
+			super();
+		}
 
-		public Utilisateur(int noUtilisateur, String pseudo, String prenom, String email, String telephone, String rue,
-				String codePostal, String ville, String motDePasse, String credit, int administrateur) {
-			this.setNoUtilisateur(noUtilisateur);
+		
+		public Utilisateur(int noUtilisateur, String pseudo,String nom, String prenom, String email, String telephone, String rue,
+				String codePostal, String ville, String motDePasse, int credit, Boolean administrateur) {
+			super();
+			this.setNoUtlisateur(noUtilisateur);
 			this.setPseudo(pseudo);
+			this.setNom(nom);
 			this.setPrenom(prenom);
 			this.setEmail(email);
 			this.setTelephone(telephone);
@@ -30,12 +38,22 @@ public class Utilisateur {
 		}
 
 
+		public String getNom() {
+			return nom;
+		}
+
+
+		public void setNom(String nom) {
+			this.nom = nom;
+		}
+
+
 		public int getNoUtilisateur() {
 			return noUtilisateur;
 		}
 
-		public void setNoUtilisateur(int noUtilisateur) {
-			this.noUtilisateur = noUtilisateur;
+		public void setNoUtlisateur(int noUtlisateur) {
+			this.noUtilisateur = noUtlisateur;
 		}
 
 		public String getPseudo() {
@@ -102,20 +120,25 @@ public class Utilisateur {
 			this.motDePasse = motDePasse;
 		}
 
-		public String getCredit() {
+		public int getCredit() {
 			return credit;
 		}
 
-		public void setCredit(String credit) {
+		public void setCredit(int credit) {
 			this.credit = credit;
 		}
 
-		public int getAdministrateur() {
+		public Boolean getAdministrateur() {
 			return administrateur;
 		}
 
-		public void setAdministrateur(int administrateur) {
+		public void setAdministrateur(Boolean administrateur) {
 			this.administrateur = administrateur;
+		}
+		
+		public String hashPwd(String MotDePasse) {
+			System.out.println("méthode hashPwd à définir par Mickael");
+			return MotDePasse;
 		}
 		 
 		

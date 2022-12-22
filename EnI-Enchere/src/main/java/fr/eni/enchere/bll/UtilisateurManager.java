@@ -1,29 +1,36 @@
-package fr.eni.enchere.bll;
+package fr.eni.encheres.bll;
 
-import fr.eni.enchere.bo.Utilisateur;
-import fr.eni.enchere.dal.DAOFactory;
-import fr.eni.enchere.dal.UtilisateurDAO;
 
-import java.util.List;
+import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.DAOFactory;
+import fr.eni.encheres.dal.UtilisateurDAO;
 
 public class UtilisateurManager {
 	
-	private static UtilisateurDAO daoUtilisateurs;
+	private UtilisateurDAO daoUtilisateurs;
 	
 	public UtilisateurManager() {
 		daoUtilisateurs= DAOFactory.getUtilisateurDAO();
 	}
 	public void creerUtilisateur(Utilisateur utilisateur) {
-		daoUtilisateurs.creerUtilisateur(utilisateur);
-	}
-	public void supprimerUtilisateur(int noUtilisateur) {
-		daoUtilisateurs.supprimerUtilisateur(noUtilisateur);
-	}
-	public Utilisateur lireUtilisateur(String pseudo) {
-		return daoUtilisateurs.lireUtilisateur(pseudo);
+		this.daoUtilisateurs.save(utilisateur);
 		
 	}
-	public List<Utilisateur> lireTousUtilisateur(){
-		return daoUtilisateurs.lireTousUtilisateur();
+	public void modifierUtilisateur(Utilisateur utilisateur) {
+		this.daoUtilisateurs.update(utilisateur);
+		
+	}
+	public void supprimerUtilisateur(Utilisateur utilisateur) {
+		this.daoUtilisateurs.delete(utilisateur);
+		
+	}
+	public Utilisateur lireUtilisateur(String pseudo) {
+		return this.daoUtilisateurs.find(pseudo); 
+						
+	}
+	
+	public Utilisateur connecter(String pseudo, String motDePasse) {
+		return this.daoUtilisateurs.login(pseudo, motDePasse);
+		
 	}
 }

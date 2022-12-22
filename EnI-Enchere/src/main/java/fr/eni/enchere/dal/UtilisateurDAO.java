@@ -1,12 +1,13 @@
-package fr.eni.enchere.dal;
+package fr.eni.encheres.dal;
 
-import java.util.List;
 
-import fr.eni.enchere.bo.Utilisateur;
+import fr.eni.encheres.bo.Utilisateur;
 
 public interface UtilisateurDAO {
-	public void creerUtilisateur(Utilisateur utilisateur);
-	public void supprimerUtilisateur(int noUtilisateur);
-	public Utilisateur lireUtilisateur(String pseudo);
-	public List<Utilisateur> lireTousUtilisateur();
+
+	public void save(Utilisateur utilisateur);
+	public void update(Utilisateur utilisateur);
+	public void delete(Utilisateur utilisateur);
+	public Utilisateur find(String pseudo);
+	public Utilisateur login(String pseudo, String motDePasse);
 }
