@@ -15,7 +15,7 @@ public class EnchereManager {
 	}
 
 	//Recherche dans la table ARTCILES dont l'enchere ouverte (en cours) :
-	public List<Article> rechercherToutesEnchres(String nomArticle, String categorie, int noUtilisateurEnchere, String dateEnchere){
+	public List<Enchere> rechercherToutesEncheres(String nomArticle, String categorie, int noUtilisateurEnchere, String dateEnchere){
 
 		return this.daoEncheres.selectAll(nomArticle, categorie, noUtilisateurEnchere, dateEnchere);
 

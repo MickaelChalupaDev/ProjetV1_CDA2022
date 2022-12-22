@@ -194,7 +194,7 @@
                     <div class="filtre">
                         <h3>Filtres :</h3>
                         <div class="inputSearchContainer">
-                            <span><input placeholder="Le nom de l'article contient" name="search"/></span>
+                            <span><input placeholder="Le nom de l'article contient" name="search" pattern="^([a-zA-Z ])$"/></span>
                         </div>
                         <div class="categorieDropdownContainer">
                             <label for="categorie">Catégorie : </label>
@@ -314,7 +314,7 @@
                 }
                 encheresOuvertes.checked = false;
                 mesEncheres.checked = false;
-                encheresRemportees.checked = false;
+                encheresRemportees.checked = false
             }
         </script>
     </footer>
