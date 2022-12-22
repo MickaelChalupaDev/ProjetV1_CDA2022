@@ -12,7 +12,7 @@ public class ArticleManager {
 	}
 	
 	public void creationArticle(Article article) {
-		daoArticles.creationArticle(article);
+		daoArticles.creerArticle(article);
 	}
 	public Article lireArticle(int noArticle) {
 		return daoArticles.lireArticle(noArticle);

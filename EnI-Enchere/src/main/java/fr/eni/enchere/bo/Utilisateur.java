@@ -19,7 +19,7 @@ public class Utilisateur {
 			super();
 		}
 
-		
+	
 		public Utilisateur(int noUtilisateur, String pseudo,String nom, String prenom, String email, String telephone, String rue,
 				String codePostal, String ville, String motDePasse, int credit, Boolean administrateur) {
 			super();
@@ -141,5 +141,21 @@ public class Utilisateur {
 			return MotDePasse;
 		}
 		 
-		
+		public Utilisateur getPageUtilisateur(){
+			return new Utilisateur(this.getNoUtilisateur(),
+			this.getPseudo(),
+			this.getPrenom(),
+			this.getEmail(),
+			this.getTelephone(),
+			this.getRue(),
+			this.getCodePostal(),
+			this.getVille(),
+			null,
+			this.getCredit(),
+			this.getAdministrateur());
+		}
+
+		public boolean getIsValid(){
+			return this.getNoUtilisateur() >= 0;
+		}
 }
