@@ -5,10 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.enchere.dal.UtilisateurDAO;
+import fr.eni.enchere.bo.Utilisateur;
 
 
-public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
+public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	
 	private static final String INSERT_UTILISATEUR=	"INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur ) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 	private static final String UPDATE_UTILISATEUR=	"UPDATE UTILISATEURS SET pseudo=?, nom=?,prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=? WHERE no_utilisateur=?;";
