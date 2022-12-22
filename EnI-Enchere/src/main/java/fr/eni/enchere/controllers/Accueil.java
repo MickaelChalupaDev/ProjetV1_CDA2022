@@ -1,7 +1,6 @@
 package fr.eni.enchere.controllers;
 
 import fr.eni.enchere.bo.Article;
-import fr.eni.enchere.bo.Categorie;
 import fr.eni.enchere.bo.Utilisateur;
 import fr.eni.enchere.controllers.objectSent.ObjectSentAccueil;
 import jakarta.servlet.*;
@@ -23,7 +22,7 @@ public class Accueil extends HttpServlet {
 
         List<Article> articles = new ArrayList<Article>();
         Article articleTest = new Article(0, "Intitulé Vente", "Je suis une vente", new Date(), new Date(), 150, 150, "Etat",
-                utilisateur, Categorie.Informatique, "pic",new ArrayList<String>());
+                utilisateur, "Informatique", "pic",new ArrayList<String>());
         articles.add(articleTest);
         articles.add(articleTest);
         articles.add(articleTest);
@@ -31,7 +30,7 @@ public class Accueil extends HttpServlet {
         ObjectSentAccueil o = new ObjectSentAccueil(articles);
         HttpSession session = request.getSession();
         if(session.isNew() || session.getAttribute("utilisateur") == null){
-            session.setAttribute("utilisateur", utilisateur.getPageUtilisateur());
+            session.setAttribute("utilisateur", utilisateur);
         }
 
         request.setAttribute("obj", o);
