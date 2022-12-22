@@ -1,4 +1,4 @@
-package fr.eni.encheres.dal;
+package fr.eni.enchere.dal.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
