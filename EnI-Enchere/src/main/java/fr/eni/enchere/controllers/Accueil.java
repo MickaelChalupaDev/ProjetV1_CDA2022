@@ -17,8 +17,8 @@ public class Accueil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Utilisateur utilisateur = null;
-        utilisateur = new Utilisateur(-1, "Pseudo", "Prénom", "exemple@test.com", "0600000000",
-                "01 rue Test", "01010", "La ville testuaire", "", "99999", 1);
+        utilisateur = new Utilisateur(-1, "Pseudo", "Nom","Prénom", "exemple@test.com", "0600000000",
+                "01 rue Test", "01010", "La ville testuaire", "", 9999, true);
 
         List<Article> articles = new ArrayList<Article>();
         Article articleTest = new Article(0, "Intitulé Vente", "Je suis une vente", new Date(), new Date(), 150, 150, "Etat",
