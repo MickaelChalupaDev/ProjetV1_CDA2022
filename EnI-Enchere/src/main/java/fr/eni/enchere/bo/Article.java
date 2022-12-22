@@ -14,13 +14,16 @@ public class Article {
 	private int prixVente;
 	private String etatVente;
 	private Utilisateur vendeur;
-	private Categorie categorie;  // Il s'agit du libellé de la catégorie
+	private String categorie;  // Il s'agit du libellé de la catégorie
 	private String nomPhoto;  // nom du fichier sur un dossier du serveur
 	
 	private List<String> adresse= new ArrayList<String>();
 
+	public Article(){
+
+	}
 	public Article(int noArticle, String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres,
-				   int miseAPrix, int prixVente, String etatVente, Utilisateur vendeur, Categorie categorie,
+				   int miseAPrix, int prixVente, String etatVente, Utilisateur vendeur, String categorie,
 				   String nomPhoto, List<String> adresse) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
@@ -108,11 +111,11 @@ public class Article {
 		this.vendeur = vendeur;
 	}
 
-	public Categorie getCategorie() {
+	public String getCategorie() {
 		return categorie;
 	}
 
-	public void setCategorie(Categorie categorie) {
+	public void setCategorie(String categorie) {
 		this.categorie = categorie;
 	}
 

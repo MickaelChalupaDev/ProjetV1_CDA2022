@@ -1,9 +1,10 @@
-package fr.eni.encheres.bll;
+package fr.eni.enchere.bll;
 
 
-import fr.eni.encheres.bo.Utilisateur;
-import fr.eni.encheres.dal.DAOFactory;
-import fr.eni.encheres.dal.UtilisateurDAO;
+import fr.eni.enchere.bo.Utilisateur;
+import fr.eni.enchere.bo.Utilisateur;
+import fr.eni.enchere.dal.DAOFactory;
+import fr.eni.enchere.dal.UtilisateurDAO;
 
 public class UtilisateurManager {
 	
@@ -14,7 +15,6 @@ public class UtilisateurManager {
 	}
 	public void creerUtilisateur(Utilisateur utilisateur) {
 		this.daoUtilisateurs.save(utilisateur);
-		
 	}
 	public void modifierUtilisateur(Utilisateur utilisateur) {
 		this.daoUtilisateurs.update(utilisateur);
@@ -25,8 +25,10 @@ public class UtilisateurManager {
 		
 	}
 	public Utilisateur lireUtilisateur(String pseudo) {
-		return this.daoUtilisateurs.find(pseudo); 
-						
+		return this.daoUtilisateurs.find(pseudo);
+	}
+	public Utilisateur lireUtilisateur(int id) {
+		return this.daoUtilisateurs.find(id);
 	}
 	
 	public Utilisateur connecter(String pseudo, String motDePasse) {

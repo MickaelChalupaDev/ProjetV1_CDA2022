@@ -16,6 +16,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private static final String DELETE_UTILISATEUR="DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
 	private static final String FIND_UTILISATEUR="SELECT * FROM UTILISATEURS WHERE pseudo=?;";
 	private static final String LOGIN_UTILISATEUR="SELECT * FROM UTILISATEURS WHERE pseudo=? and mot_de_passe=?;";
+
+	private static final String FIND_BY_ID="SELECT * FROM UTILISATEURS WHERE noUtilisateur=?";
 	
 	
 	public UtilisateurDAOJdbcImpl()
@@ -122,8 +124,36 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				utilisateur.setRue(res.getString("rue"));
 				utilisateur.setCodePostal(res.getString("code_postal"));
 				utilisateur.setVille(res.getString("ville"));
-				utilisateur.setMotDePasse(res.getString("mot_de_passe"));
+				utilisateur.setMotDePasse("");
 
+			}
+			con.close();
+		} catch (final SQLException e) {
+			e.printStackTrace();
+		}
+		return utilisateur;
+	}
+	@Override
+	public Utilisateur find(int id) {
+		Utilisateur utilisateur = null;
+		try {
+			Connection con = ConnectionDAOBdd.getConnection();
+
+			final PreparedStatement pstmt = con.prepareStatement(FIND_BY_ID);
+			pstmt.setInt(1, id);
+			ResultSet res = pstmt.executeQuery();
+			if (res.next()) {
+				utilisateur = new Utilisateur();
+				utilisateur.setNoUtlisateur(res.getInt("no_utilisateur"));;
+				utilisateur.setPseudo(res.getString("pseudo"));
+				utilisateur.setNom(res.getString("nom"));
+				utilisateur.setPrenom(res.getString("prenom"));
+				utilisateur.setEmail(res.getString("email"));
+				utilisateur.setTelephone(res.getString("telephone"));
+				utilisateur.setRue(res.getString("rue"));
+				utilisateur.setCodePostal(res.getString("code_postal"));
+				utilisateur.setVille(res.getString("ville"));
+				utilisateur.setMotDePasse("");
 			}
 			con.close();
 		} catch (final SQLException e) {
@@ -156,7 +186,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				utilisateur.setRue(res.getString("rue"));
 				utilisateur.setCodePostal(res.getString("code_postal"));
 				utilisateur.setVille(res.getString("ville"));
-				utilisateur.setMotDePasse(res.getString("mot_de_passe"));
+				utilisateur.setMotDePasse("");
 
 			} else utilisateur = null;
 			con.close();

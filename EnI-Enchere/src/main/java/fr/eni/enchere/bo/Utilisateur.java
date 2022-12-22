@@ -140,21 +140,6 @@ public class Utilisateur {
 			System.out.println("méthode hashPwd à définir par Mickael");
 			return MotDePasse;
 		}
-		 
-		public Utilisateur getPageUtilisateur(){
-			return new Utilisateur(this.getNoUtilisateur(),
-			this.getPseudo(),
-			this.getPrenom(),
-			this.getEmail(),
-			this.getTelephone(),
-			this.getRue(),
-			this.getCodePostal(),
-			this.getVille(),
-			null,
-			this.getCredit(),
-			this.getAdministrateur());
-		}
-
 		public boolean getIsValid(){
 			return this.getNoUtilisateur() >= 0;
 		}
