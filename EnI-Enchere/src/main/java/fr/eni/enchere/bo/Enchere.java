@@ -1,33 +1,33 @@
-package fr.eni.enchere.bo;
+package fr.eni.encheres.bo;
 
 import java.util.Date;
 
 public class Enchere {
-	private int noEnchere;
-	private int noUtilisateurEnchereur;
-	private int montantEnchere;
+	private int noEncherisseur;
+	private int noArticle;
 	private Date dateEnchere;
-	private Article article;
+	private int montantEnchere;
+	
+	
 	
 	public Enchere() {
 		super();
 	}
 	
-    public Enchere(int noEnchere, int noUtilisateurEnchereur, int montantEnchere,
-			Date dateEnchere, Article article) {
+    public Enchere(int noEncherisseur,int noArticle, Date dateEnchere, int montantEnchere) {
 		super();
-		this.setNoEnchere(noEnchere);
-		this.setNoUtilisateurEnchereur(noUtilisateurEnchereur);
+		this.setNoArticle(noArticle);
+		this.setNoEncherisseur(noEncherisseur);
 		this.setMontantEnchere(montantEnchere);
 		this.setDateEnchere(dateEnchere);
-		this.setArticle(article);
+		
 	}
 
-    public int getNoEnchere() {
-		return noEnchere;
+    public int getNoArticle() {
+		return noArticle;
 	}
-	public void setNoEnchere(int noEnchere) {
-		this.noEnchere = noEnchere;
+	public void setNoArticle(int noArticle) {
+		this.noArticle = noArticle;
 	}
 	
 	public int getMontantEnchere() {
@@ -43,19 +43,15 @@ public class Enchere {
 		this.dateEnchere = dateEnchere;
 	}
 
-	public Article getArticle() {
-		return article;
+	
+	public void setNoEncherisseur(int noEncherisseur) {
+		this.noEncherisseur = noEncherisseur;
 	}
-
-	public void setArticle(Article article) {
-		this.article = article;
+	public int getNoEncherisseur() {
+		return noEncherisseur;
 	}
-
-	public void setNoUtilisateurEnchereur(int noUtilisateurEnchereur) {
-		this.noUtilisateurEnchereur = noUtilisateurEnchereur;
-	}
-	public int getNoUtilisateurEnchereur() {
-		return noUtilisateurEnchereur;
+	public String toString() {
+		return this.getNoEncherisseur()+" " + this.getNoArticle() + " " + this.getDateEnchere() + " " +this.getMontantEnchere(); 
 	}
 	
 

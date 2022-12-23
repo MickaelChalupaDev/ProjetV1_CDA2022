@@ -1,27 +1,48 @@
-package fr.eni.enchere.bll;
+package fr.eni.encheres.bll;
 
-import fr.eni.enchere.bo.Article;
-import fr.eni.enchere.dal.DAOFactory;
-import fr.eni.enchere.dal.EnchereDAO;
-import fr.eni.enchere.bo.Enchere;
+import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.dal.DAOFactory;
+import fr.eni.encheres.dal.EnchereDAO;
+import fr.eni.encheres.bo.Enchere;
 
 import java.util.List;
 
 public class EnchereManager {
 	private final EnchereDAO daoEncheres;
 	
-	public EnchereManager(EnchereDAO doaEncheres) {
+	public EnchereManager() {
 		this.daoEncheres = DAOFactory.getEnchereDAO();
 	}
 
-	//Recherche dans la table ARTCILES dont l'enchere ouverte (en cours) :
-	public List<Enchere> rechercherToutesEncheres(String nomArticle, String categorie, int noUtilisateurEnchere, String dateEnchere){
+	
+	public List<Article> rechercherTout(String nomArticle, String categorie){
 
-		return this.daoEncheres.selectAll(nomArticle, categorie, noUtilisateurEnchere, dateEnchere);
+		return this.daoEncheres.selectALL(nomArticle, categorie);
 
 	}
-	public List<Enchere> rechercherMesEncheres(String nomArticle, String categorie,int noUtilisateurArticle, String dateDebut, String dateEnchere){
-		return this.daoEncheres.selectByUser(nomArticle, categorie, noUtilisateurArticle, dateDebut, dateEnchere);
+
+	public List<Article> rechercherParAchat(String nomArticle, String categorie, int noEncherisseur, boolean etatEnchere){
+
+		return this.daoEncheres.selectByBuyer(nomArticle, categorie, noEncherisseur, etatEnchere);
+
+	}
+
+	public List<Article> rechercherParVente(String nomArticle, String categorie, int noVendeur, String etatVente){
+
+		return this.daoEncheres.selectBySeller(nomArticle, categorie, noVendeur, etatVente);
+
+	}
+	public Enchere lire(int noArticle) {
+	
+		return this.daoEncheres.selectByID(noArticle);
+	}
+	
+		
+	public void encherir(Enchere enchere) {
+		this.daoEncheres.insert(enchere);
+	}
+	public void annuler(Enchere enchere) {
+		this.daoEncheres.delete(enchere);
 	}
 
 }

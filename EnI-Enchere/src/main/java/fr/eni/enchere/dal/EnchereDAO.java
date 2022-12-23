@@ -1,15 +1,20 @@
-package fr.eni.enchere.dal;
+package fr.eni.encheres.dal;
 
 import java.util.List;
 
-import fr.eni.enchere.bo.Article;
-import fr.eni.enchere.bo.Enchere;
+import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Enchere;
 
 
 public interface EnchereDAO {
 
-	public List<Enchere> selectAll(String nomArticle, String categorie, int noUtilisateurEnchere, String dateEnchere);
-	public List<Enchere> selectByUser(String nomArticle, String categorie,int noUtilisateurArticle, String dateDebut, String dateEnchere);
+	public List<Article> selectALL(String nomArticle, String categorie); 
+	public List<Article> selectByBuyer(String nomArticle, String categorie, int noEncherisseur, boolean etatEnchere);
+	public List<Article> selectBySeller(String nomArticle, String categorie, int noVendeur, String etatVente);
+	public Enchere selectByID(int noEnchere);
+	
 	public void insert(Enchere enchere);
-	public void update(Enchere enchere);
+	public void delete(Enchere enchere);
+	
+	
 }
