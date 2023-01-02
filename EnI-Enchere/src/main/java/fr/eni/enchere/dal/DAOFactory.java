@@ -1,8 +1,8 @@
-package fr.eni.enchere.dal;
+package fr.eni.encheres.dal;
 
-import fr.eni.enchere.dal.jdbc.ArticleDAOJdbcImpl;
-import fr.eni.enchere.dal.jdbc.UtilisateurDAOJdbcImpl;
-import fr.eni.enchere.dal.jdbc.EnchereDAOJdbcImpl;
+import fr.eni.encheres.dal.jdbc.ArticleDAOJdbcImpl;
+import fr.eni.encheres.dal.jdbc.UtilisateurDAOJdbcImpl;
+import fr.eni.encheres.dal.jdbc.EnchereDAOJdbcImpl;
 
 public abstract class DAOFactory {
 	

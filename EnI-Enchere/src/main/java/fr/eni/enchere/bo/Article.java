@@ -1,4 +1,4 @@
-package fr.eni.enchere.bo;
+package fr.eni.encheres.bo;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,8 +1,8 @@
-package fr.eni.enchere.bll;
+package fr.eni.encheres.bll;
 
-import fr.eni.enchere.bo.Article;
-import fr.eni.enchere.dal.ArticleDAO;
-import fr.eni.enchere.dal.DAOFactory;
+import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.dal.ArticleDAO;
+import fr.eni.encheres.dal.DAOFactory;
 
 public class ArticleManager {
 	private final ArticleDAO daoArticles;

@@ -1,6 +1,6 @@
-package fr.eni.enchere.dal;
+package fr.eni.encheres.dal;
 
-import fr.eni.enchere.bo.Article;
+import fr.eni.encheres.bo.Article;
 
 public interface ArticleDAO {
 
