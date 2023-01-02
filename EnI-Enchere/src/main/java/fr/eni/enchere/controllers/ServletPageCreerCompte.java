@@ -1,4 +1,4 @@
-package fr.eni.encheres.controleurs;
+package fr.eni.encheres.controllers;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
