@@ -1,8 +1,8 @@
-package fr.eni.enchere.controllers;
+package fr.eni.encheres.controllers;
 
-import fr.eni.enchere.bo.Article;
-import fr.eni.enchere.bo.Utilisateur;
-import fr.eni.enchere.controllers.objectSent.ObjectSentAccueil;
+import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.controllers.objectSent.ObjectSentAccueil;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @WebServlet(name = "Accueil", value = "/")
-public class Accueil extends HttpServlet {
+public class ServletPageAccueil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Utilisateur utilisateur = null;

@@ -1,4 +1,4 @@
-package fr.eni.encheres.controleurs;
+package fr.eni.encheres.controllers;
 
 import java.io.IOException;
 

@@ -1,7 +1,7 @@
-package fr.eni.enchere.controllers.objectSent;
+package fr.eni.encheres.controllers.objectSent;
 
-import fr.eni.enchere.bo.Article;
-import fr.eni.enchere.bo.Utilisateur;
+import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Utilisateur;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package fr.eni.enchere.controllers;
+package fr.eni.encheres.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
