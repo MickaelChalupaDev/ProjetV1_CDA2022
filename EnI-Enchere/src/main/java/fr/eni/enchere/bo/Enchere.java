@@ -20,7 +20,6 @@ public class Enchere {
 		this.setNoEncherisseur(noEncherisseur);
 		this.setMontantEnchere(montantEnchere);
 		this.setDateEnchere(dateEnchere);
-		
 	}
 
     public int getNoArticle() {
@@ -29,7 +28,6 @@ public class Enchere {
 	public void setNoArticle(int noArticle) {
 		this.noArticle = noArticle;
 	}
-	
 	public int getMontantEnchere() {
 		return montantEnchere;
 	}
@@ -42,8 +40,6 @@ public class Enchere {
 	public void setDateEnchere(Date dateEnchere) {
 		this.dateEnchere = dateEnchere;
 	}
-
-	
 	public void setNoEncherisseur(int noEncherisseur) {
 		this.noEncherisseur = noEncherisseur;
 	}
@@ -53,6 +49,4 @@ public class Enchere {
 	public String toString() {
 		return this.getNoEncherisseur()+" " + this.getNoArticle() + " " + this.getDateEnchere() + " " +this.getMontantEnchere(); 
 	}
-	
-
 }

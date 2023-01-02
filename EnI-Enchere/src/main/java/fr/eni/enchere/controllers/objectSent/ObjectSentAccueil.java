@@ -1,14 +1,12 @@
 package fr.eni.encheres.controllers.objectSent;
 
 import fr.eni.encheres.bo.Article;
-import fr.eni.encheres.bo.Utilisateur;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ObjectSentAccueil {
     public ObjectSentAccueil() {}
-
 
     public ObjectSentAccueil(List<Article> articles){
         this.articles = articles;
@@ -30,7 +28,6 @@ public class ObjectSentAccueil {
         this.filtreVenteAffichees = filtreVenteAffichees;
     }
 
-    Utilisateur utilisateur = null;
     List<Article> articles = new ArrayList<Article>();
     public String searched = "";
     public String categorieSelected = "";
@@ -41,10 +38,6 @@ public class ObjectSentAccueil {
     public boolean checkedVentesNonDebutees = false;
     public boolean checkedVentesTerminees = false;
     public String filtreVenteAffichees = "achats";
-
-    public Utilisateur getUtilisateur() {
-        return utilisateur;
-    }
 
     public List<Article> getArticles() {
         return articles;

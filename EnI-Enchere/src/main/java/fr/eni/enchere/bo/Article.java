@@ -12,7 +12,7 @@ public class Article {
 	private Date dateFinEncheres;
 	private int miseAPrix;
 	private int prixVente;
-	private int etatVente;
+	private EtatVente etatVente;
 	private Utilisateur vendeur;
 	private String categorie;  // Il s'agit du libellé de la catégorie
 	private String nomPhoto;  // nom du fichier sur un dossier du serveur
@@ -22,7 +22,7 @@ public class Article {
 
 	}
 	public Article(int noArticle, String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres,
-				   int miseAPrix, int prixVente, int etatVente, Utilisateur vendeur, String categorie,
+				   int miseAPrix, int prixVente, EtatVente etatVente, Utilisateur vendeur, String categorie,
 				   String nomPhoto, List<String> adresse) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
@@ -94,11 +94,11 @@ public class Article {
 		this.prixVente = prixVente;
 	}
 
-	public int getEtatVente() {
+	public EtatVente getEtatVente() {
 		return etatVente;
 	}
 
-	public void setEtatVente(int etatVente) {
+	public void setEtatVente(EtatVente etatVente) {
 		this.etatVente = etatVente;
 	}
 

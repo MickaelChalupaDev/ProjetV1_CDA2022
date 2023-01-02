@@ -1,6 +1,7 @@
 package fr.eni.encheres.controllers;
 
 import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.EtatVente;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.controllers.objectSent.ObjectSentAccueil;
 import jakarta.servlet.*;
@@ -17,19 +18,20 @@ public class ServletPageAccueil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Utilisateur utilisateur = null;
-        utilisateur = new Utilisateur(-1, "Pseudo", "Nom","Prénom", "exemple@test.com", "0600000000",
-                "01 rue Test", "01010", "La ville testuaire", "", 9999, true);
+        utilisateur = new Utilisateur(1, "Pseudo", "nom", "Prénom", "exemple@test.com", "0600000000",
+                "01 rue Test", "01010", "La ville testuaire", "", 99999, true);
 
         List<Article> articles = new ArrayList<Article>();
-        Article articleTest = new Article(0, "Intitulé Vente", "Je suis une vente", new Date(), new Date(), 150, 150, "Etat",
-                utilisateur, "Informatique", "pic",new ArrayList<String>());
+        Article articleTest = new Article(0, "Intitulé Vente", "Je suis une vente", new Date(), new Date(), 150, 150, EtatVente.NonDebutee,
+                utilisateur, "Informatique", "pic", new ArrayList<String>());
         articles.add(articleTest);
         articles.add(articleTest);
         articles.add(articleTest);
         articles.add(articleTest);
         ObjectSentAccueil o = new ObjectSentAccueil(articles);
+
         HttpSession session = request.getSession();
-        if(session.isNew() || session.getAttribute("utilisateur") == null){
+        if (session.isNew() || session.getAttribute("utilisateur") == null) {
             session.setAttribute("utilisateur", utilisateur);
         }
 

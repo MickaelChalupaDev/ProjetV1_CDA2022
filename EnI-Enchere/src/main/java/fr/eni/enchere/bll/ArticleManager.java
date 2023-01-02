@@ -13,11 +13,9 @@ public class ArticleManager {
 	
 	public Article creationArticle(Article article) {
 		return daoArticles.creerArticle(article);
-		
 	}
 	public void modifierArticle(Article article) {
 		daoArticles.modifierArticle(article);
-		
 	}
 	
 	public Article lireArticle(int noArticle) {

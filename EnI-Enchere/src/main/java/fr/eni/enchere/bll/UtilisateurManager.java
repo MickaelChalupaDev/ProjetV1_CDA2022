@@ -17,11 +17,9 @@ public class UtilisateurManager {
 	}
 	public void modifierUtilisateur(Utilisateur utilisateur) {
 		this.daoUtilisateurs.update(utilisateur);
-		
 	}
 	public void supprimerUtilisateur(Utilisateur utilisateur) {
 		this.daoUtilisateurs.delete(utilisateur);
-		
 	}
 	public Utilisateur lireUtilisateur(String pseudo) {
 		return this.daoUtilisateurs.find(pseudo);
@@ -32,6 +30,5 @@ public class UtilisateurManager {
 	
 	public Utilisateur connecter(String pseudo, String motDePasse) {
 		return this.daoUtilisateurs.login(pseudo, motDePasse);
-		
 	}
 }
