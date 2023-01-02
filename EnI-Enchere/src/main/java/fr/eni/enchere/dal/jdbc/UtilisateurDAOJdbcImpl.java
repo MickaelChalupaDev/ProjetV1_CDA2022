@@ -1,23 +1,23 @@
-package fr.eni.enchere.dal.jdbc;
+package fr.eni.encheres.dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import fr.eni.enchere.dal.UtilisateurDAO;
-import fr.eni.enchere.bo.Utilisateur;
+
+import fr.eni.encheres.bo.Utilisateur;
 
 
 public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	
 	private static final String INSERT_UTILISATEUR=	"INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur ) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
-	private static final String UPDATE_UTILISATEUR=	"UPDATE UTILISATEURS SET pseudo=?, nom=?,prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=? WHERE no_utilisateur=?;";
+	private static final String UPDATE_UTILISATEUR=	"UPDATE UTILISATEURS SET pseudo=?, nom=?,prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?, administrateur=? WHERE no_utilisateur=?;";
 	private static final String DELETE_UTILISATEUR="DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
 	private static final String FIND_UTILISATEUR="SELECT * FROM UTILISATEURS WHERE pseudo=?;";
 	private static final String LOGIN_UTILISATEUR="SELECT * FROM UTILISATEURS WHERE pseudo=? and mot_de_passe=?;";
 
-	private static final String FIND_BY_ID="SELECT * FROM UTILISATEURS WHERE noUtilisateur=?";
+	private static final String FIND_BY_ID="SELECT * FROM UTILISATEURS WHERE no_utilisateur=?";
 	
 	
 	public UtilisateurDAOJdbcImpl()
@@ -26,7 +26,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void save(Utilisateur utilisateur) {
+	public Utilisateur save(Utilisateur utilisateur) {
 		
 		try {
 			
@@ -60,6 +60,11 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			e.printStackTrace();
 		}
 		
+		if (utilisateur.getNoUtilisateur() != 0)
+			return utilisateur;
+		else
+			return null;
+		
 		
 	}
 
@@ -78,7 +83,10 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			pstmt.setString(7, utilisateur.getCodePostal());
 			pstmt.setString(8, utilisateur.getVille());
 			pstmt.setString(9, utilisateur.hashPwd(utilisateur.getMotDePasse()));
-			pstmt.setInt(10, utilisateur.getNoUtilisateur());
+			pstmt.setInt(10, utilisateur.getCredit());
+			pstmt.setBoolean(11, utilisateur.getAdministrateur());
+			pstmt.setInt(12, utilisateur.getNoUtilisateur());
+			
 			pstmt.executeUpdate();
 
 			con.close();
@@ -90,6 +98,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
 	@Override
 	public void delete(Utilisateur utilisateur) {
+		
+		
+		
 		try {
 
 			Connection con = ConnectionDAOBdd.getConnection();
@@ -124,8 +135,11 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				utilisateur.setRue(res.getString("rue"));
 				utilisateur.setCodePostal(res.getString("code_postal"));
 				utilisateur.setVille(res.getString("ville"));
-				utilisateur.setMotDePasse("");
-
+				utilisateur.setMotDePasse(res.getString("mot_de_passe"));
+				utilisateur.setCredit(res.getInt("credit"));
+				utilisateur.setAdministrateur(res.getBoolean("administrateur"));
+				
+				
 			}
 			con.close();
 		} catch (final SQLException e) {
@@ -153,7 +167,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				utilisateur.setRue(res.getString("rue"));
 				utilisateur.setCodePostal(res.getString("code_postal"));
 				utilisateur.setVille(res.getString("ville"));
-				utilisateur.setMotDePasse("");
+				utilisateur.setMotDePasse(res.getString("mot_de_passe"));
+				utilisateur.setCredit(res.getInt("credit"));
+				utilisateur.setAdministrateur(res.getBoolean("administrateur"));
 			}
 			con.close();
 		} catch (final SQLException e) {
@@ -186,7 +202,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				utilisateur.setRue(res.getString("rue"));
 				utilisateur.setCodePostal(res.getString("code_postal"));
 				utilisateur.setVille(res.getString("ville"));
-				utilisateur.setMotDePasse("");
+				utilisateur.setMotDePasse(res.getString("mot_de_passe"));
+				utilisateur.setCredit(res.getInt("credit"));
+				utilisateur.setAdministrateur(res.getBoolean("admnistrateur"));
 
 			} else utilisateur = null;
 			con.close();

@@ -1,10 +1,9 @@
-package fr.eni.enchere.bll;
+package fr.eni.encheres.bll;
 
 
-import fr.eni.enchere.bo.Utilisateur;
-import fr.eni.enchere.bo.Utilisateur;
-import fr.eni.enchere.dal.DAOFactory;
-import fr.eni.enchere.dal.UtilisateurDAO;
+import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.DAOFactory;
+import fr.eni.encheres.dal.UtilisateurDAO;
 
 public class UtilisateurManager {
 	
@@ -13,8 +12,8 @@ public class UtilisateurManager {
 	public UtilisateurManager() {
 		daoUtilisateurs= DAOFactory.getUtilisateurDAO();
 	}
-	public void creerUtilisateur(Utilisateur utilisateur) {
-		this.daoUtilisateurs.save(utilisateur);
+	public Utilisateur creerUtilisateur(Utilisateur utilisateur) {
+		return this.daoUtilisateurs.save(utilisateur);
 	}
 	public void modifierUtilisateur(Utilisateur utilisateur) {
 		this.daoUtilisateurs.update(utilisateur);
