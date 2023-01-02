@@ -12,18 +12,17 @@ public class Article {
 	private Date dateFinEncheres;
 	private int miseAPrix;
 	private int prixVente;
-	private String etatVente;
+	private int etatVente;
 	private Utilisateur vendeur;
 	private String categorie;  // Il s'agit du libellé de la catégorie
 	private String nomPhoto;  // nom du fichier sur un dossier du serveur
-	
 	private List<String> adresse= new ArrayList<String>();
 
 	public Article(){
 
 	}
 	public Article(int noArticle, String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres,
-				   int miseAPrix, int prixVente, String etatVente, Utilisateur vendeur, String categorie,
+				   int miseAPrix, int prixVente, int etatVente, Utilisateur vendeur, String categorie,
 				   String nomPhoto, List<String> adresse) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
@@ -95,11 +94,11 @@ public class Article {
 		this.prixVente = prixVente;
 	}
 
-	public String getEtatVente() {
+	public int getEtatVente() {
 		return etatVente;
 	}
 
-	public void setEtatVente(String etatVente) {
+	public void setEtatVente(int etatVente) {
 		this.etatVente = etatVente;
 	}
 
@@ -133,5 +132,24 @@ public class Article {
 
 	public void setAdresse(List<String> adresse) {
 		this.adresse = adresse;
+	}
+	
+	public String toString() {
+		return this.getNoArticle() + " " +this.getNomArticle() + " " + this.categorie; 
+	}
+	
+	public void copy(Article articleACopier) {
+		this.setNomArticle(articleACopier.getNomArticle());
+		this.setDescription(articleACopier.getDescription());
+		this.setDateDebutEncheres(articleACopier.getDateDebutEncheres());
+		this.setDateFinEncheres(articleACopier.getDateFinEncheres());
+		this.setMiseAPrix(articleACopier.getMiseAPrix());
+		this.setPrixVente(articleACopier.getPrixVente());
+		this.setEtatVente(articleACopier.getEtatVente());
+		this.setVendeur(articleACopier.getVendeur());
+		this.setCategorie(articleACopier.getCategorie());
+		if (articleACopier.getNomPhoto()!=null) {
+		this.setNomPhoto(articleACopier.getNomPhoto());}
+		this.setAdresse(articleACopier.getAdresse());
 	}
 }

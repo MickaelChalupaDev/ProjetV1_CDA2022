@@ -11,16 +11,20 @@ public class ArticleManager {
 		this.daoArticles = DAOFactory.getArticleDAO();
 	}
 	
-	public void creationArticle(Article article) {
-		daoArticles.creerArticle(article);
+	public Article creationArticle(Article article) {
+		return daoArticles.creerArticle(article);
+		
 	}
+	public void modifierArticle(Article article) {
+		daoArticles.modifierArticle(article);
+		
+	}
+	
 	public Article lireArticle(int noArticle) {
 		return daoArticles.lireArticle(noArticle);
 	}
 	public void supprimerArticle(int noArticle) {
 		daoArticles.supprimerArticle(noArticle);
 	}
-	public void Annuler() {
-		daoArticles.Annuler();
-	}
+	
 }

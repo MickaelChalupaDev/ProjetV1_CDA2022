@@ -4,8 +4,9 @@ import fr.eni.encheres.bo.Article;
 
 public interface ArticleDAO {
 
-	public void creerArticle(Article article);
+	public Article creerArticle(Article article);
 	public Article lireArticle(int noArticle);
+	public void modifierArticle(Article article);
 	public void supprimerArticle(int noArticle);
-	public void Annuler();
+	
 }
