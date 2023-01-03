@@ -13,9 +13,7 @@ public class Enchere {
 	
 	
 	
-	public Enchere() {
-		super();
-	}
+	public Enchere() {}
 	
     public Enchere(int noEncherisseur,int noArticle, Date dateEnchere, int montantEnchere) {
 		this.setNoArticle(noArticle);

@@ -18,9 +18,7 @@ public class Article {
 	private String nomPhoto;  // nom du fichier sur un dossier du serveur
 	private List<String> adresse= new ArrayList<String>();
 
-	public Article(){
-
-	}
+	public Article(){}
 	public Article(int noArticle, String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres,
 				   int miseAPrix, int prixVente, EtatVente etatVente, Utilisateur vendeur, String categorie,
 				   String nomPhoto, List<String> adresse) {
