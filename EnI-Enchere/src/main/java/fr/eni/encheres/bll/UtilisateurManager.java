@@ -21,8 +21,8 @@ public class UtilisateurManager {
 	public void supprimerUtilisateur(Utilisateur utilisateur) {
 		this.daoUtilisateurs.delete(utilisateur);
 	}
-	public Utilisateur lireUtilisateur(String pseudo) {
-		return this.daoUtilisateurs.find(pseudo);
+	public Utilisateur lireUtilisateur(String pseudoEmail) {
+		return this.daoUtilisateurs.find(pseudoEmail);
 	}
 	public Utilisateur lireUtilisateur(int id) {
 		return this.daoUtilisateurs.find(id);

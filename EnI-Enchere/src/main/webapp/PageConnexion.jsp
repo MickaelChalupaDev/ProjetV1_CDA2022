@@ -13,7 +13,7 @@
 
         .table0 {
             margin: auto;
-            margin-top: 80px;
+            margin-top: 40px;
 
 
             width: 350px;
@@ -53,11 +53,14 @@
 </header>
 
 <table class="table0">
-    <form method="get" action="ServletConnexion">
+    <form method="post" action="ServletPageConnexion">
 
+		<tr>
+		 <td colspan="2"> <p style="color:red; margin-left: 180px"> &nbsp ${requestScope.messageErreur}</p> </td>
+		</tr>
         <tr>
             <td><label> Identifiant :</label></td>
-            <td><input class="input0" type="text" name="Identifiant" placeholder="Entrez un pseudo" required/></td>
+            <td><input class="input0" type="text" name="pseudo" placeholder="Entrez un pseudo" required/></td>
         </tr>
         <tr>
             <td><label> Mot de passe :</label></td>
@@ -75,7 +78,7 @@
 </table>
 <table class="table0">
     <tr>
-        <form method="get" action="ServletCreationCompte">
+        <form method="get" action="PageCreerCompte.jsp">
             <td><input class="input3" type="submit" value="Créer un compte"/></td>
         </form>
     </tr>

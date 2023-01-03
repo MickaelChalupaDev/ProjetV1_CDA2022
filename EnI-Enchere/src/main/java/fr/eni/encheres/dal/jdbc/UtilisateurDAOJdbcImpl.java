@@ -14,7 +14,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     private static final String INSERT_UTILISATEUR = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur ) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
     private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET pseudo=?, nom=?,prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?, administrateur=? WHERE no_utilisateur=?;";
     private static final String DELETE_UTILISATEUR = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
-    private static final String FIND_UTILISATEUR = "SELECT * FROM UTILISATEURS WHERE pseudo=?;";
+    private static final String FIND_UTILISATEUR_PSEUDO = "SELECT * FROM UTILISATEURS WHERE pseudo=?;";
+    private static final String FIND_UTILISATEUR_EMAIL = "SELECT * FROM UTILISATEURS WHERE email=?;";
     private static final String LOGIN_UTILISATEUR = "SELECT * FROM UTILISATEURS WHERE pseudo=? and mot_de_passe=?;";
 
     private static final String FIND_BY_ID = "SELECT * FROM UTILISATEURS WHERE no_utilisateur=?";
@@ -113,18 +114,17 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
     }
 
     @Override
-    public Utilisateur find(String pseudo) {
+    public Utilisateur find(String pseudoEmail) {
         Utilisateur utilisateur = null;
         try {
             Connection con = ConnectionDAOBdd.getConnection();
 
-            final PreparedStatement pstmt = con.prepareStatement(FIND_UTILISATEUR);
-            pstmt.setString(1, pseudo);
+            PreparedStatement pstmt = con.prepareStatement(FIND_UTILISATEUR_PSEUDO);
+            pstmt.setString(1, pseudoEmail);
             ResultSet res = pstmt.executeQuery();
             if (res.next()) {
                 utilisateur = new Utilisateur();
                 utilisateur.setNoUtlisateur(res.getInt("no_utilisateur"));
-                ;
                 utilisateur.setPseudo(res.getString("pseudo"));
                 utilisateur.setNom(res.getString("nom"));
                 utilisateur.setPrenom(res.getString("prenom"));
@@ -136,14 +136,35 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
                 utilisateur.setMotDePasse(res.getString("mot_de_passe"));
                 utilisateur.setCredit(res.getInt("credit"));
                 utilisateur.setAdministrateur(res.getBoolean("administrateur"));
-
-
+               
             }
+            
+            pstmt = con.prepareStatement(FIND_UTILISATEUR_EMAIL);
+            pstmt.setString(1, pseudoEmail);
+            res = pstmt.executeQuery();
+            if (res.next()) {
+                utilisateur = new Utilisateur();
+                utilisateur.setNoUtlisateur(res.getInt("no_utilisateur"));
+                utilisateur.setPseudo(res.getString("pseudo"));
+                utilisateur.setNom(res.getString("nom"));
+                utilisateur.setPrenom(res.getString("prenom"));
+                utilisateur.setEmail(res.getString("email"));
+                utilisateur.setTelephone(res.getString("telephone"));
+                utilisateur.setRue(res.getString("rue"));
+                utilisateur.setCodePostal(res.getString("code_postal"));
+                utilisateur.setVille(res.getString("ville"));
+                utilisateur.setMotDePasse(res.getString("mot_de_passe"));
+                utilisateur.setCredit(res.getInt("credit"));
+                utilisateur.setAdministrateur(res.getBoolean("administrateur"));
+               
+            }
+            
             con.close();
         } catch (final SQLException e) {
             e.printStackTrace();
         }
         return utilisateur;
+       
     }
 
     @Override
