@@ -1,9 +1,4 @@
 target/
-
-.mvn
-
-src/main/webapp/META-INF/*
-
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -41,18 +36,3 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
-*/beans.xml
-*/maven-wrapper.jar
-*/maven-wrapper-properties
-*/persistence.xml
-*/web.xml
-*/context.xml
-mvnw
-mvnw.cmd
-persistence.xml
-pom.xml
-src/main/webapp/META-INF/
-.mvn/*
-.mvn
-src/main/resources/META-INF/*
