@@ -28,7 +28,7 @@
                 text-decoration: none;
                 color:black;
             }
-            button:not(:disabled), select, option, input[type="checkbox"], label + select, label + input[type="checkbox"], a{
+            button:not(:disabled), select, option, input[type="checkbox"], label + select, label + input[type="checkbox"], a, label{
                 cursor: pointer;
             }
             .titleEni{
