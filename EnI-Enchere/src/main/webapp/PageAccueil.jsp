@@ -1,8 +1,8 @@
 <%@ page import="fr.eni.encheres.bo.Utilisateur" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="obj" scope="request" type="fr.eni.encheres.controllers.objectSent.ObjectSentAccueil"/>
-<html>
+<jsp:useBean id="obj" scope="request" type="fr.eni.encheres.controleurs.objectSent.ObjectSentAccueil"/>
+
     <head>
         <title>Accueil</title>
         <style>
@@ -25,9 +25,8 @@
             }
             a:visited {
                 text-decoration: none;
-                color:black;
             }
-            button:not(:disabled), select, option, input[type="checkbox"], label + select, label + input[type="checkbox"], a, label{
+            button:not(:disabled), select, option, input[type="checkbox"], label + select, label + input[type="checkbox"], a{
                 cursor: pointer;
             }
             .titleEni{
@@ -111,17 +110,6 @@
                 border:none;
                 border-radius: 10px;
             }
-            @supports (selector(:has(*))) {
-                .inputSearchContainer span:has(input:invalid){
-                    border-color:red;
-                }
-                .inputSearchContainer span:has(input:valid){
-                    border-color:green;
-                }
-                .inputSearchContainer span:has(input:placeholder-shown){
-                    border-color:#6a6a6a;
-                }
-            }
             .categorieDropdownContainer{
                 display: flex;
                 flex-direction: row;
@@ -176,132 +164,133 @@
         <link rel="icon" href="https://www.eni-ecole.fr/wp-content/uploads/2021/01/logoENI.png" sizes="192x192">
     </head>
     <body>
-    <%-- Get the object from the request --%>
-    <nav>
-        <div>
-            <a class="titleEni" href="/">ENI-Enchères</a>
-        </div>
-        <c:choose>
-            <c:when test="${utilisateur.isValid}">
-                <div><!-- Affiché que si User != null -->
-                    <a href="ServletPageVendreUnArticle">Enchères</a>
-                    <a href="ServletPageVendreUnArticle">Vendre un article</a>
-                    <a href="PageMonProfil.jsp">Mon Profil</a>
-                    <a href="Deconnexion">Déconnexion</a>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div><!-- Affiché que si User == null -->
-                    <a href="PageConnexion.jsp">S'inscrire - Se connecter</a>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </nav>
-    <hr/>
-    <main>
-        <h3 class="titlePage">Listes des enchères</h3>
-        <form action="/Search">
-            <div class="filtresContainer">
-                <div class="filtre">
-                    <h3>Filtres :</h3>
-                    <div class="inputSearchContainer">
-                        <span><input placeholder="Le nom de l'article contient" name="search" pattern="^([a-zA-Z éèçàùôöïîÉÈÇÀÙÔÎÖÏ]){0,30}$"/></span>
-                    </div>
-                    <div class="categorieDropdownContainer">
-                        <label for="categorie">Catégorie : </label>
-                        <select id="categorie" name="categorie">
-                            <option <c:if test="${obj.categorieSelected == \"Toutes\"}">selected</c:if>> Toutes</option>
-                            <option <c:if test="${obj.categorieSelected == \"Informatique\"}">selected</c:if>>Informatique</option>
-                            <option <c:if test="${obj.categorieSelected == \"Ameublement\"}">selected</c:if>>Ameublement</option>
-                            <option <c:if test="${obj.categorieSelected == \"Vêtement\"}">selected</c:if>>Vêtement</option>
-                            <option <c:if test="${obj.categorieSelected == \"Sport&Loisir\"}">selected</c:if>>Sport&Loisir</option>
-                        </select>
-                    </div>
-                    <!-- Note les prochaines divs ne seront pas affichées si user pas connecté -->
-                    <c:if test="${utilisateur.isValid}">
-                        <div class="groupOptions">
-                            <div>
-                                <div>
-                                    <input id="achat" type="radio" name="filtreVentesAffichees" value="achat" <c:if test="${obj.filtreVenteAffichees == \"achats\"}">checked</c:if> onclick="onclickAchat()"/>
-                                    <label for="achat">Achats</label>
-                                </div>
-                                <div>
-                                    <div>
-                                        <input id="encheresOuvertes" type="checkbox" name="encheresOuvertes" <c:if test="${obj.checkedEnchereOuverte}">checked</c:if> onclick="onclickAchat()" />
-                                        <label for="encheresOuvertes">Enchères Ouvertes</label>
-                                    </div>
-                                    <div>
-                                        <input id="mesEncheres" type="checkbox" name="mesEncheres" <c:if test="${obj.checkedMesEncheres}">checked</c:if> onclick="onclickAchat()"/>
-                                        <label for="mesEncheres">Mes enchères</label>
-                                    </div>
-                                    <div>
-                                        <input id="encheresRemportees" type="checkbox" name="encheresRemportees" <c:if test="${obj.checkedMesEncheresRemportees}">checked</c:if> onclick="onclickAchat()"/>
-                                        <label for="encheresRemportees">Enchères Remportées</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <input id="mesVentes" type="radio" name="filtreVentesAffichees" value="mesVentes" <c:if test="${obj.filtreVenteAffichees != \"achats\"}">checked</c:if> onclick="onclickMesVentes()"/>
-                                    <label for="mesVentes">Mes ventes</label>
-                                </div>
-                                <div>
-                                    <div>
-                                        <input id="ventesEnCours" type="checkbox" name="ventesEnCours" <c:if test="${obj.checkedMesVentesEnCours}">checked</c:if> onclick="onclickMesVentes()"/>
-                                        <label for="ventesEnCours">Mes ventes en cours</label>
-                                    </div>
-                                    <div>
-                                        <input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" <c:if test="${obj.checkedVentesNonDebutees}">checked</c:if> onclick="onclickMesVentes()"/>
-                                        <label for="ventesNonDebutees">Ventes non débutées</label>
-                                    </div>
-                                    <div>
-                                        <input id="ventesTerminees" type="checkbox" name="ventesTerminees" <c:if test="${obj.checkedVentesTerminees}">checked</c:if> onclick="onclickMesVentes()"/>
-                                        <label for="ventesTerminees">Ventes terminées</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </c:if>
-                </div>
-                <div class="buttonSearchContainer">
-                    <button type="submit">
-                        Rechercher
-                    </button>
-                </div>
+        <%-- Get the object from the request --%>
+        <nav>
+            <div>
+                <a class="titleEni" href="/">ENI-Enchères</a>
             </div>
-        </form>
-        <div class="venteCard">
-            <!-- Note : si le radio button est mis sur "mes ventes", la page affichée sera celle de modification de vente, sinon celle d'enchérir -->
-            <c:forEach var="article" items="${obj.articles}">
-                <div>
-                    <div>
-                        <c:if test = "${article.getNomPhoto()!= null}">
-
-                            <img src="http://localhost:8080/${pageContext.request.contextPath}${article.getNomPhoto()}"  alt="l'article à vendre" style="max-height : 80px">
-
+            <c:choose>
+                <c:when test="${utilisateur.isValid}">
+                    <div><!-- Affiché que si User != null -->
+                        <a href="ServletPageVendreUnArticle">Enchères</a>
+                        <a href="ServletPageVendreUnArticle">Vendre un article</a>
+                        <a href="PageMonProfil.jsp">Mon Profil</a>
+                        <a href="Deconnexion">Déconnexion</a>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div><!-- Affiché que si User == null -->
+                        <a href="PageConnexion.jsp">S'inscrire - Se connecter</a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </nav>
+        <hr/>
+        <main>
+            <h3 class="titlePage">Listes des enchères</h3>
+            <form action="/Search">
+                <div class="filtresContainer">
+                    <div class="filtre">
+                        <h3>Filtres :</h3>
+                        <div class="inputSearchContainer">
+                            <span><input placeholder="Le nom de l'article contient" name="search" pattern="^([a-zA-Z ])$"/></span>
+                        </div>
+                        <div class="categorieDropdownContainer">
+                            <label for="categorie">Catégorie : </label>
+                            <select id="categorie" name="categorie">
+                                <option <c:if test="${obj.categorieSelected == \"Toutes\"}">selected</c:if>> Toutes</option>
+                                <option <c:if test="${obj.categorieSelected == \"Informatique\"}">selected</c:if>>Informatique</option>
+                                <option <c:if test="${obj.categorieSelected == \"Ameublement\"}">selected</c:if>>Ameublement</option>
+                                <option <c:if test="${obj.categorieSelected == \"Vêtement\"}">selected</c:if>>Vêtement</option>
+                                <option <c:if test="${obj.categorieSelected == \"Sport&Loisir\"}">selected</c:if>>Sport&Loisir</option>
+                            </select>
+                        </div>
+                        <!-- Note les prochaines divs ne seront pas affichées si user pas connecté -->
+                        <c:if test="${utilisateur.isValid}">
+                            <div class="groupOptions">
+                                <div>
+                                    <div>
+                                        <input id="achat" type="radio" name="filtreVentesAffichees" value="achat" <c:if test="${obj.filtreVenteAffichees == \"achats\"}">checked</c:if> onclick="onclickAchat()"/>
+                                        <label for="achat">Achats</label>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <input id="encheresOuvertes" type="checkbox" name="encheresOuvertes" <c:if test="${obj.checkedEnchereOuverte}">checked</c:if> />
+                                            <label for="encheresOuvertes">Enchères Ouvertes</label>
+                                        </div>
+                                        <div>
+                                            <input id="mesEncheres" type="checkbox" name="mesEncheres" <c:if test="${obj.checkedMesEncheres}">checked</c:if> />
+                                            <label for="mesEncheres">Mes enchères</label>
+                                        </div>
+                                        <div>
+                                            <input id="encheresRemportees" type="checkbox" name="encheresRemportees" <c:if test="${obj.checkedMesEncheresRemportees}">checked</c:if>/>
+                                            <label for="encheresRemportees">Enchères Remportées</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <input id="mesVentes" type="radio" name="filtreVentesAffichees" value="mesVentes" <c:if test="${obj.filtreVenteAffichees != \"achats\"}">checked</c:if> onclick="onclickMesVentes()"/>
+                                        <label for="mesVentes">Mes ventes</label>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <input id="ventesEnCours" type="checkbox" name="ventesEnCours" <c:if test="${obj.checkedMesVentesEnCours}">checked</c:if>/>
+                                            <label for="ventesEnCours">Mes ventes en cours</label>
+                                        </div>
+                                        <div>
+                                            <input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" <c:if test="${obj.checkedVentesNonDebutees}">checked</c:if>/>
+                                            <label for="ventesNonDebutees">Ventes non débutées</label>
+                                        </div>
+                                        <div>
+                                            <input id="ventesTerminees" type="checkbox" name="ventesTerminees" <c:if test="${obj.checkedVentesTerminees}">checked</c:if>/>
+                                            <label for="ventesTerminees">Ventes terminées</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </c:if>
                     </div>
-                    <div>
-                        <a href="/DetailVente/${article.noArticle}">${article.nomArticle}</a>
-                        <p>Prix : ${article.miseAPrix} points</p>
-                        <p>Fin de l'enchère : ${article.dateFinEncheres.toLocaleString()}</p>
-                        <p>Vendeur : <a href="/Profiles/${article.vendeur.pseudo}">${article.vendeur.pseudo}</a></p>
+                    <div class="buttonSearchContainer">
+                        <button type="submit">
+                            Rechercher
+                        </button>
                     </div>
                 </div>
-            </c:forEach>
-        </div>
-        <c:if test="${obj.articles.size() == 0}">
-            <h3 class="titlePage">Aucun article trouvé</h3>
-        </c:if>
-    </main>
+            </form>
+            <div class="venteCard">
+                <!-- Note : si le radio button est mis sur "mes ventes", la page affichée sera celle de modification de vente, sinon celle d'enchérir -->
+                <c:forEach var="article" items="${obj.articles}">
+                    <div>
+                        <div>
+                            <c:if test = "${article.getNomPhoto()!= null}">
+ 
+     			<img src="http://localhost:8080/${pageContext.request.contextPath}${article.getNomPhoto()}"  alt="l'article à vendre" style="max-height : 80px">
+ 		
+ 							</c:if>
+                        </div>
+                        <div>
+                        <c:if test="${utilisateur!= null}"> 
+                            <a href="ServletPageEncherir?noArticle=${article.noArticle}">${article.nomArticle}</a>
+                        </c:if>
+                        <c:if test="${utilisateur== null}"> 
+                            <a href="">${article.nomArticle}</a>
+                        </c:if>
+                            <p>Prix : ${article.miseAPrix} points</p>
+                            <p>Fin de l'enchère : ${article.dateFinEncheres.toLocaleString()}</p>
+                            <p>Vendeur : <a href="ServletAfficherPageProfil?pseudo=${article.vendeur.pseudo}">${article.vendeur.pseudo}</a></p>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+            <c:if test="${obj.articles.size() == 0}">
+                <h3 class="titlePage">Aucun article trouvé</h3>
+            </c:if>
+        </main>
     </body>
     <footer>
         <script>
             function onclickAchat(){
-                let radioBtn = document.getElementsByName("filtreVentesAffichees")[0];//première
-                radioBtn.checked = true;
-                radioBtn = document.getElementsByName("filtreVentesAffichees")[1];//deuxième
-                radioBtn.checked = false;
                 let mesVentesEnCours = document.getElementsByName("ventesEnCours")[0];
                 let ventesNonDebutees = document.getElementsByName("ventesNonDebutees")[0];
                 let ventesTerminees = document.getElementsByName("ventesTerminees")[0];
@@ -319,13 +308,9 @@
                 ventesTerminees.checked = false;
             }
             function onclickMesVentes(){
-                let radioBtn = document.getElementsByName("filtreVentesAffichees")[0];//première
-                radioBtn.checked = false;
-                radioBtn = document.getElementsByName("filtreVentesAffichees")[1];//deuxième
-                radioBtn.checked = true;
                 let encheresOuvertes = document.getElementsByName("encheresOuvertes")[0];
                 let mesEncheres = document.getElementsByName("mesEncheres")[0];
-                let encheresRemportees = document.getElementsByName("encheresRemportees")[0];
+                let encheresRemportees = document.getElementsByName("ventesTerminees")[0];
                 if(encheresOuvertes.hasAttribute("checked")){
                     encheresOuvertes.removeAttribute("checked");
                 }
