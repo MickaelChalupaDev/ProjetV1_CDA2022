@@ -1,5 +1,8 @@
 package fr.eni.encheres.bo;
 
+import fr.eni.encheres.bll.ArticleManager;
+import fr.eni.encheres.bll.UtilisateurManager;
+
 import java.util.Date;
 
 public class Enchere {
@@ -15,7 +18,6 @@ public class Enchere {
 	}
 	
     public Enchere(int noEncherisseur,int noArticle, Date dateEnchere, int montantEnchere) {
-		super();
 		this.setNoArticle(noArticle);
 		this.setNoEncherisseur(noEncherisseur);
 		this.setMontantEnchere(montantEnchere);
@@ -45,6 +47,12 @@ public class Enchere {
 	}
 	public int getNoEncherisseur() {
 		return noEncherisseur;
+	}
+	public Article getArticle(){
+		return (new ArticleManager()).lireArticle(noArticle);
+	}
+	public Utilisateur getUtilisateur(){
+		return (new UtilisateurManager()).lireUtilisateur(noEncherisseur);
 	}
 	public String toString() {
 		return this.getNoEncherisseur()+" " + this.getNoArticle() + " " + this.getDateEnchere() + " " +this.getMontantEnchere(); 
