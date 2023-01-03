@@ -87,9 +87,9 @@ public class ServletPageEncherir extends HttpServlet {
         Enchere enchere = new Enchere();
         EnchereManager eMgr = new EnchereManager();
 
-        enchere.setNoArticle(Integer.valueOf(request.getParameter("noArticle")));
+        enchere.setNoArticle(Integer.parseInt(request.getParameter("noArticle")));
         enchere.setNoEncherisseur(((Utilisateur) session.getAttribute("user")).getNoUtilisateur());
-        enchere.setMontantEnchere(Integer.valueOf(request.getParameter("maProposition")));
+        enchere.setMontantEnchere(Integer.parseInt(request.getParameter("maProposition")));
         enchere.setDateEnchere(new Date(System.currentTimeMillis()));
 
         eMgr.encherir(enchere);

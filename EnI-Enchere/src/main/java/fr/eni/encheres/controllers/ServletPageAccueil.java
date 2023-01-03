@@ -1,6 +1,6 @@
 package fr.eni.encheres.controllers;
 
-import fr.eni.encheres.bll.EnchereManager;
+import fr.eni.encheres.bll.ArticleManager;
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.controllers.objectSent.ObjectSentAccueil;
@@ -19,12 +19,12 @@ import java.util.List;
 public class ServletPageAccueil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        EnchereManager eMgr = new EnchereManager();
+        ArticleManager aMgr = new ArticleManager();
         HttpSession session = request.getSession();
         List<Article> articles = new ArrayList<Article>();
         Utilisateur user= new Utilisateur();
 
-        articles = eMgr.rechercherTout(null, null);
+        articles = aMgr.rechercherTout(null, null);
         ObjectSentAccueil o = new ObjectSentAccueil(articles);
 
         /*   if (session.getAttribute("utilisateur")== null) {

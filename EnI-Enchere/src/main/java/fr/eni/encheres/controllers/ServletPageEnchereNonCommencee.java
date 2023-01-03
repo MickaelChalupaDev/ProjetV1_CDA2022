@@ -101,7 +101,7 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
             article.setNomArticle(request.getParameter("nomArticle"));
             article.setDescription(request.getParameter("description"));
             article.setCategorie(request.getParameter("categorie"));
-            article.setMiseAPrix(Integer.valueOf(request.getParameter("miseAPrix")));
+            article.setMiseAPrix(Integer.parseInt(request.getParameter("miseAPrix")));
             article.getAdresse().add(request.getParameter("rue"));
             article.getAdresse().add(request.getParameter("codePostal"));
             article.getAdresse().add(request.getParameter("ville"));

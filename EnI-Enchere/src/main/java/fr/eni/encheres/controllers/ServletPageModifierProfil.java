@@ -87,7 +87,7 @@ public class ServletPageModifierProfil extends HttpServlet {
             Enchere enchere = new Enchere();
             List<Article> articles = new ArrayList<Article>();
 
-            articles = eMgr.rechercherParAchat(null, null, user.getNoUtilisateur(), false);
+            articles = aMgr.rechercherParAchat(null, null, user.getNoUtilisateur(), false);
 
             for (Article art : articles) {
                 enchere.setNoEncherisseur(user.getNoUtilisateur());
@@ -97,7 +97,7 @@ public class ServletPageModifierProfil extends HttpServlet {
 
             /** supprimer tous les articles de l'utilisateur : user dont les enchères ne sont pas encore débutés**/
 
-            articles = eMgr.rechercherParVente(null, null, user.getNoUtilisateur(), EtatVente.NonDebutee);
+            articles = aMgr.rechercherParVente(null, null, user.getNoUtilisateur(), EtatVente.NonDebutee);
 
             for (Article art : articles) {
                 aMgr.supprimerArticle(art.getNoArticle());
