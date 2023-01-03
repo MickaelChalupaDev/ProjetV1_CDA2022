@@ -216,15 +216,15 @@
                                 </div>
                                 <div>
                                     <div>
-                                        <input id="encheresOuvertes" type="checkbox" name="encheresOuvertes" <c:if test="${obj.checkedEnchereOuverte}">checked</c:if> />
+                                        <input id="encheresOuvertes" type="checkbox" name="encheresOuvertes" <c:if test="${obj.checkedEnchereOuverte}">checked</c:if> onclick="onclickAchat()" />
                                         <label for="encheresOuvertes">Enchères Ouvertes</label>
                                     </div>
                                     <div>
-                                        <input id="mesEncheres" type="checkbox" name="mesEncheres" <c:if test="${obj.checkedMesEncheres}">checked</c:if> />
+                                        <input id="mesEncheres" type="checkbox" name="mesEncheres" <c:if test="${obj.checkedMesEncheres}">checked</c:if> onclick="onclickAchat()"/>
                                         <label for="mesEncheres">Mes enchères</label>
                                     </div>
                                     <div>
-                                        <input id="encheresRemportees" type="checkbox" name="encheresRemportees" <c:if test="${obj.checkedMesEncheresRemportees}">checked</c:if>/>
+                                        <input id="encheresRemportees" type="checkbox" name="encheresRemportees" <c:if test="${obj.checkedMesEncheresRemportees}">checked</c:if> onclick="onclickAchat()"/>
                                         <label for="encheresRemportees">Enchères Remportées</label>
                                     </div>
                                 </div>
@@ -236,15 +236,15 @@
                                 </div>
                                 <div>
                                     <div>
-                                        <input id="ventesEnCours" type="checkbox" name="ventesEnCours" <c:if test="${obj.checkedMesVentesEnCours}">checked</c:if>/>
+                                        <input id="ventesEnCours" type="checkbox" name="ventesEnCours" <c:if test="${obj.checkedMesVentesEnCours}">checked</c:if> onclick="onclickMesVentes()"/>
                                         <label for="ventesEnCours">Mes ventes en cours</label>
                                     </div>
                                     <div>
-                                        <input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" <c:if test="${obj.checkedVentesNonDebutees}">checked</c:if>/>
+                                        <input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" <c:if test="${obj.checkedVentesNonDebutees}">checked</c:if> onclick="onclickMesVentes()"/>
                                         <label for="ventesNonDebutees">Ventes non débutées</label>
                                     </div>
                                     <div>
-                                        <input id="ventesTerminees" type="checkbox" name="ventesTerminees" <c:if test="${obj.checkedVentesTerminees}">checked</c:if>/>
+                                        <input id="ventesTerminees" type="checkbox" name="ventesTerminees" <c:if test="${obj.checkedVentesTerminees}">checked</c:if> onclick="onclickMesVentes()"/>
                                         <label for="ventesTerminees">Ventes terminées</label>
                                     </div>
                                 </div>
