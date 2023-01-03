@@ -25,6 +25,8 @@ public class ServletPageAccueil extends HttpServlet {
         Utilisateur user= new Utilisateur();
 
         articles = aMgr.rechercherTout(null, null);
+
+
         ObjectSentAccueil o = new ObjectSentAccueil(articles);
 
         /*   if (session.getAttribute("utilisateur")== null) {
