@@ -1,8 +1,8 @@
-<%@ page import="fr.eni.enchere.bo.Utilisateur" %>
+<%@ page import="fr.eni.encheres.bo.Utilisateur" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="obj" scope="request" type="fr.eni.enchere.controllers.objectSent.ObjectSentAccueil"/>
-<jsp:useBean id="utilisateur" scope="session" type="fr.eni.enchere.bo.Utilisateur"/>
+<jsp:useBean id="obj" scope="request" type="fr.eni.encheres.controllers.objectSent.ObjectSentAccueil"/>
+<jsp:useBean id="utilisateur" scope="session" type="fr.eni.encheres.bo.Utilisateur"/>
 <html>
     <head>
         <title>Accueil</title>
@@ -26,6 +26,7 @@
             }
             a:visited {
                 text-decoration: none;
+                color:black;
             }
             button:not(:disabled), select, option, input[type="checkbox"], label + select, label + input[type="checkbox"], a{
                 cursor: pointer;
@@ -216,15 +217,15 @@
                                     </div>
                                     <div>
                                         <div>
-                                            <input id="encheresOuvertes" type="checkbox" name="encheresOuvertes" <c:if test="${obj.checkedEnchereOuverte}">checked</c:if> />
+                                            <input id="encheresOuvertes" type="checkbox" name="encheresOuvertes" <c:if test="${obj.checkedEnchereOuverte}">checked</c:if> onclick="onclickAchat()"/>
                                             <label for="encheresOuvertes">Enchères Ouvertes</label>
                                         </div>
                                         <div>
-                                            <input id="mesEncheres" type="checkbox" name="mesEncheres" <c:if test="${obj.checkedMesEncheres}">checked</c:if> />
+                                            <input id="mesEncheres" type="checkbox" name="mesEncheres" <c:if test="${obj.checkedMesEncheres}">checked</c:if> onclick="onclickAchat()"/>
                                             <label for="mesEncheres">Mes enchères</label>
                                         </div>
                                         <div>
-                                            <input id="encheresRemportees" type="checkbox" name="encheresRemportees" <c:if test="${obj.checkedMesEncheresRemportees}">checked</c:if>/>
+                                            <input id="encheresRemportees" type="checkbox" name="encheresRemportees" <c:if test="${obj.checkedMesEncheresRemportees}">checked</c:if> onclick="onclickAchat()"/>
                                             <label for="encheresRemportees">Enchères Remportées</label>
                                         </div>
                                     </div>
@@ -236,15 +237,15 @@
                                     </div>
                                     <div>
                                         <div>
-                                            <input id="ventesEnCours" type="checkbox" name="ventesEnCours" <c:if test="${obj.checkedMesVentesEnCours}">checked</c:if>/>
+                                            <input id="ventesEnCours" type="checkbox" name="ventesEnCours" <c:if test="${obj.checkedMesVentesEnCours}">checked</c:if> onclick="onclickMesVentes()"/>
                                             <label for="ventesEnCours">Mes ventes en cours</label>
                                         </div>
                                         <div>
-                                            <input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" <c:if test="${obj.checkedVentesNonDebutees}">checked</c:if>/>
+                                            <input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" <c:if test="${obj.checkedVentesNonDebutees}">checked</c:if> onclick="onclickMesVentes()"/>
                                             <label for="ventesNonDebutees">Ventes non débutées</label>
                                         </div>
                                         <div>
-                                            <input id="ventesTerminees" type="checkbox" name="ventesTerminees" <c:if test="${obj.checkedVentesTerminees}">checked</c:if>/>
+                                            <input id="ventesTerminees" type="checkbox" name="ventesTerminees" <c:if test="${obj.checkedVentesTerminees}">checked</c:if> onclick="onclickMesVentes()"/>
                                             <label for="ventesTerminees">Ventes terminées</label>
                                         </div>
                                     </div>
@@ -283,6 +284,10 @@
     <footer>
         <script>
             function onclickAchat(){
+                let radioBtn = document.getElementsByName("filtreVentesAffichees")[0];//première
+                radioBtn.checked = true;
+                radioBtn = document.getElementsByName("filtreVentesAffichees")[1];//deuxième
+                radioBtn.checked = false;
                 let mesVentesEnCours = document.getElementsByName("ventesEnCours")[0];
                 let ventesNonDebutees = document.getElementsByName("ventesNonDebutees")[0];
                 let ventesTerminees = document.getElementsByName("ventesTerminees")[0];
@@ -300,9 +305,13 @@
                 ventesTerminees.checked = false;
             }
             function onclickMesVentes(){
+                let radioBtn = document.getElementsByName("filtreVentesAffichees")[0];//première
+                radioBtn.checked = false;
+                radioBtn = document.getElementsByName("filtreVentesAffichees")[1];//deuxième
+                radioBtn.checked = true;
                 let encheresOuvertes = document.getElementsByName("encheresOuvertes")[0];
                 let mesEncheres = document.getElementsByName("mesEncheres")[0];
-                let encheresRemportees = document.getElementsByName("ventesTerminees")[0];
+                let encheresRemportees = document.getElementsByName("encheresRemportees")[0];
                 if(encheresOuvertes.hasAttribute("checked")){
                     encheresOuvertes.removeAttribute("checked");
                 }
