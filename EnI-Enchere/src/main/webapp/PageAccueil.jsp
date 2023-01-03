@@ -111,6 +111,17 @@
                 border:none;
                 border-radius: 10px;
             }
+            @supports (selector(:has(*))) {
+                .inputSearchContainer span:has(input:invalid){
+                    border-color:red;
+                }
+                .inputSearchContainer span:has(input:valid){
+                    border-color:green;
+                }
+                .inputSearchContainer span:has(input:placeholder-shown){
+                    border-color:#6a6a6a;
+                }
+            }
             .categorieDropdownContainer{
                 display: flex;
                 flex-direction: row;
@@ -194,7 +205,7 @@
                 <div class="filtre">
                     <h3>Filtres :</h3>
                     <div class="inputSearchContainer">
-                        <span><input placeholder="Le nom de l'article contient" name="search" pattern="^([a-zA-Z ])$"/></span>
+                        <span><input placeholder="Le nom de l'article contient" name="search" pattern="^([a-zA-Z éèçàùôöïîÉÈÇÀÙÔÎÖÏ]){0,30}$"/></span>
                     </div>
                     <div class="categorieDropdownContainer">
                         <label for="categorie">Catégorie : </label>
