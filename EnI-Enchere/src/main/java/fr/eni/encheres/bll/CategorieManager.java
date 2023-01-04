@@ -29,9 +29,11 @@ public class CategorieManager {
         return categorieDao.getAllCategories();
     }
     public Categorie getCategorieById(int noCategorie){
-        return categorieDao.getCategorieById(noCategorie);
+        Categorie c = categorieDao.getCategorieById(noCategorie);
+        return c == null ? new Categorie(0, "Toutes") : c;
     }
     public Categorie getCategorieByLibelle(String libelle){
-        return categorieDao.getCategorieByLibelle(libelle);
+        Categorie c = categorieDao.getCategorieByLibelle(libelle);
+        return c == null ? new Categorie(0, "Toutes") : c;
     }
 }

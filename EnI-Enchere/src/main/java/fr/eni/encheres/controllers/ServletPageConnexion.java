@@ -24,6 +24,7 @@ public class ServletPageConnexion extends HttpServlet {
 		}else{
 			request.getRequestDispatcher("PageConnexion.jsp").forward(request, response);
 		}
+		return;
 	}
 
 	@Override
@@ -36,8 +37,7 @@ public class ServletPageConnexion extends HttpServlet {
 		Utilisateur user = new Utilisateur();
 		pseudo= request.getParameter("pseudo");
 		motDePasse= request.getParameter("motDePasse");
-
-		user=uMgr.lireUtilisateur(pseudo);
+		user=uMgr.connecter(pseudo,motDePasse);
 		if (user!=null) {
 			if (user.getMotDePasse().equals(motDePasse)) {
 				System.out.println("User Not Null, password matches");
@@ -53,5 +53,6 @@ public class ServletPageConnexion extends HttpServlet {
 			request.setAttribute("messageErreur", "Identifiant incorrect");
 			request.getRequestDispatcher("/connexion").forward(request, response);
 		}
+		return;
 	}
 }
