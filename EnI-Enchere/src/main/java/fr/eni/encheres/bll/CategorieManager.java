@@ -31,4 +31,7 @@ public class CategorieManager {
     public Categorie getCategorieById(int noCategorie){
         return categorieDao.getCategorieById(noCategorie);
     }
+    public Categorie getCategorieByLibelle(String libelle){
+        return categorieDao.getCategorieByLibelle(libelle);
+    }
 }

@@ -15,6 +15,8 @@ public class CategorieDAOJdbcImpl implements CategorieDAO {
     public String UPDATE = "UPDATE CATEGORIES SET [libelle] = ? WHERE no_categorie = ?";
     public String SELECT = "SELECT TOP(1) * FROM CATEGORIES WHERE no_categorie = ?";
     public String SELECTALL = "SELECT * FROM CATEGORIES";
+
+    public String SELECTBYLIBELLE = "SELECT * FROM CATEGORIES WHERE libelle = ?";
     @Override
     public void addCategorie(String libelle) {
         try {
@@ -88,7 +90,26 @@ public class CategorieDAOJdbcImpl implements CategorieDAO {
             Connection con = ConnectionDAOBdd.getConnection();
 
             PreparedStatement pstmt = con.prepareStatement(SELECT, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt.setInt(1, noCategorie);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                categorie = new Categorie(rs.getInt(1),rs.getString(2));
+            }
+            con.close();
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+        return categorie;
+    }
 
+    @Override
+    public Categorie getCategorieByLibelle(String libelle){
+        Categorie categorie = null;
+        try {
+            Connection con = ConnectionDAOBdd.getConnection();
+
+            PreparedStatement pstmt = con.prepareStatement(SELECTBYLIBELLE, PreparedStatement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1,libelle);
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
                 categorie = new Categorie(rs.getInt(1),rs.getString(2));
