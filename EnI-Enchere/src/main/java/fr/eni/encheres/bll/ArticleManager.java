@@ -15,7 +15,7 @@ public class ArticleManager {
 		return daoArticles.selectALL(nomArticle, categorie);
 	}
 	public static List<Article> rechercherTout(String nomArticle, String categorie) {
-		return daoArticles.selectALL(nomArticle, new CategorieManager().getCategorieByLibelle(categorie).noCategorie);
+		return daoArticles.selectALL(nomArticle, CategorieManager.getCategorieByLibelle(categorie).noCategorie);
 	}
 	public static List<Article> rechercherTout(String nomArticle, Categorie categorie) {
 		return daoArticles.selectALL(nomArticle, categorie.noCategorie);
@@ -25,7 +25,7 @@ public class ArticleManager {
 		return daoArticles.selectByBuyer(nomArticle, categorie, noEncherisseur, etatEnchere);
 	}
 	public static List<Article> rechercherParAchat(String nomArticle, String categorie, int noEncherisseur, boolean etatEnchere) {
-		return daoArticles.selectByBuyer(nomArticle, new CategorieManager().getCategorieByLibelle(categorie).noCategorie, noEncherisseur, etatEnchere);
+		return daoArticles.selectByBuyer(nomArticle, CategorieManager.getCategorieByLibelle(categorie).noCategorie, noEncherisseur, etatEnchere);
 	}
 	public static List<Article> rechercherParAchat(String nomArticle, Categorie categorie, int noEncherisseur, boolean etatEnchere) {
 		return daoArticles.selectByBuyer(nomArticle, categorie.noCategorie, noEncherisseur, etatEnchere);
@@ -35,7 +35,7 @@ public class ArticleManager {
 		return daoArticles.selectBySeller(nomArticle, categorie, noVendeur, etatVente);
 	}
 	public static List<Article> rechercherParVente(String nomArticle, String categorie, int noVendeur, EtatVente etatVente) {
-		return daoArticles.selectBySeller(nomArticle, new CategorieManager().getCategorieByLibelle(categorie).noCategorie, noVendeur, etatVente);
+		return daoArticles.selectBySeller(nomArticle, CategorieManager.getCategorieByLibelle(categorie).noCategorie, noVendeur, etatVente);
 	}
 	public static List<Article> rechercherParVente(String nomArticle, Categorie categorie, int noVendeur, EtatVente etatVente) {
 		return daoArticles.selectBySeller(nomArticle, categorie.noCategorie, noVendeur, etatVente);
