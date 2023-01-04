@@ -21,11 +21,11 @@ public class ServletPageDeconnexion extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
         session.setAttribute("utilisateur", null);
         session.setAttribute("filtresRecherches",new ObjectSentAccueil());
-        response.sendRedirect("/");
+        response.sendRedirect(request.getContextPath() + "/");
     }
 
     @Override

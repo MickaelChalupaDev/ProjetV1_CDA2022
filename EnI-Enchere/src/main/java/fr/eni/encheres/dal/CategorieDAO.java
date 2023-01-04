@@ -12,4 +12,5 @@ public interface CategorieDAO {
     public void updateCategorie(Categorie categorie);
     public List<Categorie> getAllCategories();
     public Categorie getCategorieById(int noCategorie);
+    public Categorie getCategorieByLibelle(String libelle);
 }

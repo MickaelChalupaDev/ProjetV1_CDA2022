@@ -184,7 +184,7 @@
     <%-- Get the object from the request --%>
     <nav>
         <div>
-            <a class="titleEni" href="/">ENI-Enchères</a>
+            <a class="titleEni" href="${pageContext.request.contextPath}/">ENI-Enchères</a>
         </div>
         <c:choose>
             <c:when test="${utilisateur.isValid}">
@@ -192,12 +192,12 @@
                     <a href="ServletPageVendreUnArticle">Enchères</a>
                     <a href="ServletPageVendreUnArticle">Vendre un article</a>
                     <a href="PageMonProfil.jsp">Mon Profil</a>
-                    <a href="Deconnexion">Déconnexion</a>
+                    <a href="${pageContext.request.contextPath}/Deconnexion">Déconnexion</a>
                 </div>
             </c:when>
             <c:otherwise>
                 <div><!-- Affiché que si User == null -->
-                    <a href="/connexion">S'inscrire - Se connecter</a>
+                    <a href="${pageContext.request.contextPath}/connexion">S'inscrire - Se connecter</a>
                 </div>
             </c:otherwise>
         </c:choose>
@@ -205,7 +205,7 @@
     <hr/>
     <main>
         <h3 class="titlePage">Listes des enchères</h3>
-        <form action="/" method="post">
+        <form action="${pageContext.request.contextPath}/" method="post">
             <div class="filtresContainer">
                 <div class="filtre">
                     <h3>Filtres :</h3>
@@ -216,7 +216,7 @@
                         <label for="categorie">Catégorie : </label>
                         <select id="categorie" name="categorie">
                             <c:forEach  var="categorie" items="${categories}">
-                                <option value="${categorie.noCategorie}" <c:if test="${filtresRecherches.categorieSelected == categorie.noCategorie}">selected</c:if>>${categorie.libelle}</option>
+                                <option value="${categorie.noCategorie}" <c:if test="${filtresRecherches.categorieSelected == categorie.noCategorie.toString()}">selected</c:if>>${categorie.libelle}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -283,10 +283,10 @@
                         </c:if>
                     </div>
                     <div>
-                        <a href="/encherir?noArticle=${article.noArticle}">${article.nomArticle}</a>
+                        <a href="${pageContext.request.contextPath}/encherir?noArticle=${article.noArticle}">${article.nomArticle}</a>
                         <p>Prix : ${article.miseAPrix} points</p>
                         <p>Fin de l'enchère : ${article.dateFinEncheres.toLocaleString()}</p>
-                        <p>Vendeur : <a href="/afficherProfile?pseudo=${article.vendeur.pseudo}">${article.vendeur.pseudo}</a></p>
+                        <p>Vendeur : <a href="${pageContext.request.contextPath}/afficherProfile?pseudo=${article.vendeur.pseudo}">${article.vendeur.pseudo}</a></p>
                     </div>
                 </div>
             </c:forEach>

@@ -22,19 +22,20 @@ import java.util.Objects;
 public class ServletPageAccueil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArticleManager aMgr = new ArticleManager();
         HttpSession session = request.getSession();
-        List<Article> articles = new ArrayList<Article>();
         Utilisateur user= new Utilisateur();
-        List<Categorie> categories = new CategorieManager().getAllCategories();
-
-        try{
-            articles = aMgr.rechercherTout(null, 0);
-        }catch (Exception e){}
+        List<Categorie> categories = CategorieManager.getAllCategories();
+        List<Article> articles = new ArrayList<Article>();
 
         if(session.isNew() || session.getAttribute("filtresRecherches") == null){
             ObjectSentAccueil o = new ObjectSentAccueil();
             session.setAttribute("filtresRecherches", o);
+            articles = ArticleManager.rechercherTout(null, 0);
+        }
+        else{
+            ObjectSentAccueil o = (ObjectSentAccueil) session.getAttribute("filtresRecherches");
+            System.out.println(o.toString());
+            articles = ArticleManager.rechercherTout(o.getSearched(),0);//todo
         }
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
             session.setAttribute("utilisateur", null);
@@ -58,19 +59,14 @@ public class ServletPageAccueil extends HttpServlet {
         String ventesNonDebutees = request.getParameter("ventesNonDebutees");
         String ventesTerminees = request.getParameter("ventesTerminees");
 
-        System.out.println(searchBox + " " + categorie + " " + filtreVenteAffichee + " " + encheresOuvertes + " " + mesEncheres + " " + encheresRemportees + " " + ventesEnCours + " " + ventesNonDebutees + " " + ventesTerminees);
         if(searchBox == null || session.getAttribute("utilisateur") == null){
             doGet(request,response);//Lorsqu'on vient de connexion, c'est un post malheureusement, donc je teste au cas où
             //Idem si on passe par du post quand il n'y a pas d'utilisateur set, je retourne le get
         }
 
         ObjectSentAccueil o = new ObjectSentAccueil(searchBox != null ? searchBox : "", categorie, filtreVenteAffichee, encheresOuvertes, mesEncheres, encheresRemportees, ventesEnCours, ventesNonDebutees, ventesTerminees);
+
         session.setAttribute("filtresRecherches", o);
-        List<Article> articles = new ArrayList<Article>();
-        articles = (new ArticleManager()).rechercherTout(Objects.equals(searchBox.trim(), "") ? null : searchBox, Integer.parseInt(o.getCategorieSelected()));
-        request.setAttribute("articles",articles);
-        List<Categorie> categories = new CategorieManager().getAllCategories();
-        request.setAttribute("categories",categories);
-        request.getRequestDispatcher("PageAccueil.jsp").forward(request, response);
+        doGet(request, response);
     }
 }

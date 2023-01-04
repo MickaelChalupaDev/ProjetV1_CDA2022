@@ -9,23 +9,16 @@ import fr.eni.encheres.dal.EnchereDAO;
 import java.util.List;
 
 public class EnchereManager {
-    private final EnchereDAO daoEncheres;
-
-    public EnchereManager() {
-        this.daoEncheres = DAOFactory.getEnchereDAO();
+    private static final EnchereDAO daoEncheres = DAOFactory.getEnchereDAO();
+    public static Enchere lire(int noArticle) {
+        return daoEncheres.selectByID(noArticle);
+    }
+    public static void encherir(Enchere enchere) {
+        daoEncheres.insert(enchere);
     }
 
-    public Enchere lire(int noArticle) {
-        return this.daoEncheres.selectByID(noArticle);
-    }
-
-
-    public void encherir(Enchere enchere) {
-        this.daoEncheres.insert(enchere);
-    }
-
-    public void annuler(Enchere enchere) {
-        this.daoEncheres.delete(enchere);
+    public static void annuler(Enchere enchere) {
+        daoEncheres.delete(enchere);
     }
 
 }

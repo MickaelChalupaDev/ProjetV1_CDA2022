@@ -7,28 +7,30 @@ import fr.eni.encheres.dal.DAOFactory;
 import java.util.List;
 
 public class CategorieManager {
-    private final CategorieDAO categorieDao;
+    private static final CategorieDAO categorieDao = DAOFactory.getCategorieDAO();
 
-    public CategorieManager() {
-        this.categorieDao = DAOFactory.getCategorieDAO();
-    }
-    public void addCategorie(String libelle)
+    public static void addCategorie(String libelle)
     {
         categorieDao.addCategorie(libelle);
     }
-    public void addCategorie(Categorie categorie){
+    public static void addCategorie(Categorie categorie){
         categorieDao.addCategorie(categorie);
     }
-    public void updateCategorie(int noCategorie, String libelle){
+    public static void updateCategorie(int noCategorie, String libelle){
         categorieDao.updateCategorie(noCategorie, libelle);
     }
-    public void updateCategorie(Categorie categorie){
+    public static void updateCategorie(Categorie categorie){
         categorieDao.updateCategorie(categorie);
     }
-    public List<Categorie> getAllCategories(){
+    public static List<Categorie> getAllCategories(){
         return categorieDao.getAllCategories();
     }
-    public Categorie getCategorieById(int noCategorie){
-        return categorieDao.getCategorieById(noCategorie);
+    public static Categorie getCategorieById(int noCategorie){
+        Categorie c = categorieDao.getCategorieById(noCategorie);
+        return c == null ? new Categorie(0, "Toutes") : c;
+    }
+    public static Categorie getCategorieByLibelle(String libelle){
+        Categorie c = categorieDao.getCategorieByLibelle(libelle);
+        return c == null ? new Categorie(0, "Toutes") : c;
     }
 }

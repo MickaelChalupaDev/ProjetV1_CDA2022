@@ -134,7 +134,7 @@ public class Utilisateur {
 			this.administrateur = administrateur;
 		}
 		
-		public String hashPwd(String MotDePasse) {
+		public static String hashPwd(String MotDePasse) {
 			System.out.println("méthode hashPwd à définir par Mickael");
 			return MotDePasse;
 		}

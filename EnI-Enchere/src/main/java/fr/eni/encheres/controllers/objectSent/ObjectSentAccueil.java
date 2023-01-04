@@ -4,6 +4,8 @@ package fr.eni.encheres.controllers.objectSent;
 //
 //import java.util.ArrayList;
 //import java.util.List;
+import fr.eni.encheres.bll.CategorieManager;
+
 import java.util.Objects;
 
 public class ObjectSentAccueil {
@@ -19,25 +21,21 @@ public class ObjectSentAccueil {
         this.searched = searched.trim();
         this.categorieSelected = categorieSelected;
         this.filtreVenteAffichees = filtreVenteAffichees;
-
-        if(Objects.equals(filtreVenteAffichees, "achats")){//Note : les checkbox renvoient soit "null" soit "on" sous string
-            this.checkedMesEncheres = checkedMesEncheres != null;
-            this.checkedEnchereOuverte = checkedEnchereOuverte != null;
-            this.checkedMesEncheresRemportees = checkedMesEncheresRemportees != null;
-
-            System.out.println("Trying for achats");
-            System.out.print(this.checkedMesEncheres);
-            System.out.print(this.checkedEnchereOuverte);
-            System.out.print(this.checkedMesEncheresRemportees);
+        if(filtreVenteAffichees != null){
+            if(Objects.equals(filtreVenteAffichees, "achats")){//Note : les checkbox renvoient soit "null" soit "on" sous string
+                this.checkedMesEncheres = checkedMesEncheres != null;
+                this.checkedEnchereOuverte = checkedEnchereOuverte != null;
+                this.checkedMesEncheresRemportees = checkedMesEncheresRemportees != null;
+            }else{
+                this.checkedMesVentesEnCours = checkedMesVentesEnCours != null;
+                this.checkedVentesNonDebutees = checkedVentesNonDebutees != null;
+                this.checkedVentesTerminees = checkedVentesTerminees != null;
+            }
         }else{
-            this.checkedMesVentesEnCours = checkedMesVentesEnCours != null;
-            this.checkedVentesNonDebutees = checkedVentesNonDebutees != null;
-            this.checkedVentesTerminees = checkedVentesTerminees != null;
-            System.out.println("Trying mesVentes");
-            System.out.print(this.checkedMesVentesEnCours);
-            System.out.print(this.checkedVentesNonDebutees);
-            System.out.print(this.checkedVentesTerminees);
+            this.filtreVenteAffichees = "achats";
+            this.checkedEnchereOuverte = true;
         }
+
     }
 
 //    public List<Article> articles = new ArrayList<Article>();
@@ -66,6 +64,10 @@ public class ObjectSentAccueil {
     }
 
     public String getCategorieSelected() {
+        if(Objects.equals(categorieSelected, ""))
+        {
+            categorieSelected = "0";
+        }
         return categorieSelected;
     }
 
@@ -95,5 +97,17 @@ public class ObjectSentAccueil {
 
     public String getFiltreVenteAffichees() {
         return filtreVenteAffichees;
+    }
+
+    @Override
+    public String toString() {
+        return "Searched : {"+searched +"}; " + "Libelle Categorie : {" + CategorieManager.getCategorieById(Integer.parseInt(categorieSelected)).libelle
+                + "}; Filtre Affiches : {" + filtreVenteAffichees + "}; \n Checked EnchereOuverte : {"
+                + (checkedEnchereOuverte ? "Oui": "Non") + "}; Checked MesEncheres : {"
+                + (checkedMesEncheres ? "Oui" : "Non") + "}; Checked EncheresRemportees : {"
+                + (checkedMesEncheresRemportees ? "Oui": "Non") + "}; \n Checked VentesEnCours : {"
+                + (checkedMesVentesEnCours ? "Oui":"Non") + "}; Checked VentesNonDebutees : {"
+                + (checkedVentesNonDebutees ?"Oui":"Non" ) + "}; Checked VentesTerminees : {"
+                + (checkedVentesTerminees ? "Oui":"Non") +"};";
     }
 }
