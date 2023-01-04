@@ -1,51 +1,52 @@
 package fr.eni.encheres.controllers;
 
+import java.io.IOException;
+
 import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Utilisateur;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
+
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
-import java.io.IOException;
-
-@WebServlet(name = "AfficherProfile", value = "/afficherProfile")
+/**
+ * Servlet implementation class ServletAfficherPageProfil
+ */
 public class ServletAfficherPageProfil extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        if (session.isNew() || session.getAttribute("utilisateur") == null) {
-            response.sendRedirect("/");
-        }
-        Utilisateur user = new Utilisateur();
-        Utilisateur userConnected = new Utilisateur();
-        UtilisateurManager uMgr = new UtilisateurManager();
-        user = uMgr.lireUtilisateur((String) request.getParameter("pseudo"));
-        userConnected = uMgr.lireUtilisateur("Npseudo");
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Utilisateur user = new Utilisateur();
+		Utilisateur userConnected = new Utilisateur();
+		UtilisateurManager uMgr= new UtilisateurManager();
+		System.out.println((String) request.getParameter("pseudo"));
+		user = uMgr.lireUtilisateur((String) request.getParameter("pseudo"));
+		
+		userConnected=(Utilisateur) request.getSession().getAttribute("utilisateur");
+		
+	
+		if (userConnected !=null) {
+		if (user.getPseudo().equals(userConnected.getPseudo())) 
+		{
+			request.getRequestDispatcher("/PageMonProfil.jsp").forward(request, response);
+			return; 
+		}} 
+			request.setAttribute("user", user);
+		    request.getRequestDispatcher("/PageProfil.jsp").forward(request, response);
+			
+	}
 
-
-        if (user.getPseudo().equals(userConnected.getPseudo())) {
-            request.setAttribute("user", user);
-            RequestDispatcher rd = request.getRequestDispatcher("/PageMonProfil.jsp");
-            rd.forward(request, response);
-        } else {
-            request.setAttribute("user", user);
-            RequestDispatcher rd = request.getRequestDispatcher("/PageProfil.jsp");
-            rd.forward(request, response);
-        }
-
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        doGet(request, response);
-    }
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
 
 }
