@@ -87,8 +87,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ARTICLES_VENDUS](
                                         [no_article] [int] IDENTITY(1,1) NOT NULL,
-                                        [nom_article] [varchar](30) NOT NULL,
-                                        [description] [varchar](300) NOT NULL,
+                                        [nom_article] [nvarchar](30) NOT NULL,
+                                        [description] [nvarchar](300) NOT NULL,
                                         [date_debut_encheres] [date] NOT NULL,
                                         [date_fin_encheres] [date] NOT NULL,
                                         [prix_initial] [int] NULL,
@@ -96,7 +96,7 @@ CREATE TABLE [dbo].[ARTICLES_VENDUS](
                                         [etat_vente] [int] NULL,
                                         [no_utilisateur] [int] NOT NULL,
                                         [no_categorie] [int] NOT NULL,
-                                        [lien_photo] [varchar](100) NULL,
+                                        [lien_photo] [nvarchar](100) NULL,
                                         CONSTRAINT [articles_vendus_pk] PRIMARY KEY CLUSTERED
                                             (
                                              [no_article] ASC
@@ -110,7 +110,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[CATEGORIES](
                                    [no_categorie] [int] IDENTITY(1,1) NOT NULL,
-                                   [libelle] [varchar](30) NOT NULL,
+                                   [libelle] [nvarchar](30) NOT NULL,
                                    CONSTRAINT [categorie_pk] PRIMARY KEY CLUSTERED
                                        (
                                         [no_categorie] ASC
@@ -141,9 +141,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[RETRAITS](
                                  [no_article] [int] NOT NULL,
-                                 [rue] [varchar](30) NOT NULL,
-                                 [code_postal] [varchar](15) NOT NULL,
-                                 [ville] [varchar](30) NOT NULL,
+                                 [rue] [nvarchar](100) NOT NULL,
+                                 [code_postal] [nvarchar](15) NOT NULL,
+                                 [ville] [nvarchar](30) NOT NULL,
                                  CONSTRAINT [retrait_pk] PRIMARY KEY CLUSTERED
                                      (
                                       [no_article] ASC
@@ -157,15 +157,15 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[UTILISATEURS](
                                      [no_utilisateur] [int] IDENTITY(1,1) NOT NULL,
-                                     [pseudo] [varchar](30) NOT NULL,
-                                     [nom] [varchar](30) NOT NULL,
-                                     [prenom] [varchar](30) NOT NULL,
-                                     [email] [varchar](20) NOT NULL,
-                                     [telephone] [varchar](15) NULL,
-                                     [rue] [varchar](30) NOT NULL,
-                                     [code_postal] [varchar](10) NOT NULL,
-                                     [ville] [varchar](30) NOT NULL,
-                                     [mot_de_passe] [varchar](30) NOT NULL,
+                                     [pseudo] [nvarchar](30) NOT NULL,
+                                     [nom] [nvarchar](30) NOT NULL,
+                                     [prenom] [nvarchar](30) NOT NULL,
+                                     [email] [nvarchar](100) NOT NULL,
+                                     [telephone] [nvarchar](15) NULL,
+                                     [rue] [nvarchar](100) NOT NULL,
+                                     [code_postal] [nvarchar](10) NOT NULL,
+                                     [ville] [nvarchar](30) NOT NULL,
+                                     [mot_de_passe] [nvarchar](255) NOT NULL,
                                      [credit] [int] NOT NULL,
                                      [administrateur] [bit] NOT NULL,
                                      CONSTRAINT [utilisateur_pk] PRIMARY KEY CLUSTERED

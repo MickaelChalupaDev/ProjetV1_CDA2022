@@ -43,8 +43,7 @@
 </header>
 <h2 Style="text-align: center"> Mon profil </h2>
 <table class="table0">
-    <form method="get" action="ServletCreationCompte">
-
+    <form method="post" action="/creerCompte">
         <tr>
             <td><label> Pseudo : </label></td>
             <td><input class="input0" type="text" name="pseudo" placeholder="Entrez un pseudo" required/></td>
@@ -80,7 +79,7 @@
     <tr>
 
         <td><input class="input3" type="submit" name="creation" value="Créer"/></td>
-        <td><a href="PageAcceuilNonConnecte.jsp"> <input class="input3" type="button" value="Annuler"/> </a></td>
+        <td><a href="/"> <input class="input3" type="button" value="Annuler"/> </a></td>
 
     </tr>
 </table>

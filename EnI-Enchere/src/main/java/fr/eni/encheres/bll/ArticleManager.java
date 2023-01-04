@@ -14,15 +14,15 @@ public class ArticleManager {
 		this.daoArticles = DAOFactory.getArticleDAO();
 	}
 
-	public List<Article> rechercherTout(String nomArticle, String categorie) {
+	public List<Article> rechercherTout(String nomArticle, int categorie) {
 		return this.daoArticles.selectALL(nomArticle, categorie);
 	}
 
-	public List<Article> rechercherParAchat(String nomArticle, String categorie, int noEncherisseur, boolean etatEnchere) {
+	public List<Article> rechercherParAchat(String nomArticle, int categorie, int noEncherisseur, boolean etatEnchere) {
 		return this.daoArticles.selectByBuyer(nomArticle, categorie, noEncherisseur, etatEnchere);
 	}
 
-	public List<Article> rechercherParVente(String nomArticle, String categorie, int noVendeur, EtatVente etatVente) {
+	public List<Article> rechercherParVente(String nomArticle, int categorie, int noVendeur, EtatVente etatVente) {
 		return this.daoArticles.selectBySeller(nomArticle, categorie, noVendeur, etatVente);
 	}
 	

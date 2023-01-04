@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class ServletPageModifierProfil extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("utilisateur") == null) {
+            response.sendRedirect("/");
+        }
+
         Utilisateur user = new Utilisateur();
         UtilisateurManager uMgr = new UtilisateurManager();
         RequestDispatcher rd = null;
@@ -87,7 +93,7 @@ public class ServletPageModifierProfil extends HttpServlet {
             Enchere enchere = new Enchere();
             List<Article> articles = new ArrayList<Article>();
 
-            articles = aMgr.rechercherParAchat(null, null, user.getNoUtilisateur(), false);
+            articles = aMgr.rechercherParAchat(null, 0, user.getNoUtilisateur(), false);
 
             for (Article art : articles) {
                 enchere.setNoEncherisseur(user.getNoUtilisateur());
@@ -97,7 +103,7 @@ public class ServletPageModifierProfil extends HttpServlet {
 
             /** supprimer tous les articles de l'utilisateur : user dont les enchères ne sont pas encore débutés**/
 
-            articles = aMgr.rechercherParVente(null, null, user.getNoUtilisateur(), EtatVente.NonDebutee);
+            articles = aMgr.rechercherParVente(null, 0, user.getNoUtilisateur(), EtatVente.NonDebutee);
 
             for (Article art : articles) {
                 aMgr.supprimerArticle(art.getNoArticle());

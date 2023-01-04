@@ -23,13 +23,18 @@ public class ServletPageEncherir extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("utilisateur") == null) {
+            response.sendRedirect("/");
+        }
+
         UtilisateurManager uMgr = new UtilisateurManager();
         Utilisateur user = new Utilisateur();
         Utilisateur userGagnant = new Utilisateur();
         Date date = new Date(System.currentTimeMillis());
 
         user = uMgr.lireUtilisateur(2);
-        HttpSession session = request.getSession();
+
         session.setAttribute("user", user);
 
         Article article = new Article();

@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -19,7 +20,7 @@ public class ServletPageCreerCompte extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		request.getRequestDispatcher("PageCreerCompte.jsp").forward(request, response);
 	}
 
 	@Override
@@ -27,7 +28,6 @@ public class ServletPageCreerCompte extends HttpServlet {
 		
 		Utilisateur user = new Utilisateur();
 		UtilisateurManager uMgr= new UtilisateurManager();
-		RequestDispatcher rd = null;
 
 		Pattern patternEmail = Pattern.compile("^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+)$");
 		Matcher matcherEmail = patternEmail.matcher(request.getParameter("email"));
@@ -39,7 +39,13 @@ public class ServletPageCreerCompte extends HttpServlet {
 		Matcher matcherPseudo = patternEmail.matcher(request.getParameter("pseudo"));
 		boolean matchesPseudo = matcherEmail.matches(); //true/false
 
-		if(!(matchesEmail && matchesPseudo && matchesMotDePasse)) return;
+		/*Validation des règles*/
+		System.out.println(request.getParameter("email") + (matchesEmail ? "yes" :"no" ) + " "
+		+ request.getParameter("motDePasse") + (matchesMotDePasse ? "yes" : "no") + " "
+		+ request.getParameter("pseudo") + (matchesPseudo ? "yes" : "no"));
+
+		if(!(matchesEmail && matchesPseudo && matchesMotDePasse)) request.getRequestDispatcher("/creerCompte").forward(request, response);
+		/*Validation des règles*/
 
 		user.setPseudo(request.getParameter("pseudo"));
 		user.setNom(request.getParameter("nom"));
@@ -61,17 +67,16 @@ public class ServletPageCreerCompte extends HttpServlet {
 		 rd.forward(request, response);
 		 
 		 */
-		user = uMgr.creerUtilisateur(user); 
+		user = uMgr.creerUtilisateur(user);
 		if (user!=null) {
-		
-			rd= request.getRequestDispatcher("/PageListeEncheresConnecte.jsp");
-			rd.forward(request, response);
-			
+			System.out.println(user.toString());
+			HttpSession session = request.getSession();
+			session.setAttribute("utilisateur", user);
+			response.sendRedirect("/");
 		} else
 		{
-			 rd= request.getRequestDispatcher("/PageCreerCompte.jsp");
-			 rd.forward(request, response);
-			
+			System.out.println("No User, try again");
+			request.getRequestDispatcher("/creerCompte").forward(request, response);
 		}
 		
 	}

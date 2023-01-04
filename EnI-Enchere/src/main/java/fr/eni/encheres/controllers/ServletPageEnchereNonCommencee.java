@@ -27,10 +27,14 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("utilisateur") == null) {
+            response.sendRedirect("/");
+        }
+
         UtilisateurManager uMgr = new UtilisateurManager();
         Utilisateur user = new Utilisateur();
         user = uMgr.lireUtilisateur(2);
-        HttpSession session = request.getSession();
         session.setAttribute("user", user);
         Article articleInit = new Article();
         Article article = new Article();

@@ -19,17 +19,13 @@ import java.util.List;
 public class ServletPageDeconnexion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArticleManager aMgr = new ArticleManager();
         HttpSession session = request.getSession();
-        List<Article> articles = new ArrayList<Article>();
-        Utilisateur user= new Utilisateur();
-
-        articles = aMgr.rechercherTout(null, null);
-        ObjectSentAccueil o = new ObjectSentAccueil(articles);
-        user=null;
-        session.setAttribute("utilisateur", user);
-        request.setAttribute("obj", o);
-        request.getRequestDispatcher("PageAccueil.jsp").forward(request, response);
+        if (session.isNew() || session.getAttribute("utilisateur") == null) {
+            response.sendRedirect("/");
+        }
+        session.setAttribute("utilisateur", null);
+        session.setAttribute("filtresRecherches",new ObjectSentAccueil());
+        response.sendRedirect("/");
     }
 
     @Override

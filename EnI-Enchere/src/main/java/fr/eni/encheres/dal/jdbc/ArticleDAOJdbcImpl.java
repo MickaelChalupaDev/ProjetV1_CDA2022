@@ -197,7 +197,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     }
 
     @Override
-    public List<Article> selectALL(String nomArticle, String categorie) {
+    public List<Article> selectALL(String nomArticle, int categorie) {
 
         List<Article> articles = new ArrayList<Article>();
         Article article = null;
@@ -206,7 +206,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             Connection con = ConnectionDAOBdd.getConnection();
             PreparedStatement pstmt;
             if (nomArticle == null) {
-                if (categorie == null) {
+                if (categorie == 0) {
 
                     select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                     select.append(" WHERE date_debut_encheres <= GETDATE() and date_fin_encheres > GETDATE();");
@@ -215,16 +215,16 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
                 } else {
                     select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
-                    select.append(" WHERE libelle like ? and date_debut_encheres <= GETDATE()");
+                    select.append(" WHERE no_categorie = ? and date_debut_encheres <= GETDATE()");
                     select.append(" and date_fin_encheres > GETDATE()");
 
                     pstmt = con.prepareStatement(select.toString());
-                    pstmt.setString(1, "%" + categorie + "%");
+                    pstmt.setInt(1, categorie);
                 }
 
             } else {
 
-                if (categorie == null) {
+                if (categorie == 0) {
 
                     select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                     select.append(" WHERE nom_article like ? and date_debut_encheres <= GETDATE()");
@@ -234,12 +234,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
                 } else {
                     select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
-                    select.append(" WHERE nom_article like ? AND libelle like ? and date_debut_encheres <= GETDATE()");
+                    select.append(" WHERE nom_article like ? AND no_categorie = ? and date_debut_encheres <= GETDATE()");
                     select.append(" and date_fin_encheres > GETDATE()");
 
                     pstmt = con.prepareStatement(select.toString());
                     pstmt.setString(1, "%" + nomArticle + "%");
-                    pstmt.setString(2, "%" + categorie + "%");
+                    pstmt.setInt(2, categorie);
                 }
 
             }
@@ -275,7 +275,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     }
 
     @Override
-    public List<Article> selectByBuyer(String nomArticle, String categorie, int noEncherisseur, boolean etatEnchere) {
+    public List<Article> selectByBuyer(String nomArticle, int categorie, int noEncherisseur, boolean etatEnchere) {
 
         StringBuilder select = new StringBuilder();
         List<Article> articles = new ArrayList<Article>();
@@ -285,7 +285,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             PreparedStatement pstmt;
             if (!etatEnchere) {
                 if (nomArticle == null) {
-                    if (categorie == null) {
+                    if (categorie == 0) {
 
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" inner join ENCHERES on ENCHERES.no_article=ARTICLES_VENDUS.no_article");
@@ -296,16 +296,16 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" inner join ENCHERES on ENCHERES.no_article=ARTICLES_VENDUS.no_article");
-                        select.append(" WHERE libelle like ? and date_debut_encheres <= GETDATE()");
+                        select.append(" WHERE no_categorie = ? and date_debut_encheres <= GETDATE()");
                         select.append(" and date_fin_encheres > GETDATE() and ENCHERES.no_utilisateur =?");
                         pstmt = con.prepareStatement(select.toString());
-                        pstmt.setString(1, "%" + categorie + "%");
+                        pstmt.setInt(1, categorie);
                         pstmt.setInt(2, noEncherisseur);
                     }
 
                 } else {
 
-                    if (categorie == null) {
+                    if (categorie == 0) {
 
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" inner join ENCHERES on ENCHERES.no_article=ARTICLES_VENDUS.no_article");
@@ -318,19 +318,19 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" inner join ENCHERES on ENCHERES.no_article=ARTICLES_VENDUS.no_article");
-                        select.append(" WHERE nom_article like ? AND libelle like ? and date_debut_encheres <= GETDATE()");
+                        select.append(" WHERE nom_article like ? AND no_categorie = ? and date_debut_encheres <= GETDATE()");
                         select.append(" and date_fin_encheres > GETDATE() and ENCHERES.no_utilisateur =?");
 
                         pstmt = con.prepareStatement(select.toString());
                         pstmt.setString(1, "%" + nomArticle + "%");
-                        pstmt.setString(2, "%" + categorie + "%");
+                        pstmt.setInt(2, categorie);
                         pstmt.setInt(3, noEncherisseur);
                     }
                 }
             } else {
 
                 if (nomArticle == null) {
-                    if (categorie == null) {
+                    if (categorie == 0) {
 
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" inner join ENCHERES on ENCHERES.no_article=ARTICLES_VENDUS.no_article");
@@ -342,18 +342,18 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" inner join ENCHERES on ENCHERES.no_article=ARTICLES_VENDUS.no_article");
-                        select.append(" WHERE libelle like ?");
+                        select.append(" WHERE no_categorie = ?");
                         select.append(" and date_fin_encheres < GETDATE() and ENCHERES.no_utilisateur =?");
                         select.append(" and ENCHERES.montant_enchere=ARTICLES_VENDUS.prix_vente; ");
 
                         pstmt = con.prepareStatement(select.toString());
-                        pstmt.setString(1, "%" + categorie + "%");
+                        pstmt.setInt(1, categorie);
                         pstmt.setInt(2, noEncherisseur);
                     }
 
                 } else {
 
-                    if (categorie == null) {
+                    if (categorie == 0) {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" inner join ENCHERES on ENCHERES.no_article=ARTICLES_VENDUS.no_article");
                         select.append(" WHERE nom_article like ? and ENCHERES.no_utilisateur =?");
@@ -365,13 +365,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" inner join ENCHERES on ENCHERES.no_article=ARTICLES_VENDUS.no_article");
-                        select.append(" WHERE nom_article like ? AND libelle like ? ");
+                        select.append(" WHERE nom_article like ? AND no_categorie = ? ");
                         select.append(" and date_fin_encheres < GETDATE() and ENCHERES.no_utilisateur =?");
                         select.append(" and ENCHERES.montant_enchere=ARTICLES_VENDUS.prix_vente; ");
                         pstmt = con.prepareStatement(select.toString());
 
                         pstmt.setString(1, "%" + nomArticle + "%");
-                        pstmt.setString(2, "%" + categorie + "%");
+                        pstmt.setInt(2, categorie);
                         pstmt.setInt(3, noEncherisseur);
                     }
                 }
@@ -409,7 +409,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
     }
 
     @Override
-    public List<Article> selectBySeller(String nomArticle, String categorie, int noVendeur, EtatVente etatVente) {
+    public List<Article> selectBySeller(String nomArticle, int categorie, int noVendeur, EtatVente etatVente) {
 
         List<Article> articles = new ArrayList<Article>();
         Article article = null;
@@ -420,7 +420,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             PreparedStatement pstmt;
             if (etatVente == EtatVente.NonDebutee) {
                 if (nomArticle == null) {
-                    if (categorie == null) {
+                    if (categorie == 0) {
 
                         select.append("SELECT * FROM ARTICLES_VENDUS INNER JOIN CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" WHERE date_debut_encheres > GETDATE() AND ARTICLES_VENDUS.no_utilisateur =?;");
@@ -429,16 +429,16 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
-                        select.append(" WHERE libelle like ? ");
+                        select.append(" WHERE no_categorie = ? ");
                         select.append(" AND date_debut_encheres > GETDATE() AND ARTICLES_VENDUS.no_utilisateur =?;");
                         pstmt = con.prepareStatement(select.toString());
-                        pstmt.setString(1, "%" + categorie + "%");
+                        pstmt.setInt(1, categorie);
                         pstmt.setInt(2, noVendeur);
                     }
 
                 } else {
 
-                    if (categorie == null) {
+                    if (categorie == 0) {
 
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" WHERE nom_article like ? ");
@@ -449,18 +449,18 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
-                        select.append(" WHERE nom_article like ? AND libelle like ?");
+                        select.append(" WHERE nom_article like ? AND no_categorie = ?");
                         select.append(" AND date_debut_encheres > GETDATE() AND ARTICLES_VENDUS.no_utilisateur =?;");
 
                         pstmt = con.prepareStatement(select.toString());
                         pstmt.setString(1, "%" + nomArticle + "%");
-                        pstmt.setString(2, "%" + categorie + "%");
+                        pstmt.setInt(2, categorie);
                         pstmt.setInt(3, noVendeur);
                     }
                 }
             } else if (etatVente == EtatVente.EnCours) {
                 if (nomArticle == null) {
-                    if (categorie == null) {
+                    if (categorie == 0) {
 
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" WHERE date_debut_encheres < GETDATE() and date_fin_encheres > GETDATE() AND ARTICLES_VENDUS.no_utilisateur =?;");
@@ -470,18 +470,18 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
-                        select.append(" WHERE libelle like ?");
+                        select.append(" WHERE no_categorie = ?");
                         select.append(" and date_debut_encheres < GETDATE() and date_fin_encheres > GETDATE() and ARTICLES_VENDUS.no_utilisateur =?;");
 
 
                         pstmt = con.prepareStatement(select.toString());
-                        pstmt.setString(1, "%" + categorie + "%");
+                        pstmt.setInt(1, categorie);
                         pstmt.setInt(2, noVendeur);
                     }
 
                 } else {
 
-                    if (categorie == null) {
+                    if (categorie == 0) {
 
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" WHERE nom_article like ?");
@@ -493,11 +493,11 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
-                        select.append(" WHERE nom_article like ? AND libelle like ? ");
+                        select.append(" WHERE nom_article like ? AND no_categorie = ? ");
                         select.append(" and date_debut_encheres < GETDATE() and date_fin_encheres > GETDATE() AND ARTICLES_VENDUS.no_utilisateur =?;");
                         pstmt = con.prepareStatement(select.toString());
                         pstmt.setString(1, "%" + nomArticle + "%");
-                        pstmt.setString(2, "%" + categorie + "%");
+                        pstmt.setInt(2, categorie);
                         pstmt.setInt(3, noVendeur);
                     }
                 }
@@ -505,7 +505,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
 
                 if (nomArticle == null) {
-                    if (categorie == null) {
+                    if (categorie == 0) {
 
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" WHERE date_fin_encheres < GETDATE() AND ARTICLES_VENDUS.no_utilisateur =?;");
@@ -514,17 +514,17 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
-                        select.append(" WHERE libelle like ?");
+                        select.append(" WHERE no_categorie = ?");
                         select.append(" and date_fin_encheres < GETDATE() AND ARTICLES_VENDUS.no_utilisateur =?;");
 
                         pstmt = con.prepareStatement(select.toString());
-                        pstmt.setString(1, categorie);
+                        pstmt.setInt(1, categorie);
                         pstmt.setInt(2, noVendeur);
                     }
 
                 } else {
 
-                    if (categorie == null) {
+                    if (categorie == 0) {
 
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
                         select.append(" WHERE nom_article like ? ");
@@ -536,12 +536,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
                     } else {
                         select.append("SELECT * FROM ARTICLES_VENDUS inner join CATEGORIES on ARTICLES_VENDUS.no_categorie = CATEGORIES.no_categorie");
-                        select.append(" WHERE nom_article like ? AND libelle like ? ");
+                        select.append(" WHERE nom_article like ? AND no_categorie = ? ");
                         select.append(" and date_fin_encheres < GETDATE() AND ARTICLES_VENDUS.no_utilisateur =?;");
 
                         pstmt = con.prepareStatement(select.toString());
                         pstmt.setString(1, "%" + nomArticle + "%");
-                        pstmt.setString(2, "%" + categorie + "%");
+                        pstmt.setInt(2, categorie);
                         pstmt.setInt(3, noVendeur);
                     }
                 }

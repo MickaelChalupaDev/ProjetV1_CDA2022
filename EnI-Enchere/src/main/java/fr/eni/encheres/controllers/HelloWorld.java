@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "helloServlet", value = "/Search")
+@WebServlet(name = "helloServlet", value = "/test")
 public class HelloWorld extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -24,7 +24,7 @@ public class HelloWorld extends HttpServlet {
 		if(session.getAttribute("utilisateur") != null){
 			utilisateur = (Utilisateur)session.getAttribute("utilisateur");
 		}
-		ObjectSentAccueil o = new ObjectSentAccueil(articles);
+		ObjectSentAccueil o = new ObjectSentAccueil();
 
 		request.setAttribute("obj", o);//Toujours à ignorer, j'en avais besoin pour build ma page
 		request.getRequestDispatcher("PageAccueil.jsp").forward(request, response);

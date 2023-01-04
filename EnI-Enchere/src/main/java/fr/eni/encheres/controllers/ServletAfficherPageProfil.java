@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -17,6 +18,10 @@ public class ServletAfficherPageProfil extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("utilisateur") == null) {
+            response.sendRedirect("/");
+        }
         Utilisateur user = new Utilisateur();
         Utilisateur userConnected = new Utilisateur();
         UtilisateurManager uMgr = new UtilisateurManager();

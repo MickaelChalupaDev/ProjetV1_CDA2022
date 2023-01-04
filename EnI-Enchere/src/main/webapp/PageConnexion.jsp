@@ -53,8 +53,7 @@
 </header>
 
 <table class="table0">
-    <form method="post" action="ServletPageConnexion">
-
+    <form method="post" action="/connexion">
 		<tr>
 		 <td colspan="2"> <p style="color:red; margin-left: 180px"> &nbsp ${requestScope.messageErreur}</p> </td>
 		</tr>
@@ -78,7 +77,7 @@
 </table>
 <table class="table0">
     <tr>
-        <form method="get" action="PageCreerCompte.jsp">
+        <form method="get" action="/creerCompte">
             <td><input class="input3" type="submit" value="Créer un compte"/></td>
         </form>
     </tr>
