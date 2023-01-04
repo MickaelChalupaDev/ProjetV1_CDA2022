@@ -27,7 +27,6 @@ public class ServletPageCreerCompte extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Utilisateur user = new Utilisateur();
-		UtilisateurManager uMgr= new UtilisateurManager();
 
 		Pattern patternEmail = Pattern.compile("^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+)$");
 		Matcher matcherEmail = patternEmail.matcher(request.getParameter("email"));
@@ -67,16 +66,16 @@ public class ServletPageCreerCompte extends HttpServlet {
 		 rd.forward(request, response);
 		 
 		 */
-		user = uMgr.creerUtilisateur(user);
+		user = UtilisateurManager.creerUtilisateur(user);
 		if (user!=null) {
 			System.out.println(user.toString());
 			HttpSession session = request.getSession();
 			session.setAttribute("utilisateur", user);
-			response.sendRedirect("/");
+			response.sendRedirect(request.getContextPath() + "/");
 		} else
 		{
 			System.out.println("No User, try again");
-			request.getRequestDispatcher("/creerCompte").forward(request, response);
+			request.getRequestDispatcher(request.getContextPath() + "/creerCompte").forward(request, response);
 		}
 		
 	}

@@ -27,13 +27,12 @@ public class ServletPageModifierProfil extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
 
         Utilisateur user = new Utilisateur();
-        UtilisateurManager uMgr = new UtilisateurManager();
         RequestDispatcher rd = null;
-        user = uMgr.lireUtilisateur(request.getParameter("pseudo"));
+        user = UtilisateurManager.lireUtilisateur(request.getParameter("pseudo"));
         request.setAttribute("user", user);
         rd = request.getRequestDispatcher("/PageModifierMonProfil.jsp");
         rd.forward(request, response);
@@ -42,12 +41,11 @@ public class ServletPageModifierProfil extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Utilisateur user = new Utilisateur();
-        UtilisateurManager uMgr = new UtilisateurManager();
         RequestDispatcher rd = null;
         String messageMotDePasse = null;
         String messageCompatibiliteMotDePasse = null;
 
-        user.setNoUtlisateur(uMgr.lireUtilisateur(request.getParameter("pseudo")).getNoUtilisateur());
+        user.setNoUtlisateur(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getNoUtilisateur());
         user.setPseudo(request.getParameter("pseudo"));
         user.setNom(request.getParameter("nom"));
         user.setPrenom(request.getParameter("prenom"));
@@ -57,17 +55,17 @@ public class ServletPageModifierProfil extends HttpServlet {
         user.setCodePostal(request.getParameter("codePostal"));
         user.setVille(request.getParameter("ville"));
 
-        user.setCredit(uMgr.lireUtilisateur(request.getParameter("pseudo")).getCredit());
-        user.setAdministrateur(uMgr.lireUtilisateur(request.getParameter("pseudo")).getAdministrateur());
+        user.setCredit(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getCredit());
+        user.setAdministrateur(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getAdministrateur());
 
         if (((String) request.getParameter("enregistrement").trim()).equals("Enregistrer")) {
 
 
-            if (request.getParameter("motDePasse").equals(uMgr.lireUtilisateur(request.getParameter("pseudo")).getMotDePasse())) {
+            if (request.getParameter("motDePasse").equals(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getMotDePasse())) {
 
                 if (request.getParameter("nouveauMotDePasse").equals(request.getParameter("confirmation"))) {
                     user.setMotDePasse(request.getParameter("nouveauMotDePasse"));
-                    uMgr.modifierUtilisateur(user);
+                    UtilisateurManager.modifierUtilisateur(user);
                     rd = request.getRequestDispatcher("/PageListeEncheresConnecte.jsp");
                     rd.forward(request, response);
                 } else {
@@ -88,25 +86,23 @@ public class ServletPageModifierProfil extends HttpServlet {
         } else {
 
             /** supprimer toutes les enchères de l'utilisateur : user qui sont seulement en cours **/
-            EnchereManager eMgr = new EnchereManager();
-            ArticleManager aMgr = new ArticleManager();
             Enchere enchere = new Enchere();
             List<Article> articles = new ArrayList<Article>();
 
-            articles = aMgr.rechercherParAchat(null, 0, user.getNoUtilisateur(), false);
+            articles = ArticleManager.rechercherParAchat(null, 0, user.getNoUtilisateur(), false);
 
             for (Article art : articles) {
                 enchere.setNoEncherisseur(user.getNoUtilisateur());
                 enchere.setNoArticle(art.getNoArticle());
-                eMgr.annuler(enchere);
+                EnchereManager.annuler(enchere);
             }
 
             /** supprimer tous les articles de l'utilisateur : user dont les enchères ne sont pas encore débutés**/
 
-            articles = aMgr.rechercherParVente(null, 0, user.getNoUtilisateur(), EtatVente.NonDebutee);
+            articles = ArticleManager.rechercherParVente(null, 0, user.getNoUtilisateur(), EtatVente.NonDebutee);
 
             for (Article art : articles) {
-                aMgr.supprimerArticle(art.getNoArticle());
+                ArticleManager.supprimerArticle(art.getNoArticle());
             }
 
             /** mettre le compte inactif (et ne pas supprimer ) **/

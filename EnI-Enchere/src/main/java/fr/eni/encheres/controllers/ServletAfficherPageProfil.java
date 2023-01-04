@@ -20,13 +20,12 @@ public class ServletAfficherPageProfil extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath() + "/");
         }
         Utilisateur user = new Utilisateur();
         Utilisateur userConnected = new Utilisateur();
-        UtilisateurManager uMgr = new UtilisateurManager();
-        user = uMgr.lireUtilisateur((String) request.getParameter("pseudo"));
-        userConnected = uMgr.lireUtilisateur("Npseudo");
+        user = UtilisateurManager.lireUtilisateur((String) request.getParameter("pseudo"));
+        userConnected = UtilisateurManager.lireUtilisateur("Npseudo");
 
 
         if (user.getPseudo().equals(userConnected.getPseudo())) {

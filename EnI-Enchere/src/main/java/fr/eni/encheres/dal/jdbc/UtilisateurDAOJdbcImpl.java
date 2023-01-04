@@ -41,7 +41,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
             pstmt.setString(6, utilisateur.getRue());
             pstmt.setString(7, utilisateur.getCodePostal());
             pstmt.setString(8, utilisateur.getVille());
-            pstmt.setString(9, utilisateur.hashPwd(utilisateur.getMotDePasse()));
+            pstmt.setString(9, Utilisateur.hashPwd(utilisateur.getMotDePasse()));
             pstmt.setInt(10, utilisateur.getCredit());
             pstmt.setBoolean(11, utilisateur.getAdministrateur());
             pstmt.executeUpdate();
@@ -80,7 +80,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
             pstmt.setString(6, utilisateur.getRue());
             pstmt.setString(7, utilisateur.getCodePostal());
             pstmt.setString(8, utilisateur.getVille());
-            pstmt.setString(9, utilisateur.hashPwd(utilisateur.getMotDePasse()));
+            pstmt.setString(9, Utilisateur.hashPwd(utilisateur.getMotDePasse()));
             pstmt.setInt(10, utilisateur.getCredit());
             pstmt.setBoolean(11, utilisateur.getAdministrateur());
             pstmt.setInt(12, utilisateur.getNoUtilisateur());

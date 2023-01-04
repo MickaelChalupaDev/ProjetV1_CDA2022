@@ -64,6 +64,10 @@ public class ObjectSentAccueil {
     }
 
     public String getCategorieSelected() {
+        if(Objects.equals(categorieSelected, ""))
+        {
+            categorieSelected = "0";
+        }
         return categorieSelected;
     }
 
@@ -97,7 +101,7 @@ public class ObjectSentAccueil {
 
     @Override
     public String toString() {
-        return "Searched : {"+searched +"}; " + "Libelle Categorie : {" + new CategorieManager().getCategorieById(Integer.parseInt(categorieSelected)).libelle
+        return "Searched : {"+searched +"}; " + "Libelle Categorie : {" + CategorieManager.getCategorieById(Integer.parseInt(categorieSelected)).libelle
                 + "}; Filtre Affiches : {" + filtreVenteAffichees + "}; \n Checked EnchereOuverte : {"
                 + (checkedEnchereOuverte ? "Oui": "Non") + "}; Checked MesEncheres : {"
                 + (checkedMesEncheres ? "Oui" : "Non") + "}; Checked EncheresRemportees : {"

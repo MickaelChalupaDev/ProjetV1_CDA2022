@@ -35,14 +35,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             pstmt.setInt(7, article.getEtatVente().ordinal());
             pstmt.setInt(8, article.getVendeur().getNoUtilisateur());
 
-            pstmt.setInt(9, (new CategorieManager()).getCategorieByLibelle(article.getCategorie()).noCategorie);
+            pstmt.setInt(9, CategorieManager.getCategorieByLibelle(article.getCategorie()).noCategorie);
             pstmt.setString(10, article.getNomPhoto());
 
             pstmt.executeUpdate();//
             ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
                 article.setNoArticle(rs.getInt(1));
-
             }
 
             pstmt = con.prepareStatement("INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES (?,?,?,?)");
@@ -52,7 +51,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             pstmt.setString(3, article.getAdresse().get(1));
             pstmt.setString(4, article.getAdresse().get(2));
             pstmt.executeUpdate();
-
 
             con.close();
         } catch (SQLException e) {
@@ -95,7 +93,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
 
                 int noUtilisateur = rs.getInt("no_utilisateur");
-                Utilisateur utilisateur = new UtilisateurManager().lireUtilisateur(noUtilisateur);
+                Utilisateur utilisateur = UtilisateurManager.lireUtilisateur(noUtilisateur);
                 article.setVendeur(utilisateur);
                 article.setCategorie(rs.getString("libelle"));
                 article.setNomPhoto(rs.getString("lien_photo"));
@@ -154,7 +152,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             pstmt.setInt(6, article.getPrixVente());
             pstmt.setInt(7, article.getEtatVente().ordinal());
             pstmt.setInt(8, article.getVendeur().getNoUtilisateur());
-            pstmt.setInt(9, (new CategorieManager()).getCategorieByLibelle(article.getCategorie()).noCategorie);
+            pstmt.setInt(9, CategorieManager.getCategorieByLibelle(article.getCategorie()).noCategorie);
             pstmt.setString(10, article.getNomPhoto());
             pstmt.setInt(11, article.getNoArticle());
 
@@ -228,14 +226,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 article.setPrixVente(res.getInt(7));
                 article.setEtatVente(EtatVente.values()[res.getInt(8)]);
 
-                UtilisateurManager uMgr = new UtilisateurManager();
-                article.setVendeur(uMgr.lireUtilisateur(res.getInt(9)));
+                article.setVendeur(UtilisateurManager.lireUtilisateur(res.getInt(9)));
 
                 article.setCategorie(res.getString(13));
                 article.setNomPhoto(res.getString(11));
 
-                ArticleManager aMgr = new ArticleManager();
-                article.setAdresse(aMgr.lireArticle(res.getInt(1)).getAdresse());
+                article.setAdresse(ArticleManager.lireArticle(res.getInt(1)).getAdresse());
                 articles.add(article);
             }
 
@@ -361,14 +357,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 article.setPrixVente(res.getInt(7));
                 article.setEtatVente(EtatVente.values()[res.getInt(8)]);
 
-                UtilisateurManager uMgr = new UtilisateurManager();
-                article.setVendeur(uMgr.lireUtilisateur(res.getInt(9)));
+                article.setVendeur(UtilisateurManager.lireUtilisateur(res.getInt(9)));
 
                 article.setCategorie(res.getString(13));
                 article.setNomPhoto(res.getString(11));
 
-                ArticleManager aMgr = new ArticleManager();
-                article.setAdresse(aMgr.lireArticle(res.getInt(1)).getAdresse());
+                article.setAdresse(ArticleManager.lireArticle(res.getInt(1)).getAdresse());
 
                 articles.add(article);
             }
@@ -532,15 +526,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 article.setPrixVente(res.getInt(7));
                 article.setEtatVente(EtatVente.values()[res.getInt(8)]);
 
-                UtilisateurManager uMgr = new UtilisateurManager();
-                article.setVendeur(uMgr.lireUtilisateur(res.getInt(9)));
+                article.setVendeur(UtilisateurManager.lireUtilisateur(res.getInt(9)));
 
                 article.setCategorie(res.getString(10));
                 article.setNomPhoto(res.getString(11));
 
-                ArticleManager aMgr = new ArticleManager();
 
-                article.setAdresse(aMgr.lireArticle(res.getInt(1)).getAdresse());
+                article.setAdresse(ArticleManager.lireArticle(res.getInt(1)).getAdresse());
 
                 articles.add(article);
             }

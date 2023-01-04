@@ -47,10 +47,10 @@ public class Enchere {
 		return noEncherisseur;
 	}
 	public Article getArticle(){
-		return (new ArticleManager()).lireArticle(noArticle);
+		return ArticleManager.lireArticle(noArticle);
 	}
 	public Utilisateur getUtilisateur(){
-		return (new UtilisateurManager()).lireUtilisateur(noEncherisseur);
+		return UtilisateurManager.lireUtilisateur(noEncherisseur);
 	}
 	public String toString() {
 		return this.getNoEncherisseur()+" " + this.getNoArticle() + " " + this.getDateEnchere() + " " +this.getMontantEnchere(); 
