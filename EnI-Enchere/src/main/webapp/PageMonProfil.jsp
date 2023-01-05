@@ -1,7 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri= "http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="fr.eni.encheres.bo.Utilisateur" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,37 +47,36 @@
 
   <tr>
     <td><label> Pseudo :</label></td>
-    <td> ${sessionScope.utilisateur.getPseudo() }</td>
+    <td> ${utilisateur.pseudo}</td>
   </tr>
   <tr>
     <td><label> Nom : </label></td>
-    <td>  ${sessionScope.utilisateur.getNom() } </td>
+    <td>  ${utilisateur.nom} </td>
   </tr>
   <tr>
     <td > Prénom : </td>
-    <td> ${sessionScope.utilisateur.getPrenom() } </td>
+    <td> ${utilisateur.prenom} </td>
   </tr>
   <tr>
     <td>Email : </td>
-    <td>${sessionScope.utilisateur.getEmail() }</td>
+    <td>${utilisateur.email}</td>
   </tr>
   <tr>
     <td> Rue : </td>
-    <td> ${sessionScope.utilisateur.getRue() }</td>
+    <td> ${utilisateur.rue}</td>
   </tr>
   <tr>
     <td>Code postal</td>
-    <td>${sessionScope.utilisateur.getCodePostal() } </td>
+    <td>${utilisateur.codePostal} </td>
   </tr>
   <tr>
     <td>Ville  </td>
-    <td> ${sessionScope.utilisateur.getVille() }</td>
+    <td> ${utilisateur.ville }</td>
   </tr>
 </table>
 <table class="table0">
   <tr>
-    <td> <a href="ServletPageModifierProfil"> <input class="input3" type="submit" value="Modifier"/> </a>
-
+    <td> <a href="${pageContext.request.contextPath}/profile/modifier"> <input class="input3" type="submit" value="Modifier"/> </a>
   </tr>
 </table>
 

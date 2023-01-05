@@ -53,7 +53,7 @@
 </header>
 
 <table class="table0">
-    <form method="post" action="/connexion">
+    <form method="post" action="${pageContext.request.contextPath}/connexion">
 		<tr>
 		 <td colspan="2"> <p style="color:red; margin-left: 180px"> &nbsp ${requestScope.messageErreur}</p> </td>
 		</tr>
@@ -67,7 +67,7 @@
         </tr>
         <tr>
             <td rowspan="2"><input class="input1" type="submit" value="Connexion"/></td>
-            <td><input class="input2" type="checkbox" name="seSeouvenirDeMoi"> <label> Se souvenir de moi</label></td>
+            <td><input class="input2" type="checkbox" name="seSouvenirDeMoi"> <label> Se souvenir de moi</label></td>
         </tr>
         <tr>
             <td><a href=""> Mot de passe oublié </a></td>
@@ -77,7 +77,7 @@
 </table>
 <table class="table0">
     <tr>
-        <form method="get" action="/creerCompte">
+        <form method="get" action="${pageContext.request.contextPath}/creerCompte">
             <td><input class="input3" type="submit" value="Créer un compte"/></td>
         </form>
     </tr>

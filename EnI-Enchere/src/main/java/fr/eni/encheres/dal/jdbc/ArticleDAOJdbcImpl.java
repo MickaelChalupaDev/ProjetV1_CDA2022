@@ -169,7 +169,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public List<Article> selectALL(String nomArticle, int categorie) {
-
+        System.out.println("Select all");
         List<Article> articles = new ArrayList<Article>();
         Article article = null;
         StringBuilder select = new StringBuilder();

@@ -20,12 +20,23 @@ public class ServletPageCreerCompte extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("utilisateur") != null){ //On ne peut se connecter que si l'utilisateur est null
+			response.sendRedirect(request.getContextPath() + "/");
+			return;
+		}
 		request.getRequestDispatcher("PageCreerCompte.jsp").forward(request, response);
+		return;
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		HttpSession session = request.getSession();
+		if(session.getAttribute("utilisateur") != null){ //On ne peut se connecter que si l'utilisateur est null
+			response.sendRedirect(request.getContextPath() + "/");
+			return;
+		}
+
 		Utilisateur user = new Utilisateur();
 
 		Pattern patternEmail = Pattern.compile("^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+)$");
@@ -69,7 +80,6 @@ public class ServletPageCreerCompte extends HttpServlet {
 		user = UtilisateurManager.creerUtilisateur(user);
 		if (user!=null) {
 			System.out.println(user.toString());
-			HttpSession session = request.getSession();
 			session.setAttribute("utilisateur", user);
 			response.sendRedirect(request.getContextPath() + "/");
 		} else

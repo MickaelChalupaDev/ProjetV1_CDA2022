@@ -10,9 +10,7 @@ public class Enchere {
 	private int noArticle;
 	private Date dateEnchere;
 	private int montantEnchere;
-	
-	
-	
+
 	public Enchere() {}
 	
     public Enchere(int noEncherisseur,int noArticle, Date dateEnchere, int montantEnchere) {

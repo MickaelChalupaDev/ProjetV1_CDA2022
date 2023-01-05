@@ -12,6 +12,8 @@ public class ObjectSentAccueil {
 
     public ObjectSentAccueil(/*List<Article> articles*/){
 //        this.articles = articles;
+        this.searched = "";
+        this.categorieSelected = "0";
         this.checkedEnchereOuverte = true;
     }
 
@@ -60,6 +62,10 @@ public class ObjectSentAccueil {
 //    }
 
     public String getSearched() {
+        if(searched == null)
+        {
+            return "";
+        }
         return searched;
     }
 

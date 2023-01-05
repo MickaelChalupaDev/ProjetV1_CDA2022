@@ -189,9 +189,9 @@
         <c:choose>
             <c:when test="${utilisateur.isValid}">
                 <div><!-- Affiché que si User != null -->
-                    <a href="ServletPageVendreUnArticle">Enchères</a>
+                    <a href="${pageContext.request.contextPath}/">Enchères</a>
                     <a href="ServletPageVendreUnArticle">Vendre un article</a>
-                    <a href="PageMonProfil.jsp">Mon Profil</a>
+                    <a href="${pageContext.request.contextPath}/profile">Mon Profil</a>
                     <a href="${pageContext.request.contextPath}/Deconnexion">Déconnexion</a>
                 </div>
             </c:when>
@@ -279,14 +279,14 @@
                 <div>
                     <div>
                         <c:if test = "${article.getNomPhoto()!= null}">
-                            <img src="http://localhost:8080/${pageContext.request.contextPath}${article.getNomPhoto()}"  alt="l'article à vendre" style="max-height : 80px">
+                            <img src="${pageContext.request.contextPath}/images?image=${article.getNomPhoto()}"  alt="l'article à vendre" style="max-height : 80px">
                         </c:if>
                     </div>
                     <div>
                         <a href="${pageContext.request.contextPath}/encherir?noArticle=${article.noArticle}">${article.nomArticle}</a>
                         <p>Prix : ${article.miseAPrix} points</p>
                         <p>Fin de l'enchère : ${article.dateFinEncheres.toLocaleString()}</p>
-                        <p>Vendeur : <a href="${pageContext.request.contextPath}/afficherProfile?pseudo=${article.vendeur.pseudo}">${article.vendeur.pseudo}</a></p>
+                        <p>Vendeur : <a href="${pageContext.request.contextPath}/profile?pseudo=${article.vendeur.pseudo}">${article.vendeur.pseudo}</a></p>
                     </div>
                 </div>
             </c:forEach>

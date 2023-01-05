@@ -35,20 +35,22 @@ public class ServletPageAccueil extends HttpServlet {
         else{
             ObjectSentAccueil o = (ObjectSentAccueil) session.getAttribute("filtresRecherches");
             System.out.println(o.toString());
-            articles = ArticleManager.rechercherTout(o.getSearched(),0);//todo
+            articles = ArticleManager.rechercherTout(null,0);//todo
         }
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
-            session.setAttribute("utilisateur", null);
+            if(session.getAttribute("utilisateur") == null){
+                session.setAttribute("utilisateur", null);
+            }
         }
         request.setAttribute("articles",articles);
         request.setAttribute("categories",categories);
         request.getRequestDispatcher("PageAccueil.jsp").forward(request, response);
+        return;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-
         String searchBox = request.getParameter("search");
         String categorie = request.getParameter("categorie");
         String filtreVenteAffichee = request.getParameter("filtreVentesAffichees");
@@ -68,5 +70,6 @@ public class ServletPageAccueil extends HttpServlet {
 
         session.setAttribute("filtresRecherches", o);
         doGet(request, response);
+        return;
     }
 }

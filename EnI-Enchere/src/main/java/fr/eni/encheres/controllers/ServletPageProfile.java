@@ -7,41 +7,40 @@ import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.EtatVente;
 import fr.eni.encheres.bo.Utilisateur;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "ModifierProfile", value = "/profile/modifier")
-public class ServletPageModifierProfil extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
+@WebServlet(name = "ServletPageProfile", value = "/profile")
+public class ServletPageProfile extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
-            response.sendRedirect(request.getContextPath() + "/");
+            response.sendRedirect(request.getContextPath() + "/connexion");
         }
 
-        Utilisateur user = new Utilisateur();
-        RequestDispatcher rd = null;
-        user = UtilisateurManager.lireUtilisateur(request.getParameter("pseudo"));
-        request.setAttribute("user", user);
-        rd = request.getRequestDispatcher("/PageModifierMonProfil.jsp");
-        rd.forward(request, response);
+        String pseudo = request.getParameter("pseudo");
+        if(pseudo == null){//Afficher son propre profile
+            RequestDispatcher rd = null;
+            //Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
+            request.getRequestDispatcher("PageMonProfil.jsp").forward(request, response);
+        }
+        else{//Afficher le profile d'un autre
+            Utilisateur user = UtilisateurManager.lireUtilisateur(pseudo);
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("PageProfil.jsp").forward(request, response);
+        }
+        return;
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {//modifier profile
         Utilisateur user = new Utilisateur();
-        RequestDispatcher rd = null;
         String messageMotDePasse = null;
         String messageCompatibiliteMotDePasse = null;
 
@@ -66,22 +65,19 @@ public class ServletPageModifierProfil extends HttpServlet {
                 if (request.getParameter("nouveauMotDePasse").equals(request.getParameter("confirmation"))) {
                     user.setMotDePasse(request.getParameter("nouveauMotDePasse"));
                     UtilisateurManager.modifierUtilisateur(user);
-                    rd = request.getRequestDispatcher("/PageListeEncheresConnecte.jsp");
-                    rd.forward(request, response);
+                    request.getRequestDispatcher("/PageListeEncheresConnecte.jsp").forward(request, response);
                 } else {
                     messageCompatibiliteMotDePasse = "saisie de mot de passe incompatible !";
                     request.setAttribute("user", user);
                     request.setAttribute("messageCompatibiliteMotDePasse", "saisie de mot de passe incompatible !");
-                    rd = request.getRequestDispatcher("/PageModifierMonProfil.jsp");
-                    rd.forward(request, response);
+                    request.getRequestDispatcher("/PageModifierMonProfil.jsp").forward(request, response);
                 }
             } else {
                 messageMotDePasse = "mot de passe incorrect !";
                 request.setAttribute("messageMotDePasse", messageMotDePasse);
                 request.setAttribute("user", user);
 
-                rd = request.getRequestDispatcher("/PageModifierMonProfil.jsp");
-                rd.forward(request, response);
+                request.getRequestDispatcher("/PageModifierMonProfil.jsp").forward(request, response);
             }
         } else {
 
@@ -106,14 +102,9 @@ public class ServletPageModifierProfil extends HttpServlet {
             }
 
             /** mettre le compte inactif (et ne pas supprimer ) **/
-
-
             //uMgr.supprimerUtilisateur(user);
-            rd = request.getRequestDispatcher("/PageAccueil.jsp");
-            rd.forward(request, response);
-
-
+            request.getRequestDispatcher("/PageAccueil.jsp").forward(request, response);
         }
+        return;
     }
-
 }

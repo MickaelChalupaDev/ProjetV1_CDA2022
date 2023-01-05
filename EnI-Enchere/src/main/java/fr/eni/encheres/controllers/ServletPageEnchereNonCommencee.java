@@ -29,7 +29,7 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
-            response.sendRedirect(request.getContextPath() + "/");
+            response.sendRedirect(request.getContextPath() + "/connexion");
         }
 
         Utilisateur user = new Utilisateur();

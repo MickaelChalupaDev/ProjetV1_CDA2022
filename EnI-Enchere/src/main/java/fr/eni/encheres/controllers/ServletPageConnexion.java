@@ -21,36 +21,36 @@ public class ServletPageConnexion extends HttpServlet {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("utilisateur") != null){ //On ne peut se connecter que si l'utilisateur est null
 			response.sendRedirect(request.getContextPath() + "/");
-		}else{
-			request.getRequestDispatcher("PageConnexion.jsp").forward(request, response);
 		}
+		request.getRequestDispatcher("PageConnexion.jsp").forward(request, response);
 		return;
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
+		if(session.getAttribute("utilisateur") != null){ //On ne peut se connecter que si l'utilisateur est null
+			response.sendRedirect(request.getContextPath() + "/");
+			return;
+		}
 		String pseudo= null;
 		String motDePasse=null;
 		Utilisateur user = new Utilisateur();
 		pseudo= request.getParameter("pseudo");
+		if(pseudo == null){//Fix des erreurs de requêtes post/get
+			doGet(request, response);
+			return;
+		}
 		motDePasse= request.getParameter("motDePasse");
-		user=UtilisateurManager.connecter(pseudo,motDePasse);
-		if (user!=null) {
-			if (user.getMotDePasse().equals(motDePasse)) {
-				System.out.println("User Not Null, password matches");
-				session.setAttribute("utilisateur", user);
-				request.getRequestDispatcher(request.getContextPath() + "/accueil").forward(request, response);
-			} else {
-				System.out.println("User Not Null, password error");
-				request.setAttribute("messageErreur", " Mot de passe incorrect");
-				request.getRequestDispatcher(request.getContextPath() + "/connexion").forward(request, response);
-			}
-		}else {
+		user=UtilisateurManager.connecter(pseudo,motDePasse);//hash dans le login
+		if (user != null) { //Le password est hash dans le login, la vérification se fait en base directement
+			System.out.println("User Not Null, password matches");
+			session.setAttribute("utilisateur", user);
+			response.sendRedirect(request.getContextPath() + "/");//Redirige sur l'accueil
+		}else { //S'il s'est trompé, on lui renvoie l'erreur d'identifiants incorrecte sans + de précisions
 			System.out.println("User Null");
-			request.setAttribute("messageErreur", "Identifiant incorrect");
-			request.getRequestDispatcher(request.getContextPath() + "/connexion").forward(request, response);
+			request.setAttribute("messageErreur", "Identifiants incorrect");
+			doGet(request, response);//Renvoie la page du get
 		}
 		return;
 	}
