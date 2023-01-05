@@ -55,7 +55,7 @@
 <table class="table0">
     <form method="post" action="/connexion">
 		<tr>
-		 <td colspan="2"> <p style="color:red; margin-left: 180px"> &nbsp ${requestScope.messageErreur}</p> </td>
+		 <td colspan="2"> <p style="color:red; margin-left: 100px"> &nbsp ${requestScope.messageErreur}</p> </td>
 		</tr>
         <tr>
             <td><label> Identifiant :</label></td>

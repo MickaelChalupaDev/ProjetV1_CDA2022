@@ -20,7 +20,7 @@ public class ServletPageConnexion extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("utilisateur") != null){ //On ne peut se connecter que si l'utilisateur est null
-			response.sendRedirect(request.getContextPath() + "/");
+			response.sendRedirect("/");
 		}else{
 			request.getRequestDispatcher("PageConnexion.jsp").forward(request, response);
 		}
@@ -38,19 +38,11 @@ public class ServletPageConnexion extends HttpServlet {
 		motDePasse= request.getParameter("motDePasse");
 		user=UtilisateurManager.connecter(pseudo,motDePasse);
 		if (user!=null) {
-			if (user.getMotDePasse().equals(motDePasse)) {
-				System.out.println("User Not Null, password matches");
 				session.setAttribute("utilisateur", user);
-				request.getRequestDispatcher(request.getContextPath() + "/accueil").forward(request, response);
-			} else {
-				System.out.println("User Not Null, password error");
-				request.setAttribute("messageErreur", " Mot de passe incorrect");
-				request.getRequestDispatcher(request.getContextPath() + "/connexion").forward(request, response);
-			}
-		}else {
-			System.out.println("User Null");
-			request.setAttribute("messageErreur", "Identifiant incorrect");
-			request.getRequestDispatcher(request.getContextPath() + "/connexion").forward(request, response);
+				request.getRequestDispatcher("/").forward(request, response);
+		} else {
+			request.setAttribute("messageErreur", "Identifiant ou mot de passe incorrect");
+			request.getRequestDispatcher("PageConnexion.jsp").forward(request, response);
 		}
 		return;
 	}
