@@ -7,5 +7,6 @@
 		url="jdbc:sqlserver://localhost;databaseName=ENCHERES;encrypt=false;trustServerCertificate=false;integratedSecurity=false;"
 		username="java"
 		password=""
+		maxWaitMillis="5000"
 	/>
 </Context>

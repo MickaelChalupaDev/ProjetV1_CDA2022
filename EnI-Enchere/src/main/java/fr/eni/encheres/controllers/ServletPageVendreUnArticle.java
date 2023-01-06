@@ -4,14 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import fr.eni.encheres.bll.ArticleManager;
+import fr.eni.encheres.bll.CategorieManager;
 import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.EtatVente;
 import fr.eni.encheres.bo.Utilisateur;
 import jakarta.servlet.ServletException;
@@ -35,16 +40,23 @@ public class ServletPageVendreUnArticle extends HttpServlet {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
             response.sendRedirect(request.getContextPath() + "/");
+            return;
         }
         Article article = new Article();
+        List<Categorie> categories = CategorieManager.getAllCategories();
+        categories.remove(0);
+        request.setAttribute("categories",categories);
         request.setAttribute("article", article);
         request.getRequestDispatcher("PageVendreUnArticle.jsp").forward(request, response);
+        return;
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
-
+        List<Categorie> categories = CategorieManager.getAllCategories();
+        categories.remove(0);
+        request.setAttribute("categories",categories);
         Article article = new Article();
         article.setNoArticle(Integer.parseInt(request.getParameter("noArticle")));
 
@@ -95,12 +107,12 @@ public class ServletPageVendreUnArticle extends HttpServlet {
                     if (article.getNoArticle() == 0) {
 
                         String dateSave = String.valueOf(System.currentTimeMillis());
-                        String pathName = getServletContext().getRealPath("/") + "/images/" + user.getNoUtilisateur() + "-" + dateSave + "-";
+                        String pathName = getServletContext().getRealPath("/images/")+ user.getNoUtilisateur() + "-" + dateSave + "-";
 
                         File fileToSave = new File(pathName + filePart.getSubmittedFileName());
                         Files.copy(fileInputStream, fileToSave.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                        String fileUrl = "/photos/" + user.getNoUtilisateur() + "-" + dateSave + "-" + filePart.getSubmittedFileName();
+                        String fileUrl = user.getNoUtilisateur() + "-" + dateSave + "-" + filePart.getSubmittedFileName();
                         article.setNomPhoto(fileUrl);
 
                         ArticleManager.creationArticle(article);
@@ -113,12 +125,12 @@ public class ServletPageVendreUnArticle extends HttpServlet {
                         fileToSave.delete();
 
                         String dateSave = String.valueOf(System.currentTimeMillis());
-                        pathName = getServletContext().getRealPath("/") + "/photos/" + user.getNoUtilisateur() + "-" + dateSave + "-";
+                        pathName =  getServletContext().getRealPath("/images/")+ user.getNoUtilisateur() + "-" + dateSave + "-";
 
                         fileToSave = new File(pathName + filePart.getSubmittedFileName());
                         Files.copy(fileInputStream, fileToSave.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                        String fileUrl = "/photos/" + user.getNoUtilisateur() + "-" + dateSave + "-" + filePart.getSubmittedFileName();
+                        String fileUrl = user.getNoUtilisateur() + "-" + dateSave + "-" + filePart.getSubmittedFileName();
                         article.setNomPhoto(fileUrl);
                         ArticleManager.modifierArticle(article);
                     }
@@ -163,21 +175,22 @@ public class ServletPageVendreUnArticle extends HttpServlet {
                     article.setNomPhoto(ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto());
                     ArticleManager.modifierArticle(article);
                 }
-                request.getRequestDispatcher("Accueil").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/");
 
             }
         } else {
             if (article.getNoArticle() == 0) {
-                request.getRequestDispatcher("Accueil").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/");
                 return;
             } else {
-                String pathName = getServletContext().getRealPath("/") + ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto();
+                String pathName = getServletContext().getRealPath("/images/") + ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto();
                 File fileToSave = new File(pathName);
                 fileToSave.delete();
                 ArticleManager.supprimerArticle(article.getNoArticle());
-                request.getRequestDispatcher("Accueil").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/");
                 return;
             }
         }
+        return;
     }
 }

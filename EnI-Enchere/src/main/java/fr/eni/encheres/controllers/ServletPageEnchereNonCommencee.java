@@ -1,8 +1,10 @@
 package fr.eni.encheres.controllers;
 
 import fr.eni.encheres.bll.ArticleManager;
+import fr.eni.encheres.bll.CategorieManager;
 import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.EtatVente;
 import fr.eni.encheres.bo.Utilisateur;
 import jakarta.servlet.ServletException;
@@ -19,6 +21,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @MultipartConfig
 @WebServlet(name = "EnchereNonCommencee", value = "/EnchereNonCommencee")
@@ -30,22 +33,34 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
             response.sendRedirect(request.getContextPath() + "/connexion");
+            return;
+        }
+        List<Categorie> categories = CategorieManager.getAllCategories();
+        categories.remove(0);
+        request.setAttribute("categories",categories);
+
+        int noArticle = 0;
+        try{
+            noArticle = Integer.parseInt(request.getParameter("article"));
+        }catch (NumberFormatException e){
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
         }
 
-        Utilisateur user = new Utilisateur();
-        user = UtilisateurManager.lireUtilisateur(2);
-        session.setAttribute("user", user);
+        Article article = ArticleManager.lireArticle(noArticle);
+
+        if(article.getVendeur() == (Utilisateur) session.getAttribute("utilisateur")){
+            response.sendRedirect(request.getContextPath() + "/");
+        }
+
+
         Article articleInit = new Article();
-        Article article = new Article();
 
-        articleInit = ArticleManager.lireArticle(1134);
-        article.copy(articleInit);
-
-        article = ArticleManager.creationArticle(article);
+        articleInit.copy(article);
 
         if (article.getNomPhoto() != null) {
 
-            String pathNameOrigin = getServletContext().getRealPath("/") + article.getNomPhoto();
+            String pathNameOrigin = getServletContext().getRealPath("/images/") + article.getNomPhoto();
             String pathName = String.copyValueOf(pathNameOrigin.toCharArray(), 0, pathNameOrigin.length() - 4);
             String extension = String.copyValueOf(pathNameOrigin.toCharArray(), pathNameOrigin.length() - 4, 4);
             String pathNameDestination = pathName + "-copie" + extension;
@@ -59,23 +74,27 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
 
             article.setNomPhoto(pathNameDestination);
 
-            ArticleManager.modifierArticle(article);
+//            ArticleManager.modifierArticle(article);
         }
         request.setAttribute("article", article);
         request.setAttribute("articleInit", articleInit);
         request.getRequestDispatcher("PageEnchereNonCommencee.jsp").forward(request, response);
+        return;
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("utilisateur") == null) {
+            response.sendRedirect(request.getContextPath() + "/connexion");
+            return;
+        }
+        List<Categorie> categories = CategorieManager.getAllCategories();
+        categories.remove(0);
+        request.setAttribute("categories",categories);
         Article article = new Article();
         Article articleInit = new Article();
 
-        Utilisateur user = new Utilisateur();
-        HttpSession session = request.getSession();
-        user = (Utilisateur) session.getAttribute("user");
+        Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
 
         article = ArticleManager.lireArticle(Integer.parseInt(request.getParameter("noArticle")));
         articleInit = ArticleManager.lireArticle(Integer.parseInt(request.getParameter("noArticleInit")));
@@ -137,12 +156,12 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
                     }
 
                     String dateSave = String.valueOf(System.currentTimeMillis());
-                    pathName = getServletContext().getRealPath("/") + "/photos/" + user.getNoUtilisateur() + "-" + dateSave + "-";
+                    pathName = getServletContext().getRealPath("/images/")  + user.getNoUtilisateur() + "-" + dateSave + "-";
 
                     fileToSave = new File(pathName + filePart.getSubmittedFileName());
                     Files.copy(fileInputStream, fileToSave.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                    String fileUrl = "/photos/" + user.getNoUtilisateur() + "-" + dateSave + "-" + filePart.getSubmittedFileName();
+                    String fileUrl = user.getNoUtilisateur() + "-" + dateSave + "-" + filePart.getSubmittedFileName();
                     article.setNomPhoto(fileUrl);
                     ArticleManager.modifierArticle(article);
 
@@ -194,14 +213,14 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
                 if (article.getNomPhoto() != null) {
 
 
-                    String pathName = getServletContext().getRealPath("/") + ArticleManager.lireArticle(articleInit.getNoArticle()).getNomPhoto();
+                    String pathName = getServletContext().getRealPath("/images/") + ArticleManager.lireArticle(articleInit.getNoArticle()).getNomPhoto();
                     File fileToSave = new File(pathName);
 
                     fileToSave.delete();
                     articleInit.copy(article);
                     ArticleManager.modifierArticle(articleInit);
                     ArticleManager.supprimerArticle(article.getNoArticle());
-                    request.getRequestDispatcher("PageListeEncheresConnecte.jsp").forward(request, response);
+                    response.sendRedirect(request.getContextPath() + "/");
                     return;
                 } else {
                     article.setNomPhoto(articleInit.getNomPhoto());
@@ -209,7 +228,7 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
                     ArticleManager.modifierArticle(articleInit);
 
                     ArticleManager.supprimerArticle(article.getNoArticle());
-                    request.getRequestDispatcher("PageListeEncheresConnecte.jsp").forward(request, response);
+                    response.sendRedirect(request.getContextPath() + "/");
                     return;
                 }
             }
@@ -220,7 +239,7 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
 
             if (ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto() != null) {
 
-                pathName = getServletContext().getRealPath("/") + ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto();
+                pathName = getServletContext().getRealPath("/images/") + ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto();
                 fileToSave = new File(pathName);
                 fileToSave.delete();
             }
@@ -228,23 +247,23 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
             ArticleManager.supprimerArticle(article.getNoArticle());
 
             if (ArticleManager.lireArticle(articleInit.getNoArticle()).getNomPhoto() != null) {
-                pathName = getServletContext().getRealPath("/") + ArticleManager.lireArticle(articleInit.getNoArticle()).getNomPhoto();
+                pathName = getServletContext().getRealPath("/images/") + ArticleManager.lireArticle(articleInit.getNoArticle()).getNomPhoto();
                 fileToSave = new File(pathName);
                 fileToSave.delete();
             }
 
             ArticleManager.supprimerArticle(articleInit.getNoArticle());
 
-            request.getRequestDispatcher("PageListeEncheresConnecte.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/");
             return;
         } else {
             if (ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto() != null) {
-                String pathName = getServletContext().getRealPath("/") + ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto();
+                String pathName = getServletContext().getRealPath("/images/") + ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto();
                 File fileToSave = new File(pathName);
                 fileToSave.delete();
             }
             ArticleManager.supprimerArticle(article.getNoArticle());
-            request.getRequestDispatcher("PageListeEncheresConnecte.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/");
             return;
         }
     }

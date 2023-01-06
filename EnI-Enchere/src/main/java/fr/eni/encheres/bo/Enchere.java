@@ -6,6 +6,7 @@ import fr.eni.encheres.bll.UtilisateurManager;
 import java.util.Date;
 
 public class Enchere {
+	public int noEnchere;
 	private int noEncherisseur;
 	private int noArticle;
 	private Date dateEnchere;
@@ -13,13 +14,13 @@ public class Enchere {
 
 	public Enchere() {}
 	
-    public Enchere(int noEncherisseur,int noArticle, Date dateEnchere, int montantEnchere) {
+    public Enchere(int noEnchere,int noEncherisseur,int noArticle, Date dateEnchere, int montantEnchere) {
+		this.noEnchere = noEnchere;
 		this.setNoArticle(noArticle);
 		this.setNoEncherisseur(noEncherisseur);
 		this.setMontantEnchere(montantEnchere);
 		this.setDateEnchere(dateEnchere);
 	}
-
     public int getNoArticle() {
 		return noArticle;
 	}

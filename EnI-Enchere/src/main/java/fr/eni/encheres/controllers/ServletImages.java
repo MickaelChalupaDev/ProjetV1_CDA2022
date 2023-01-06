@@ -25,10 +25,12 @@ public class ServletImages extends HttpServlet {
         outputStream.flush();
         outputStream.close();
         response.flushBuffer();
+        return;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
+        return;
     }
 }

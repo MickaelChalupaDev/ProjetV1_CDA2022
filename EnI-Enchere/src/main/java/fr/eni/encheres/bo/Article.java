@@ -1,5 +1,7 @@
 package fr.eni.encheres.bo;
 
+import fr.eni.encheres.bll.EnchereManager;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -149,5 +151,15 @@ public class Article {
 		if (articleACopier.getNomPhoto()!=null) {
 		this.setNomPhoto(articleACopier.getNomPhoto());}
 		this.setAdresse(articleACopier.getAdresse());
+	}
+
+	public int getUpdatedPrix(){
+		Enchere currEnchere = EnchereManager.lire(noArticle);
+		if(currEnchere != null){
+			if(currEnchere.getMontantEnchere() != 0){
+				return currEnchere.getMontantEnchere();
+			}
+		}
+		return prixVente;
 	}
 }

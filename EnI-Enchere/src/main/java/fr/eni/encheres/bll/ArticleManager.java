@@ -3,6 +3,8 @@ package fr.eni.encheres.bll;
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.EtatVente;
+import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.controllers.objectSent.ObjectSentAccueil;
 import fr.eni.encheres.dal.ArticleDAO;
 import fr.eni.encheres.dal.DAOFactory;
 
@@ -39,6 +41,10 @@ public class ArticleManager {
 	}
 	public static List<Article> rechercherParVente(String nomArticle, Categorie categorie, int noVendeur, EtatVente etatVente) {
 		return daoArticles.selectBySeller(nomArticle, categorie.noCategorie, noVendeur, etatVente);
+	}
+
+	public static List<Article> rechercher(Utilisateur utilisateur, ObjectSentAccueil o){
+		return daoArticles.rechercher(utilisateur, o);
 	}
 	
 	public static Article creationArticle(Article article) {

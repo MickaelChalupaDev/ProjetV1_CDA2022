@@ -82,10 +82,12 @@ public class ServletPageCreerCompte extends HttpServlet {
 			System.out.println(user.toString());
 			session.setAttribute("utilisateur", user);
 			response.sendRedirect(request.getContextPath() + "/");
+			return;
 		} else
 		{
 			System.out.println("No User, try again");
 			request.getRequestDispatcher(request.getContextPath() + "/creerCompte").forward(request, response);
+			return;
 		}
 		
 	}

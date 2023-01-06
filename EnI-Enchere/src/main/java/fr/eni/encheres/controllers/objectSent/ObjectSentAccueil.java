@@ -15,6 +15,7 @@ public class ObjectSentAccueil {
         this.searched = "";
         this.categorieSelected = "0";
         this.checkedEnchereOuverte = true;
+        this.filtreVenteAffichees = "achats";
     }
 
     public ObjectSentAccueil(String searched, String categorieSelected,String filtreVenteAffichees,

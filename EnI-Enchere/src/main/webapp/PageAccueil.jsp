@@ -190,7 +190,7 @@
             <c:when test="${utilisateur.isValid}">
                 <div><!-- Affiché que si User != null -->
                     <a href="${pageContext.request.contextPath}/">Enchères</a>
-                    <a href="ServletPageVendreUnArticle">Vendre un article</a>
+                    <a href="${pageContext.request.contextPath}/vendre">Vendre un article</a>
                     <a href="${pageContext.request.contextPath}/profile">Mon Profil</a>
                     <a href="${pageContext.request.contextPath}/Deconnexion">Déconnexion</a>
                 </div>
@@ -210,7 +210,7 @@
                 <div class="filtre">
                     <h3>Filtres :</h3>
                     <div class="inputSearchContainer">
-                        <span><input placeholder="Le nom de l'article contient" name="search" pattern="^([a-zA-Z éèçàùôöïîÉÈÇÀÙÔÎÖÏ]){0,30}$"/></span>
+                        <span><input placeholder="Le nom de l'article contient" name="search" pattern="^([a-zA-Z éèçàùôöïîÉÈÇÀÙÔÎÖÏ]){0,30}$" value="${filtresRecherches.searched}"/></span>
                     </div>
                     <div class="categorieDropdownContainer">
                         <label for="categorie">Catégorie : </label>
@@ -230,15 +230,15 @@
                                 </div>
                                 <div>
                                     <div>
-                                        <input id="encheresOuvertes" type="checkbox" name="encheresOuvertes" <c:if test="${filtresRecherches.checkedEnchereOuverte}">checked</c:if> onclick="onclickAchat()" />
+                                        <input id="encheresOuvertes" type="checkbox" name="encheresOuvertes" <c:if test="${filtresRecherches.checkedEnchereOuverte}">checked</c:if> onclick="onclickAchat(1)" />
                                         <label for="encheresOuvertes">Enchères Ouvertes</label>
                                     </div>
                                     <div>
-                                        <input id="mesEncheres" type="checkbox" name="mesEncheres" <c:if test="${filtresRecherches.checkedMesEncheres}">checked</c:if> onclick="onclickAchat()"/>
+                                        <input id="mesEncheres" type="checkbox" name="mesEncheres" <c:if test="${filtresRecherches.checkedMesEncheres}">checked</c:if> onclick="onclickAchat(2)"/>
                                         <label for="mesEncheres">Mes enchères</label>
                                     </div>
                                     <div>
-                                        <input id="encheresRemportees" type="checkbox" name="encheresRemportees" <c:if test="${filtresRecherches.checkedMesEncheresRemportees}">checked</c:if> onclick="onclickAchat()"/>
+                                        <input id="encheresRemportees" type="checkbox" name="encheresRemportees" <c:if test="${filtresRecherches.checkedMesEncheresRemportees}">checked</c:if> onclick="onclickAchat(3)"/>
                                         <label for="encheresRemportees">Enchères Remportées</label>
                                     </div>
                                 </div>
@@ -250,15 +250,15 @@
                                 </div>
                                 <div>
                                     <div>
-                                        <input id="ventesEnCours" type="checkbox" name="ventesEnCours" <c:if test="${filtresRecherches.checkedMesVentesEnCours}">checked</c:if> onclick="onclickMesVentes()"/>
+                                        <input id="ventesEnCours" type="checkbox" name="ventesEnCours" <c:if test="${filtresRecherches.checkedMesVentesEnCours}">checked</c:if> onclick="onclickMesVentes(1)"/>
                                         <label for="ventesEnCours">Mes ventes en cours</label>
                                     </div>
                                     <div>
-                                        <input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" <c:if test="${filtresRecherches.checkedVentesNonDebutees}">checked</c:if> onclick="onclickMesVentes()"/>
+                                        <input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" <c:if test="${filtresRecherches.checkedVentesNonDebutees}">checked</c:if> onclick="onclickMesVentes(2)"/>
                                         <label for="ventesNonDebutees">Ventes non débutées</label>
                                     </div>
                                     <div>
-                                        <input id="ventesTerminees" type="checkbox" name="ventesTerminees" <c:if test="${filtresRecherches.checkedVentesTerminees}">checked</c:if> onclick="onclickMesVentes()"/>
+                                        <input id="ventesTerminees" type="checkbox" name="ventesTerminees" <c:if test="${filtresRecherches.checkedVentesTerminees}">checked</c:if> onclick="onclickMesVentes(3)"/>
                                         <label for="ventesTerminees">Ventes terminées</label>
                                     </div>
                                 </div>
@@ -279,12 +279,12 @@
                 <div>
                     <div>
                         <c:if test = "${article.getNomPhoto()!= null}">
-                            <img src="${pageContext.request.contextPath}/images?image=${article.getNomPhoto()}"  alt="l'article à vendre" style="max-height : 80px">
+                            <img src="${pageContext.request.contextPath}/images?image=${article.getNomPhoto()}"  alt="l'article à vendre">
                         </c:if>
                     </div>
                     <div>
                         <a href="${pageContext.request.contextPath}/encherir?noArticle=${article.noArticle}">${article.nomArticle}</a>
-                        <p>Prix : ${article.miseAPrix} points</p>
+                        <p>Prix : ${article.miseAPrix} points<c:if test="${article.miseAPrix != article.getUpdatedPrix() && article.getUpdatedPrix() > 0}">, (enchéri à ${article.getUpdatedPrix()} points)</c:if></p>
                         <p>Fin de l'enchère : ${article.dateFinEncheres.toLocaleString()}</p>
                         <p>Vendeur : <a href="${pageContext.request.contextPath}/profile?pseudo=${article.vendeur.pseudo}">${article.vendeur.pseudo}</a></p>
                     </div>
@@ -298,7 +298,7 @@
     </body>
     <footer>
         <script>
-            function onclickAchat(){
+            function onclickAchat(ck = undefined){
                 let radioBtn = document.getElementsByName("filtreVentesAffichees")[0];//première
                 radioBtn.checked = true;
                 radioBtn = document.getElementsByName("filtreVentesAffichees")[1];//deuxième
@@ -318,8 +318,27 @@
                 mesVentesEnCours.checked = false;
                 ventesNonDebutees.checked = false;
                 ventesTerminees.checked = false;
+                if(ck != undefined){
+                    let encheresOuvertes = document.getElementsByName("encheresOuvertes")[0];
+                    let mesEncheres = document.getElementsByName("mesEncheres")[0];
+                    let encheresRemportees = document.getElementsByName("encheresRemportees")[0];
+                    switch (ck){
+                        case 1 : {
+                            if(encheresRemportees.hasAttribute("checked")){
+                                encheresRemportees.removeAttribute("checked");
+                            }
+                            encheresRemportees.checked = false
+                            break;
+                        }
+                        case 3 : {
+                            mesEncheres.checked = true;
+                            encheresOuvertes.checked = false;
+                            break
+                        }
+                    }
+                }
             }
-            function onclickMesVentes(){
+            function onclickMesVentes(ck = undefined){
                 let radioBtn = document.getElementsByName("filtreVentesAffichees")[0];//première
                 radioBtn.checked = false;
                 radioBtn = document.getElementsByName("filtreVentesAffichees")[1];//deuxième
@@ -339,6 +358,46 @@
                 encheresOuvertes.checked = false;
                 mesEncheres.checked = false;
                 encheresRemportees.checked = false
+                if(ck != undefined){
+                    let mesVentesEnCours = document.getElementsByName("ventesEnCours")[0];
+                    let ventesNonDebutees = document.getElementsByName("ventesNonDebutees")[0];
+                    let ventesTerminees = document.getElementsByName("ventesTerminees")[0];
+                    switch (ck){
+                        case 1: {
+                            if(ventesNonDebutees.hasAttribute("checked")){
+                                ventesNonDebutees.removeAttribute("checked");
+                            }
+                            if(ventesTerminees.hasAttribute("checked")){
+                                ventesTerminees.removeAttribute("checked");
+                            }
+                            ventesNonDebutees.checked = false;
+                            ventesTerminees.checked = false;
+                            break;
+                        }
+                        case 2 : {
+                            if(mesVentesEnCours.hasAttribute("checked")){
+                                mesVentesEnCours.removeAttribute("checked");
+                            }
+                            if(ventesTerminees.hasAttribute("checked")){
+                                ventesTerminees.removeAttribute("checked");
+                            }
+                            mesVentesEnCours.checked = false;
+                            ventesTerminees.checked = false;
+                            break;
+                        }
+                        case 3 : {
+                            if(mesVentesEnCours.hasAttribute("checked")){
+                                mesVentesEnCours.removeAttribute("checked");
+                            }
+                            if(ventesNonDebutees.hasAttribute("checked")){
+                                ventesNonDebutees.removeAttribute("checked");
+                            }
+                            mesVentesEnCours.checked = false;
+                            ventesNonDebutees.checked = false;
+                            break;
+                        }
+                    }
+                }
             }
         </script>
     </footer>

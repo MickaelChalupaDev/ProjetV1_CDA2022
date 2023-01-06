@@ -21,6 +21,7 @@ public class ServletPageConnexion extends HttpServlet {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("utilisateur") != null){ //On ne peut se connecter que si l'utilisateur est null
 			response.sendRedirect(request.getContextPath() + "/");
+			return;
 		}
 		request.getRequestDispatcher("PageConnexion.jsp").forward(request, response);
 		return;
@@ -47,11 +48,12 @@ public class ServletPageConnexion extends HttpServlet {
 			System.out.println("User Not Null, password matches");
 			session.setAttribute("utilisateur", user);
 			response.sendRedirect(request.getContextPath() + "/");//Redirige sur l'accueil
+			return;
 		}else { //S'il s'est trompé, on lui renvoie l'erreur d'identifiants incorrecte sans + de précisions
 			System.out.println("User Null");
 			request.setAttribute("messageErreur", "Identifiants incorrect");
 			doGet(request, response);//Renvoie la page du get
+			return;
 		}
-		return;
 	}
 }

@@ -7,6 +7,7 @@ import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.EtatVente;
 import fr.eni.encheres.dal.EnchereDAO;
 
+import java.util.Date;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,33 +35,22 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
             Connection con = ConnectionDAOBdd.getConnection();
             PreparedStatement pstmt;
 
-            SELECT_ENCHERE = "SELECT * FROM ENCHERES WHERE no_utilisateur=? AND no_article=?";
-            pstmt = con.prepareStatement(SELECT_ENCHERE);
+            Article a = ArticleManager.lireArticle(enchere.getNoArticle());
+            System.out.println(a.getEtatVente());
+            if(a.getEtatVente() != EtatVente.EnCours){
+                System.out.println("Erreur");
+                return;
+            }
 
+            INSERT_ENCHERE = "INSERT INTO ENCHERES (no_utilisateur, no_article, date_enchere, montant_enchere) VALUES(?,?,?,?);";
+
+            pstmt = con.prepareStatement(INSERT_ENCHERE);
             pstmt.setInt(1, enchere.getNoEncherisseur());
             pstmt.setInt(2, enchere.getNoArticle());
-            ResultSet res = pstmt.executeQuery();
-            if (res.next()) {
-                UPDATE_ENCHERE = "UPDATE ENCHERES SET date_enchere= ?, montant_enchere=? WHERE no_utilisateur=? and no_article=?;";
-                pstmt = con.prepareStatement(UPDATE_ENCHERE);
-                pstmt.setTimestamp(1, Timestamp.valueOf((String) sdf.format(enchere.getDateEnchere())));
-                pstmt.setInt(2, enchere.getMontantEnchere());
-                pstmt.setInt(3, enchere.getNoEncherisseur());
-                pstmt.setInt(4, enchere.getNoArticle());
+            pstmt.setTimestamp(3, Timestamp.valueOf((String) sdf.format(enchere.getDateEnchere())));
+            pstmt.setInt(4, enchere.getMontantEnchere());
+            pstmt.executeUpdate();
 
-                pstmt.executeUpdate();
-
-            } else {
-                INSERT_ENCHERE = "INSERT INTO ENCHERES (no_utilisateur, no_article, date_enchere, montant_enchere) VALUES(?,?,?,?);";
-
-                pstmt = con.prepareStatement(INSERT_ENCHERE);
-                pstmt.setInt(1, enchere.getNoEncherisseur());
-                pstmt.setInt(2, enchere.getNoArticle());
-                pstmt.setTimestamp(3, Timestamp.valueOf((String) sdf.format(enchere.getDateEnchere())));
-                pstmt.setInt(4, enchere.getMontantEnchere());
-                pstmt.executeUpdate();
-
-            }
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,11 +75,11 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
             ResultSet res = pstmt.executeQuery();
             if (res.next()) {
                 enchere = new Enchere();
-                enchere.setNoEncherisseur(res.getInt(1));
-                enchere.setNoArticle(res.getInt(2));
-                enchere.setDateEnchere(res.getDate(3));
-                enchere.setMontantEnchere(res.getInt(4));
-
+                enchere.noEnchere = (res.getInt(1));
+                enchere.setNoEncherisseur(res.getInt(2));
+                enchere.setNoArticle(res.getInt(3));
+                enchere.setDateEnchere(res.getDate(4));
+                enchere.setMontantEnchere(res.getInt(5));
             }
             con.close();
 

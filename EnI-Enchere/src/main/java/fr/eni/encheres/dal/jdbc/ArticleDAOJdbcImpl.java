@@ -6,12 +6,14 @@ import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.EtatVente;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.controllers.objectSent.ObjectSentAccueil;
 import fr.eni.encheres.dal.ArticleDAO;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 
@@ -34,7 +36,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             pstmt.setInt(6, article.getPrixVente());
             pstmt.setInt(7, article.getEtatVente().ordinal());
             pstmt.setInt(8, article.getVendeur().getNoUtilisateur());
-
             pstmt.setInt(9, CategorieManager.getCategorieByLibelle(article.getCategorie()).noCategorie);
             pstmt.setString(10, article.getNomPhoto());
 
@@ -63,6 +64,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public Article lireArticle(int noArticle) {
+        SetEtatVenteTermine();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Article article = null;
         StringBuilder select = new StringBuilder();
@@ -90,6 +92,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 article.setDateFinEncheres(new Date(rs.getDate("date_fin_encheres").getTime()));
                 article.setMiseAPrix(rs.getInt("prix_initial"));
                 article.setPrixVente(rs.getInt("prix_vente"));
+                article.setEtatVente(EtatVente.values()[rs.getInt("etat_vente")]);
 
 
                 int noUtilisateur = rs.getInt("no_utilisateur");
@@ -169,10 +172,14 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public List<Article> selectALL(String nomArticle, int categorie) {
+        SetEtatVenteTermine();
         System.out.println("Select all");
         List<Article> articles = new ArrayList<Article>();
         Article article = null;
         StringBuilder select = new StringBuilder();
+        if(Objects.equals(nomArticle, "")){
+            nomArticle = null;
+        }
         try {
             Connection con = ConnectionDAOBdd.getConnection();
             PreparedStatement pstmt;
@@ -245,7 +252,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public List<Article> selectByBuyer(String nomArticle, int categorie, int noEncherisseur, boolean etatEnchere) {
-
+        SetEtatVenteTermine();
         StringBuilder select = new StringBuilder();
         List<Article> articles = new ArrayList<Article>();
         Article article = null;
@@ -377,7 +384,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public List<Article> selectBySeller(String nomArticle, int categorie, int noVendeur, EtatVente etatVente) {
-
+        SetEtatVenteTermine();
         List<Article> articles = new ArrayList<Article>();
         Article article = null;
         StringBuilder select = new StringBuilder();
@@ -542,10 +549,128 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             e.printStackTrace();
         }
         return articles;
-
-
     }
 
+    @Override
+    public List<Article> rechercher(Utilisateur utilisateur, ObjectSentAccueil o) {
+        List<Article> articles = new ArrayList<Article>();
+        String query = "SELECT a.[no_article]" +
+                "      ,[nom_article]" +
+                "      ,[description]" +
+                "      ,[date_debut_encheres]" +
+                "      ,[date_fin_encheres]" +
+                "      ,[prix_initial]" +
+                "      ,[prix_vente]" +
+                "      ,[etat_vente]" +
+                "      ,a.[no_utilisateur]" +
+                "      ,[no_categorie]" +
+                "      ,[lien_photo] FROM ARTICLES_VENDUS a LEFT JOIN ENCHERES e ON a.no_article = e.no_article WHERE 1=1 ";
+        if(utilisateur == null || Objects.equals(o, new ObjectSentAccueil())){ //Je ne m'embête pas à traiter le cas par défaut
+            return selectALL(o.getSearched(), Integer.parseInt(o.getCategorieSelected()));//prévention
+        }
+
+        if(!o.checkedEnchereOuverte && !o.checkedMesEncheres && !o.checkedMesEncheresRemportees && !o.checkedMesVentesEnCours && !o.checkedVentesNonDebutees && !o.checkedVentesTerminees){
+            return articles;
+        }
+
+        if(o.checkedMesEncheres || o.checkedMesEncheresRemportees || o.filtreVenteAffichees.equals("mesVentes")){
+            query+= " AND "+ (o.filtreVenteAffichees.equals("mesVentes") ? "a" : "e") +".no_utilisateur = "+utilisateur.getNoUtilisateur()+"";
+        }
+        if(o.checkedEnchereOuverte || o.checkedMesVentesEnCours){
+            query+=" AND a.etat_vente = 1 ";
+        }
+        if(o.checkedVentesNonDebutees){
+            query+=" AND a.etat_vente = 0";
+        }
+        if(o.checkedMesEncheresRemportees || o.checkedVentesTerminees){
+            query+= " AND a.etat_vente > 1";
+        }
+        if(o.searched != null && !o.searched.trim().equals("")){
+            o.searched = o.searched.replace("'", "''")
+                    .replace("\\", "\\\\")
+                    .replace("\0", "\\0")
+                    .replace("\n", "\\n")
+                    .replace("\r", "\\r")
+                    .replace("\t", "\\t")
+                    .replace("\b", "\\b")
+                    .replace("\u001A", "\\Z")
+                    .replace("--", "")
+                    .replace("/*", "")
+                    .replace("*/", "");//Suppressions de l'injection SQL au cas où
+            query+= " AND a.nom_article LIKE '%"+o.searched.trim()+"%'";
+        }
+        if(!Objects.equals(o.categorieSelected, "0")){
+            query += " AND a.no_categorie = "+o.categorieSelected;
+        }
+
+
+
+        query += "GROUP BY a.[no_article]" +
+                "      ,[nom_article]" +
+                "      ,[description]" +
+                "      ,[date_debut_encheres]" +
+                "      ,[date_fin_encheres]" +
+                "      ,[prix_initial]" +
+                "      ,[prix_vente]" +
+                "      ,[etat_vente]" +
+                "      ,a.[no_utilisateur]" +
+                "      ,[no_categorie]" +
+                "      ,[lien_photo]";
+        try {
+            Connection con = ConnectionDAOBdd.getConnection();
+
+            PreparedStatement pstmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            ResultSet res = pstmt.executeQuery();
+            while (res.next()) {
+                Article article = new Article();
+                article.setNoArticle(res.getInt(1));
+                article.setNomArticle(res.getString(2));
+                article.setDescription(res.getString(3));
+                article.setDateDebutEncheres(res.getDate(4));
+                article.setDateFinEncheres(res.getDate(5));
+                article.setMiseAPrix(res.getInt(6));
+                article.setPrixVente(res.getInt(7));
+                article.setEtatVente(EtatVente.values()[res.getInt(8)]);
+
+                article.setVendeur(UtilisateurManager.lireUtilisateur(res.getInt(9)));
+
+                article.setCategorie(res.getString(10));
+                article.setNomPhoto(res.getString(11));
+
+
+                article.setAdresse(ArticleManager.lireArticle(res.getInt(1)).getAdresse());
+
+                articles.add(article);
+            }
+
+            con.close();
+
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+
+        return articles;
+    }
+
+    private void SetEtatVenteTermine(){//Set ETAT VENTE = 1 / Terminées si la date est dépassée
+        String query = "UPDATE ARTICLES_VENDUS" +
+                "   SET etat_vente = 2" +
+                " WHERE date_fin_encheres < GETDATE()" +
+                "  AND etat_vente = 1";
+        try {
+            Connection con = ConnectionDAOBdd.getConnection();
+
+            PreparedStatement pstmt = con.prepareStatement(query);
+
+            pstmt.executeUpdate();
+            con.close();
+
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }
 	

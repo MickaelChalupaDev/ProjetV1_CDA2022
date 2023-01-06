@@ -10,8 +10,8 @@ import java.util.List;
 
 public class EnchereManager {
     private static final EnchereDAO daoEncheres = DAOFactory.getEnchereDAO();
-    public static Enchere lire(int noArticle) {
-        return daoEncheres.selectByID(noArticle);
+    public static Enchere lire(int noEnchere) {
+        return daoEncheres.selectByID(noEnchere);
     }
     public static void encherir(Enchere enchere) {
         daoEncheres.insert(enchere);

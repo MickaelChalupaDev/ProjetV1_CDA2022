@@ -123,15 +123,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ENCHERES](
+                                [no_enchere] [int] NOT NULL PRIMARY KEY IDENTITY(1,1),
                                  [no_utilisateur] [int] NOT NULL,
                                  [no_article] [int] NOT NULL,
                                  [date_enchere] [datetime] NOT NULL,
                                  [montant_enchere] [int] NOT NULL,
-                                 CONSTRAINT [enchere_pk] PRIMARY KEY CLUSTERED
-                                     (
-                                      [no_utilisateur] ASC,
-                                      [no_article] ASC
-                                         )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 /****** Object:  Table [dbo].[RETRAITS]    Script Date: 03/01/2023 16:40:47 ******/

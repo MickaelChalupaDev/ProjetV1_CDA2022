@@ -22,14 +22,17 @@ public class ServletPageDeconnexion extends HttpServlet {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
             response.sendRedirect(request.getContextPath() + "/");
+            return;
         }
         session.setAttribute("utilisateur", null);
         session.setAttribute("filtresRecherches",new ObjectSentAccueil());
         response.sendRedirect(request.getContextPath() + "/");
+        return;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
+        return;
     }
 }

@@ -25,32 +25,39 @@ public class ServletPageEncherir extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session.isNew() || session.getAttribute("utilisateur") == null) {
-            response.sendRedirect(request.getContextPath() + "/");
+            response.sendRedirect(request.getContextPath() + "/connexion");
+            return;
         }
 
-        Utilisateur user = new Utilisateur();
-        Utilisateur userGagnant = new Utilisateur();
         Date date = new Date(System.currentTimeMillis());
 
-        user = UtilisateurManager.lireUtilisateur(2);
+        int noArticle = 0;
+        try{
+            noArticle = Integer.parseInt(request.getParameter("noArticle"));
+        }catch (NumberFormatException e){
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
 
-        session.setAttribute("user", user);
+        Article article = ArticleManager.lireArticle(noArticle);
+        Utilisateur currUser = (Utilisateur) session.getAttribute("utilisateur");
+        if(article.getVendeur().getNoUtilisateur() == currUser.getNoUtilisateur()){
+            response.sendRedirect(request.getContextPath() + "/EnchereNonCommencee?article="+article.getNoArticle());
+            return;
+        }
 
-        Article article = new Article();
 
-        article = ArticleManager.lireArticle(1133);
         int meilleureOffre = 0;
-        Enchere enchere = new Enchere();
-
-        //meilleureOffre= eMgr.lire(1133).getMontantEnchere();
-        enchere = EnchereManager.lire(1133);
+        Enchere enchere = EnchereManager.lire(noArticle);
 
         if (enchere != null) {
-            meilleureOffre = EnchereManager.lire(article.getNoArticle()).getMontantEnchere();
-
-        } else
+            meilleureOffre = enchere.getMontantEnchere();
+            if(meilleureOffre == 0){
+                meilleureOffre = ArticleManager.lireArticle(article.getNoArticle()).getMiseAPrix();
+            }
+        } else {
             meilleureOffre = ArticleManager.lireArticle(article.getNoArticle()).getMiseAPrix();
-
+        }
 
         request.setAttribute("meilleureOffre", meilleureOffre);
 
@@ -66,11 +73,11 @@ public class ServletPageEncherir extends HttpServlet {
             article.setPrixVente(EnchereManager.lire(article.getNoArticle()).getMontantEnchere());
             article.setEtatVente(EtatVente.Terminee);
             ArticleManager.modifierArticle(article);
-            if (EnchereManager.lire(article.getNoArticle()).getNoEncherisseur() == ((Utilisateur) session.getAttribute("user")).getNoUtilisateur()) {
+            if (EnchereManager.lire(article.getNoArticle()).getNoEncherisseur() == ((Utilisateur) session.getAttribute("utilisateur")).getNoUtilisateur()) {
                 request.getRequestDispatcher("PageAcquisition.jsp").forward(request, response);
                 return;
             } else {
-                userGagnant = UtilisateurManager.lireUtilisateur(EnchereManager.lire(article.getNoArticle()).getNoEncherisseur());
+                Utilisateur userGagnant = UtilisateurManager.lireUtilisateur(EnchereManager.lire(article.getNoArticle()).getNoEncherisseur());
 
                 request.setAttribute("userGagnant", userGagnant);
 
@@ -83,16 +90,21 @@ public class ServletPageEncherir extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        if (session.isNew() || session.getAttribute("utilisateur") == null) {
+            response.sendRedirect(request.getContextPath() + "/connexion");
+            return;
+        }
 
         Enchere enchere = new Enchere();
 
+        enchere.noEnchere = 0;//pas encore de numéro d'enchère
         enchere.setNoArticle(Integer.parseInt(request.getParameter("noArticle")));
-        enchere.setNoEncherisseur(((Utilisateur) session.getAttribute("user")).getNoUtilisateur());
+        enchere.setNoEncherisseur(((Utilisateur) session.getAttribute("utilisateur")).getNoUtilisateur());
         enchere.setMontantEnchere(Integer.parseInt(request.getParameter("maProposition")));
         enchere.setDateEnchere(new Date(System.currentTimeMillis()));
-
         EnchereManager.encherir(enchere);
-        request.getRequestDispatcher("PageListeEncheresConnecte.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/");
+        return;
     }
 
 }

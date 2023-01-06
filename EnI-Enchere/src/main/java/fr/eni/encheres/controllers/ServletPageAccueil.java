@@ -23,10 +23,14 @@ public class ServletPageAccueil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Utilisateur user= new Utilisateur();
         List<Categorie> categories = CategorieManager.getAllCategories();
-        List<Article> articles = new ArrayList<Article>();
 
+        List<Article> articles = new ArrayList<Article>();
+        if (session.isNew() || session.getAttribute("utilisateur") == null) {
+            if(session.getAttribute("utilisateur") == null){
+                session.setAttribute("utilisateur", null);
+            }
+        }
         if(session.isNew() || session.getAttribute("filtresRecherches") == null){
             ObjectSentAccueil o = new ObjectSentAccueil();
             session.setAttribute("filtresRecherches", o);
@@ -35,12 +39,7 @@ public class ServletPageAccueil extends HttpServlet {
         else{
             ObjectSentAccueil o = (ObjectSentAccueil) session.getAttribute("filtresRecherches");
             System.out.println(o.toString());
-            articles = ArticleManager.rechercherTout(null,0);//todo
-        }
-        if (session.isNew() || session.getAttribute("utilisateur") == null) {
-            if(session.getAttribute("utilisateur") == null){
-                session.setAttribute("utilisateur", null);
-            }
+            articles = ArticleManager.rechercher((Utilisateur) session.getAttribute("utilisateur"), o);
         }
         request.setAttribute("articles",articles);
         request.setAttribute("categories",categories);
@@ -64,6 +63,7 @@ public class ServletPageAccueil extends HttpServlet {
         if(searchBox == null || session.getAttribute("utilisateur") == null){
             doGet(request,response);//Lorsqu'on vient de connexion, c'est un post malheureusement, donc je teste au cas où
             //Idem si on passe par du post quand il n'y a pas d'utilisateur set, je retourne le get
+            return;
         }
 
         ObjectSentAccueil o = new ObjectSentAccueil(searchBox != null ? searchBox : "", categorie, filtreVenteAffichee, encheresOuvertes, mesEncheres, encheresRemportees, ventesEnCours, ventesNonDebutees, ventesTerminees);
