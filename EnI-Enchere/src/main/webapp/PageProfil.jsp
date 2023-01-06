@@ -134,11 +134,11 @@
             <td> ${requestScope.user.getRue() }</td>
         </tr>
         <tr>
-            <td>Code postal</td>
+            <td>Code postal :</td>
             <td>${requestScope.user.getCodePostal() } </td>
         </tr>
         <tr>
-            <td>Ville</td>
+            <td>Ville :</td>
             <td> ${requestScope.user.getVille() }</td>
         </tr>
     </table>

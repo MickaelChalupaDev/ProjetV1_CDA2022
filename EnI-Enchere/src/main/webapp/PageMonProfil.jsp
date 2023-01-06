@@ -127,11 +127,11 @@
             <td> ${utilisateur.rue}</td>
         </tr>
         <tr>
-            <td>Code postal</td>
+            <td>Code postal :</td>
             <td>${utilisateur.codePostal} </td>
         </tr>
         <tr>
-            <td>Ville</td>
+            <td>Ville :</td>
             <td> ${utilisateur.ville }</td>
         </tr>
     </table>
