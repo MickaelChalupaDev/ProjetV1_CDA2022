@@ -33,7 +33,7 @@ public class ServletPageModifierProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("utilisateur") != null){ //On ne peut se connecter que si l'utilisateur est null
+        if(session.getAttribute("utilisateur") == null){ //On ne peut se connecter que si l'utilisateur est null
             response.sendRedirect(request.getContextPath() + "/");
             return;
         }
@@ -71,9 +71,12 @@ public class ServletPageModifierProfile extends HttpServlet {
         user.setCredit(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getCredit());
         user.setAdministrateur(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getAdministrateur());
 
+        System.out.println(((String) request.getParameter("enregistrement").trim()).equals("Enregistrer"));
+        
         if (((String) request.getParameter("enregistrement").trim()).equals("Enregistrer")) {
 
-
+System.out.println(request.getParameter("motDePasse").equals(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getMotDePasse()));
+System.out.println(request.getParameter("motDePasse"));
             if (request.getParameter("motDePasse").equals(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getMotDePasse())) {
 
                 if (request.getParameter("nouveauMotDePasse").equals(request.getParameter("confirmation"))) {
