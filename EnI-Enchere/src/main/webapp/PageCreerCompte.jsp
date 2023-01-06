@@ -105,7 +105,7 @@
         <table class="table0">
             <tr>
                 <td><label> Pseudo : </label></td>
-                <td><input class="input0" type="text" name="pseudo" placeholder="Entrez un pseudo" required pattern="^[a-zA-Zçéèêëàîïûü.\- ]{2,}$"/></td>
+                <td><input class="input0" type="text" name="pseudo" placeholder="Entrez un pseudo" required pattern="^[a-zA-Zçéèêëàîïûü.\- 0-9]{2,}$"/></td>
                 <td><label> Nom : </label></td>
                 <td><input class="input0" type="text" name="nom" required pattern="^[a-zA-Zçéèêëàîïûü.\- ]{2,}$"/></td>
             </tr>
