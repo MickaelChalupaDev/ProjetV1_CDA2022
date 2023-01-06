@@ -123,7 +123,7 @@
 
                     <c:if test="${requestScope.article.getNomPhoto()!= null}">
 
-                        <img src="http://localhost:8080/${pageContext.request.contextPath}${requestScope.article.getNomPhoto()}"
+                        <img src="${pageContext.request.contextPath}/images?image=${article.getNomPhoto()}"
                              alt="Photo de l'article à vendre" style="max-height : 300px">
 
                     </c:if>
