@@ -136,7 +136,7 @@
                 <td colspan="2" style="color:red"> ${messageMotDePasse} </td>
             </tr>
             <tr>
-                <td><label> Noueavu mot de passe : </label></td>
+                <td><label> Nouveau mot de passe : </label></td>
                 <td><input class="input0" type="password" name="nouveauMotDePasse" placeholder="*******"/></td>
                 <td><label> Confirmation : </label></td>
                 <td><input class="input0" type="password" name="confirmation" placeholder="*******"/></td>
