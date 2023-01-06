@@ -105,33 +105,33 @@
         <table class="table0">
             <tr>
                 <td><label> Pseudo : </label></td>
-                <td><input class="input0" type="text" name="pseudo" placeholder="Entrez un pseudo" required/></td>
+                <td><input class="input0" type="text" name="pseudo" placeholder="Entrez un pseudo" required pattern="^[a-zA-Zçéèêëàîïûü.\- ]{2,}$"/></td>
                 <td><label> Nom : </label></td>
-                <td><input class="input0" type="text" name="nom" required/></td>
+                <td><input class="input0" type="text" name="nom" required pattern="^[a-zA-Zçéèêëàîïûü.\- ]{2,}$"/></td>
             </tr>
             <tr>
                 <td><label> Prénom </label></td>
-                <td><input class="input0" type="text" name="prenom" required/></td>
+                <td><input class="input0" type="text" name="prenom" required pattern="^[a-zA-Zçéèêëàîïûü.\- ]{2,}$"/></td>
                 <td><label> Email : </label></td>
-                <td><input class="input0" type="email" name="email" required/></td>
+                <td><input class="input0" type="email" name="email" required pattern="^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)$"/></td>
             </tr>
             <tr>
                 <td><label> Téléphone : </label></td>
-                <td><input class="input0" type="text" name="telephone" required/></td>
+                <td><input class="input0" type="text" name="telephone" required pattern="^[0-9]{6,}$"/></td>
                 <td><label> Rue : </label></td>
-                <td><input class="input0" type="text" name="rue" required/></td>
+                <td><input class="input0" type="text" name="rue" required pattern="^[a-zA-Zçéèêëàîïûü.\- 0-9]{2,}$"/></td>
             </tr>
             <tr>
                 <td><label> Code postal : </label></td>
-                <td><input class="input0" type="text" name="codePostal" required/></td>
+                <td><input class="input0" type="text" name="codePostal" required pattern="^[a-zA-Z0-9]{2,}$"/></td>
                 <td><label> Ville : </label></td>
-                <td><input class="input0" type="text" name="ville" required/></td>
+                <td><input class="input0" type="text" name="ville" required pattern="^[a-zA-Zçéèêëàîïûü.\- ]{2,}$"/></td>
             </tr>
             <tr>
                 <td><label> Mot de passe : </label></td>
-                <td><input class="input0" type="password" name="motDePasse" placeholder="*******" required/></td>
+                <td><input class="input0" type="password" name="motDePasse" placeholder="*******" required pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$"/></td>
                 <td><label> Confirmation : </label></td>
-                <td><input class="input0" type="password" name="confirmation" placeholder="*******" required/></td>
+                <td><input class="input0" type="password" name="confirmation" placeholder="*******" required pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$"/></td>
             </tr>
 
         </table>

@@ -105,30 +105,30 @@
         <table class="table0">
             <tr>
                 <td><label> Pseudo : </label></td>
-                <td><input class="input0" type="text" name="pseudo" value="${utilisateur.pseudo}"
+                <td><input class="input0" type="text" name="pseudo" value="${utilisateur.pseudo}" pattern="^[a-zA-Zçéèêëàîïûü.\- ]{2,}$"
                            placeholder="Entrez un pseudo" required/></td>
                 <td><label> Nom : </label></td>
-                <td><input class="input0" type="text" name="nom" value="${utilisateur.nom}" required/></td>
+                <td><input class="input0" type="text" name="nom" value="${utilisateur.nom}" required pattern="^[a-zA-Zçéèêëàîïûü.\- ]{2,}$"/></td>
             </tr>
             <tr>
                 <td><label> Prénom </label></td>
-                <td><input class="input0" type="text" name="prenom" value="${utilisateur.prenom}" required/></td>
+                <td><input class="input0" type="text" name="prenom" value="${utilisateur.prenom}" required pattern="^[a-zA-Zçéèêëàîïûü.\- ]{2,}$"/></td>
                 <td><label> Email : </label></td>
-                <td><input class="input0" type="email" name="email" value="${utilisateur.email}" required/></td>
+                <td><input class="input0" type="email" name="email" value="${utilisateur.email}" required pattern="^([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)$"/></td>
             </tr>
             <tr>
                 <td><label> Téléphone : </label></td>
-                <td><input class="input0" type="text" name="telephone" value="${utilisateur.telephone}" required/></td>
+                <td><input class="input0" type="text" name="telephone" value="${utilisateur.telephone}" required pattern="^[0-9]{6,}$"/></td>
                 <td><label> Rue : </label></td>
-                <td><input class="input0" type="text" name="rue" value="${utilisateur.getRue()}" required/></td>
+                <td><input class="input0" type="text" name="rue" value="${utilisateur.getRue()}" required pattern="^[a-zA-Zçéèêëàîïûü.\- 0-9]{2,}$"/></td>
             </tr>
             <tr>
                 <td><label> Code postal : </label></td>
-                <td><input class="input0" type="text" name="codePostal" value="${utilisateur.getCodePostal()}"
+                <td><input class="input0" type="text" name="codePostal" value="${utilisateur.getCodePostal()}" pattern="^[a-zA-Z0-9]{2,}$"
                            required/>
                 </td>
                 <td><label> Ville : </label></td>
-                <td><input class="input0" type="text" name="ville" value="${utilisateur.getVille()}" required/></td>
+                <td><input class="input0" type="text" name="ville" value="${utilisateur.getVille()}" required pattern="^[a-zA-Zçéèêëàîïûü.\- 0-9]{2,}$"/></td>
             </tr>
             <tr>
                 <td><label> Mot de passe actuel : </label></td>
@@ -137,9 +137,9 @@
             </tr>
             <tr>
                 <td><label> Nouveau mot de passe : </label></td>
-                <td><input class="input0" type="password" name="nouveauMotDePasse" placeholder="*******"/></td>
+                <td><input class="input0" type="password" name="nouveauMotDePasse" placeholder="*******" pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$"/></td>
                 <td><label> Confirmation : </label></td>
-                <td><input class="input0" type="password" name="confirmation" placeholder="*******"/></td>
+                <td><input class="input0" type="password" name="confirmation" placeholder="*******" pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$"/></td>
             </tr>
             <tr>
                 <td><label> Crédit : </label></td>

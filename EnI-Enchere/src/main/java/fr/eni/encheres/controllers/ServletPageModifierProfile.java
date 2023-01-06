@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet(name = "ServletPageModifierProfile", value = "/modifierProfile")
 public class ServletPageModifierProfile extends HttpServlet {
@@ -31,19 +32,41 @@ public class ServletPageModifierProfile extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Utilisateur user = new Utilisateur();
+        HttpSession session = request.getSession();
+        if(session.getAttribute("utilisateur") != null){ //On ne peut se connecter que si l'utilisateur est null
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
         String messageMotDePasse = null;
         String messageCompatibiliteMotDePasse = null;
-
-        user.setNoUtlisateur(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getNoUtilisateur());
-        user.setPseudo(request.getParameter("pseudo"));
-        user.setNom(request.getParameter("nom"));
-        user.setPrenom(request.getParameter("prenom"));
-        user.setEmail(request.getParameter("email"));
-        user.setTelephone(request.getParameter("telephone"));
-        user.setRue(request.getParameter("rue"));
-        user.setCodePostal(request.getParameter("codePostal"));
-        user.setVille(request.getParameter("ville"));
+        Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
+        if(request.getParameter("pseudo") != null && !Objects.equals(request.getParameter("pseudo"), "")){
+            user.setPseudo(request.getParameter("pseudo"));
+        }
+        if(request.getParameter("nom") != null && !Objects.equals(request.getParameter("nom"), "")){
+            user.setNom(request.getParameter("nom"));
+        }
+        if(request.getParameter("prenom") != null && !Objects.equals(request.getParameter("prenom"), ""))
+        {
+            user.setPrenom(request.getParameter("prenom"));
+        }
+        if(request.getParameter("email") != null && !Objects.equals(request.getParameter("email"), "")){
+            user.setEmail(request.getParameter("email"));
+        }
+        if(request.getParameter("telephone") != null && !Objects.equals(request.getParameter("telephone"), "")){
+            user.setTelephone(request.getParameter("telephone"));
+        }
+        if(request.getParameter("rue") != null && !Objects.equals(request.getParameter("rue"), ""))
+        {
+            user.setRue(request.getParameter("rue"));
+        }
+        if(request.getParameter("codePostal") != null && !Objects.equals(request.getParameter("codePostal"), "")){
+            user.setCodePostal(request.getParameter("codePostal"));
+        }
+        if(request.getParameter("ville") != null && request.getParameter("ville") != "")
+        {
+            user.setVille(request.getParameter("ville"));
+        }
 
         user.setCredit(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getCredit());
         user.setAdministrateur(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getAdministrateur());
@@ -54,15 +77,17 @@ public class ServletPageModifierProfile extends HttpServlet {
             if (request.getParameter("motDePasse").equals(UtilisateurManager.lireUtilisateur(request.getParameter("pseudo")).getMotDePasse())) {
 
                 if (request.getParameter("nouveauMotDePasse").equals(request.getParameter("confirmation"))) {
+                    String regexPassword = "^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$";
                     user.setMotDePasse(request.getParameter("nouveauMotDePasse"));
                     UtilisateurManager.modifierUtilisateur(user);
+                    session.setAttribute("utilisateur",user);
                     response.sendRedirect(request.getContextPath() + "/");
                     return;
                 } else {
                     messageCompatibiliteMotDePasse = "saisie de mot de passe incompatible !";
                     request.setAttribute("user", user);
                     request.setAttribute("messageCompatibiliteMotDePasse", "saisie de mot de passe incompatible !");
-                    doGet(request, response);
+                    request.getRequestDispatcher("/PageModifierProfil.jsp").forward(request, response);
                     return;
                 }
             } else {
@@ -70,7 +95,7 @@ public class ServletPageModifierProfile extends HttpServlet {
                 request.setAttribute("messageMotDePasse", messageMotDePasse);
                 request.setAttribute("user", user);
 
-                doGet(request,response);
+                request.getRequestDispatcher("/PageModifierProfil.jsp").forward(request, response);
                 return;
             }
         } else {
@@ -96,7 +121,9 @@ public class ServletPageModifierProfile extends HttpServlet {
             }
 
             /** mettre le compte inactif (et ne pas supprimer ) **/
-            //uMgr.supprimerUtilisateur(user);
+
+
+            UtilisateurManager.supprimerUtilisateur(user);
             response.sendRedirect(request.getContextPath() + "/");
             return;
         }
