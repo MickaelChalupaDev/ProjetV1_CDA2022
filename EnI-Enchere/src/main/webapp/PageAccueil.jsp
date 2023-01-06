@@ -286,7 +286,7 @@
                     </div>
                     <div>
                     	<c:if test="${utilisateur!= null}"> 
-                            <a href="ServletPageEncherir?noArticle=${article.noArticle}">${article.nomArticle}</a>
+                            <a href="${pageContext.request.contextPath}/encherir?noArticle=${article.noArticle}">${article.nomArticle}</a>
                         </c:if>
                         <c:if test="${utilisateur== null}"> 
                             <a href="">${article.nomArticle}</a>
