@@ -56,12 +56,14 @@ public class ServletPageModifierProfile extends HttpServlet {
                 if (request.getParameter("nouveauMotDePasse").equals(request.getParameter("confirmation"))) {
                     user.setMotDePasse(request.getParameter("nouveauMotDePasse"));
                     UtilisateurManager.modifierUtilisateur(user);
-                    request.getRequestDispatcher("/PageListeEncheresConnecte.jsp").forward(request, response);
+                    response.sendRedirect(request.getContextPath() + "/");
+                    return;
                 } else {
                     messageCompatibiliteMotDePasse = "saisie de mot de passe incompatible !";
                     request.setAttribute("user", user);
                     request.setAttribute("messageCompatibiliteMotDePasse", "saisie de mot de passe incompatible !");
-                    request.getRequestDispatcher("/PageModifierMonProfil.jsp").forward(request, response);
+                    doGet(request, response);
+                    return;
                 }
             } else {
                 messageMotDePasse = "mot de passe incorrect !";
@@ -69,6 +71,7 @@ public class ServletPageModifierProfile extends HttpServlet {
                 request.setAttribute("user", user);
 
                 doGet(request,response);
+                return;
             }
         } else {
 
@@ -97,6 +100,5 @@ public class ServletPageModifierProfile extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/");
             return;
         }
-        return;
     }
 }
