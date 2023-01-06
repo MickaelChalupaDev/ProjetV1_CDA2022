@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="fr.eni.encheres.bo.Utilisateur" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,10 +70,6 @@
 
         .input2 {
             margin-left: 10px;
-        }
-
-        a {
-            margin-left: 30px;
         }
 
         .input3 {
