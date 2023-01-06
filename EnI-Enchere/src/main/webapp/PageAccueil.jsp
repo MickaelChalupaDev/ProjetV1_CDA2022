@@ -135,10 +135,11 @@
                 gap: 15px;
             }
             .categorieDropdownContainer label{
-                width:20%;
+                width:25%;
+                text-wrap: avoid;
             }
             .categorieDropdownContainer select{
-                min-width: 80%;
+                min-width: 75%;
                 padding:5px;
             }
             .groupOptions{
@@ -304,7 +305,7 @@
                         <c:if test="${utilisateur== null}"> 
                            <p>Vendeur :  <a href="">${article.vendeur.pseudo }</a> </p>
                         </c:if>
-                      
+
                     </div>
                 </div>
             </c:forEach>
