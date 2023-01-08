@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @MultipartConfig
 @WebServlet(name = "EnchereNonCommencee", value = "/EnchereNonCommencee")
@@ -48,7 +49,7 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
         }
 
         Article article = ArticleManager.lireArticle(noArticle);
-
+        session.setAttribute("article", article);
         if(article.getVendeur() == (Utilisateur) session.getAttribute("utilisateur")){
             response.sendRedirect(request.getContextPath() + "/");
         }
@@ -76,7 +77,6 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
 
 //            ArticleManager.modifierArticle(article);
         }
-        request.setAttribute("article", article);
         request.setAttribute("articleInit", articleInit);
         request.getRequestDispatcher("PageEnchereNonCommencee.jsp").forward(request, response);
         return;
@@ -96,8 +96,9 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
 
         Utilisateur user = (Utilisateur) session.getAttribute("utilisateur");
 
-        article = ArticleManager.lireArticle(Integer.parseInt(request.getParameter("noArticle")));
-        articleInit = ArticleManager.lireArticle(Integer.parseInt(request.getParameter("noArticleInit")));
+        article = (Article)session.getAttribute("article");
+
+        articleInit = article;
 
 
         if (request.getParameter("creation").equals("Enregistrer")) {
@@ -115,8 +116,6 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
                 e1.printStackTrace();
             }
 
-
-            article.setVendeur((Utilisateur) session.getAttribute("user"));
             article.setNomArticle(request.getParameter("nomArticle"));
             article.setDescription(request.getParameter("description"));
             article.setCategorie(request.getParameter("categorie"));
@@ -149,37 +148,29 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
 
                     InputStream fileInputStream = filePart.getInputStream();
 
-                    if (ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto() != null) {
-                        pathName = getServletContext().getRealPath("/") + ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto();
+                    if (article.getNomPhoto() != null || !Objects.equals(article.getNomPhoto(), "")) {
+                        pathName = getServletContext().getRealPath("/images/") + article.getNomPhoto();
                         fileToSave = new File(pathName);
                         fileToSave.delete();
-                    }
+                        article.setNomPhoto(null);
+                    }//file deleting for the old one.
 
                     String dateSave = String.valueOf(System.currentTimeMillis());
-                    pathName = getServletContext().getRealPath("/images/")  + user.getNoUtilisateur() + "-" + dateSave + "-";
+                    pathName = getServletContext().getRealPath("/images/") + user.getNoUtilisateur() + "-" + dateSave + "-";
 
                     fileToSave = new File(pathName + filePart.getSubmittedFileName());
                     Files.copy(fileInputStream, fileToSave.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
                     String fileUrl = user.getNoUtilisateur() + "-" + dateSave + "-" + filePart.getSubmittedFileName();
                     article.setNomPhoto(fileUrl);
-                    ArticleManager.modifierArticle(article);
-
+                    //updating with the new file
                 } else {
-
-                    article.setNomPhoto(ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto());
-
-                    request.setAttribute("article", article);
                     request.setAttribute("articleInit", articleInit);
                     request.setAttribute("messagePhoto", "Formats : jpg, png !");
                     request.getRequestDispatcher("PageEnchereNonCommencee.jsp").forward(request, response);
                     return;
                 }
             }
-
-
-            article.setNomPhoto(ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto());
-
             /*****/
 
             assert dateSql != null;
@@ -206,20 +197,8 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
             } else {
 
                 article.setDateFinEncheres(dateFinEncheres);
-
-
-                ArticleManager.modifierArticle(article);
-
                 if (article.getNomPhoto() != null) {
-
-
-                    String pathName = getServletContext().getRealPath("/images/") + ArticleManager.lireArticle(articleInit.getNoArticle()).getNomPhoto();
-                    File fileToSave = new File(pathName);
-
-                    fileToSave.delete();
-                    articleInit.copy(article);
                     ArticleManager.modifierArticle(articleInit);
-                    ArticleManager.supprimerArticle(article.getNoArticle());
                     response.sendRedirect(request.getContextPath() + "/");
                     return;
                 } else {
@@ -237,28 +216,17 @@ public class ServletPageEnchereNonCommencee extends HttpServlet {
             String pathName = null;
             File fileToSave = null;
 
-            if (ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto() != null) {
-
-                pathName = getServletContext().getRealPath("/images/") + ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto();
+            if (article.getNomArticle() != null) {
+                pathName = getServletContext().getRealPath("/images/") + article.getNomPhoto();
                 fileToSave = new File(pathName);
                 fileToSave.delete();
             }
-
             ArticleManager.supprimerArticle(article.getNoArticle());
-
-            if (ArticleManager.lireArticle(articleInit.getNoArticle()).getNomPhoto() != null) {
-                pathName = getServletContext().getRealPath("/images/") + ArticleManager.lireArticle(articleInit.getNoArticle()).getNomPhoto();
-                fileToSave = new File(pathName);
-                fileToSave.delete();
-            }
-
-            ArticleManager.supprimerArticle(articleInit.getNoArticle());
-
             response.sendRedirect(request.getContextPath() + "/");
             return;
         } else {
-            if (ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto() != null) {
-                String pathName = getServletContext().getRealPath("/images/") + ArticleManager.lireArticle(article.getNoArticle()).getNomPhoto();
+            if (article.getNomPhoto() != null) {
+                String pathName = getServletContext().getRealPath("/images/") + article.getNomPhoto();
                 File fileToSave = new File(pathName);
                 fileToSave.delete();
             }

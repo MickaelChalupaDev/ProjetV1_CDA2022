@@ -113,6 +113,7 @@
 <hr/>
 <main>
     <h3 class="titlePage">Enchère non commencée / modifier</h3>
+    <form method="post" action="${pageContext.request.contextPath}/EnchereNonCommencee" enctype="multipart/form-data">
     <table class="table2">
         <tr>
             <td style="vertical-align:top; width:300px">
@@ -127,8 +128,6 @@
             </td>
             <td>
                 <table class="table0">
-                    <form method="post" action="ServletPageEnchereNonCommencee" enctype="multipart/form-data">
-
                         <tr>
                             <td><label> Article : </label><input style="margin-left: 35px" class="input0" type="text"
                                                                  name="nomArticle"
@@ -215,11 +214,12 @@
 
                     </tr>
                 </table>
-                </form>
+
 
             </td>
         </tr>
     </table>
+    </form>
 </main>
 </body>
 

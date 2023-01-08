@@ -172,9 +172,9 @@ CREATE TABLE [dbo].[UTILISATEURS](
 GO
 SET IDENTITY_INSERT [dbo].[ARTICLES_VENDUS] ON
 
-INSERT [dbo].[ARTICLES_VENDUS] ([no_article], [nom_article], [description], [date_debut_encheres], [date_fin_encheres], [prix_initial], [prix_vente], [etat_vente], [no_utilisateur], [no_categorie], [lien_photo]) VALUES (1, N'Téléphone', N'A10', CAST(N'2023-01-03' AS Date), CAST(N'2023-01-31' AS Date), 21, 0, 1, 2, 1, N'/photos/2-1672757640602-telephone.png')
-INSERT [dbo].[ARTICLES_VENDUS] ([no_article], [nom_article], [description], [date_debut_encheres], [date_fin_encheres], [prix_initial], [prix_vente], [etat_vente], [no_utilisateur], [no_categorie], [lien_photo]) VALUES (2, N'Caméra', N'S10', CAST(N'2023-01-03' AS Date), CAST(N'2023-01-18' AS Date), 31, 0, 1, 1, 4, N'/photos/1-1672757716380-icone-camera.jpg')
-INSERT [dbo].[ARTICLES_VENDUS] ([no_article], [nom_article], [description], [date_debut_encheres], [date_fin_encheres], [prix_initial], [prix_vente], [etat_vente], [no_utilisateur], [no_categorie], [lien_photo]) VALUES (3, N'Téléphone', N'A10', CAST(N'2023-01-03' AS Date), CAST(N'2023-01-31' AS Date), 21, 0, 1, 2, 1, N'/photos/2-1672757640602-telephone-copie.png')
+INSERT [dbo].[ARTICLES_VENDUS] ([no_article], [nom_article], [description], [date_debut_encheres], [date_fin_encheres], [prix_initial], [prix_vente], [etat_vente], [no_utilisateur], [no_categorie], [lien_photo]) VALUES (1, N'Téléphone', N'A10', CAST(N'2023-01-03' AS Date), CAST(N'2023-01-31' AS Date), 21, 0, 1, 2, 1, N'2-1672757640602-telephone.png')
+INSERT [dbo].[ARTICLES_VENDUS] ([no_article], [nom_article], [description], [date_debut_encheres], [date_fin_encheres], [prix_initial], [prix_vente], [etat_vente], [no_utilisateur], [no_categorie], [lien_photo]) VALUES (2, N'Caméra', N'S10', CAST(N'2023-01-03' AS Date), CAST(N'2023-01-18' AS Date), 31, 0, 1, 1, 4, N'1-1672757716380-icone-camera.jpg')
+INSERT [dbo].[ARTICLES_VENDUS] ([no_article], [nom_article], [description], [date_debut_encheres], [date_fin_encheres], [prix_initial], [prix_vente], [etat_vente], [no_utilisateur], [no_categorie], [lien_photo]) VALUES (3, N'Téléphone', N'A10', CAST(N'2023-01-03' AS Date), CAST(N'2023-01-31' AS Date), 21, 0, 1, 2, 1, N'2-1672757640602-telephone-copie.png')
 SET IDENTITY_INSERT [dbo].[ARTICLES_VENDUS] OFF
 GO
 SET IDENTITY_INSERT [dbo].[CATEGORIES] ON
@@ -213,12 +213,12 @@ GO
 ALTER TABLE [dbo].[ARTICLES_VENDUS] CHECK CONSTRAINT [ventes_utilisateur_fk]
 GO
 ALTER TABLE [dbo].[ENCHERES]  WITH CHECK ADD  CONSTRAINT [encheres_articles_vendus_fk] FOREIGN KEY([no_article])
-    REFERENCES [dbo].[ARTICLES_VENDUS] ([no_article])
+    REFERENCES [dbo].[ARTICLES_VENDUS] ([no_article]) ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[ENCHERES] CHECK CONSTRAINT [encheres_articles_vendus_fk]
 GO
 ALTER TABLE [dbo].[RETRAITS]  WITH CHECK ADD  CONSTRAINT [retraits_articles_vendus_fk] FOREIGN KEY([no_article])
-    REFERENCES [dbo].[ARTICLES_VENDUS] ([no_article])
+    REFERENCES [dbo].[ARTICLES_VENDUS] ([no_article]) ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[RETRAITS] CHECK CONSTRAINT [retraits_articles_vendus_fk]
 GO

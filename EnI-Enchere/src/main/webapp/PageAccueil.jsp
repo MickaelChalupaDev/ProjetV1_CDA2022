@@ -285,27 +285,17 @@
                         
                     </div>
                     <div>
-                    	<c:if test="${utilisateur!= null}"> 
-                            <a href="${pageContext.request.contextPath}/encherir?noArticle=${article.noArticle}">${article.nomArticle}</a>
-                        </c:if>
-                        <c:if test="${utilisateur== null}"> 
-                            <a href="">${article.nomArticle}</a>
-                        </c:if>
+                        <a href="${pageContext.request.contextPath}/encherir?noArticle=${article.noArticle}">${article.nomArticle}</a>
                         
                         <p>Prix : ${article.miseAPrix} points<c:if test="${article.miseAPrix != article.getUpdatedPrix() && article.getUpdatedPrix() > 0}">, (enchéri à ${article.getUpdatedPrix()} points)</c:if></p>
                         <p>Fin de l'enchère : ${article.dateFinEncheres.toLocaleString()}</p>
-                        <c:if test="${utilisateur!= null}">
-                        	<c:if test="${utilisateur.pseudo != article.vendeur.pseudo}">  
-                        		<p>Vendeur : <a href="${pageContext.request.contextPath}/profile?pseudo=${article.vendeur.pseudo}">${article.vendeur.pseudo}</a></p>
-                        	</c:if>
-                        	<c:if test="${utilisateur.pseudo == article.vendeur.pseudo}">  
-                        		<p>Vendeur : <a href="${pageContext.request.contextPath}/profile">${article.vendeur.pseudo}</a></p>
-                        	</c:if>
-                        </c:if>
-                        <c:if test="${utilisateur== null}"> 
-                           <p>Vendeur :  <a href="">${article.vendeur.pseudo }</a> </p>
-                        </c:if>
 
+                        <c:if test="${utilisateur.pseudo != article.vendeur.pseudo}">
+                            <p>Vendeur : <a href="${pageContext.request.contextPath}/profile?pseudo=${article.vendeur.pseudo}">${article.vendeur.pseudo}</a></p>
+                        </c:if>
+                        <c:if test="${utilisateur.pseudo == article.vendeur.pseudo}">
+                            <p>Vendeur : <a href="${pageContext.request.contextPath}/profile">${article.vendeur.pseudo}</a></p>
+                        </c:if>
                     </div>
                 </div>
             </c:forEach>

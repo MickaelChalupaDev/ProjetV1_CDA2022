@@ -64,7 +64,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public Article lireArticle(int noArticle) {
-        SetEtatVenteTermine();
+        UpdateEtatVentes();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Article article = null;
         StringBuilder select = new StringBuilder();
@@ -141,7 +141,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
         try {
             Connection con = ConnectionDAOBdd.getConnection();
             PreparedStatement pstmt = con.prepareStatement("UPDATE ARTICLES_VENDUS SET nom_article=?,description=?,date_debut_encheres=?,"
-                    + "date_fin_encheres=?,prix_initial=?,prix_vente=?,etat_vente=?,no_utilisateur=?,no_categorie=?, lien_photo=? WHERE no_article = ?");
+                    + "date_fin_encheres=?,prix_initial=?,prix_vente=?,etat_vente=?,no_categorie=?, lien_photo=? WHERE no_article = ?");
 
 
             pstmt.setString(1, article.getNomArticle());
@@ -154,10 +154,9 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             pstmt.setInt(5, article.getMiseAPrix());
             pstmt.setInt(6, article.getPrixVente());
             pstmt.setInt(7, article.getEtatVente().ordinal());
-            pstmt.setInt(8, article.getVendeur().getNoUtilisateur());
-            pstmt.setInt(9, CategorieManager.getCategorieByLibelle(article.getCategorie()).noCategorie);
-            pstmt.setString(10, article.getNomPhoto());
-            pstmt.setInt(11, article.getNoArticle());
+            pstmt.setInt(8, CategorieManager.getCategorieByLibelle(article.getCategorie()).noCategorie);
+            pstmt.setString(9, article.getNomPhoto());
+            pstmt.setInt(10, article.getNoArticle());
 
             pstmt.executeUpdate();
 
@@ -172,7 +171,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public List<Article> selectALL(String nomArticle, int categorie) {
-        SetEtatVenteTermine();
+        UpdateEtatVentes();
         System.out.println("Select all");
         List<Article> articles = new ArrayList<Article>();
         Article article = null;
@@ -252,7 +251,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public List<Article> selectByBuyer(String nomArticle, int categorie, int noEncherisseur, boolean etatEnchere) {
-        SetEtatVenteTermine();
+        UpdateEtatVentes();
         StringBuilder select = new StringBuilder();
         List<Article> articles = new ArrayList<Article>();
         Article article = null;
@@ -384,7 +383,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public List<Article> selectBySeller(String nomArticle, int categorie, int noVendeur, EtatVente etatVente) {
-        SetEtatVenteTermine();
+        UpdateEtatVentes();
         List<Article> articles = new ArrayList<Article>();
         Article article = null;
         StringBuilder select = new StringBuilder();
@@ -553,6 +552,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
     @Override
     public List<Article> rechercher(Utilisateur utilisateur, ObjectSentAccueil o) {
+        UpdateEtatVentes();
         List<Article> articles = new ArrayList<Article>();
         String query = "SELECT a.[no_article]" +
                 "      ,[nom_article]" +
@@ -670,6 +670,27 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
             e.printStackTrace();
         }
 
+    }
+    private void SetEtatVenteCommencee(){
+        String query = "UPDATE ARTICLES_VENDUS" +
+                "   SET etat_vente = 1" +
+                " WHERE date_debut_encheres > GETDATE()" +
+                "  AND etat_vente = 0";
+        try {
+            Connection con = ConnectionDAOBdd.getConnection();
+
+            PreparedStatement pstmt = con.prepareStatement(query);
+
+            pstmt.executeUpdate();
+            con.close();
+
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void UpdateEtatVentes(){
+        SetEtatVenteTermine();
+        SetEtatVenteCommencee();
     }
 
 }

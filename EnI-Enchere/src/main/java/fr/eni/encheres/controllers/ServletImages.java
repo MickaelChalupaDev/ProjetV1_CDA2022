@@ -14,17 +14,22 @@ import java.nio.file.Paths;
 public class ServletImages extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String image = request.getParameter("image");
-        System.out.println("Sending Image :" + image);
-        response.setContentType("image/*");
-        String filePath = getServletContext().getRealPath("/images/"+image);
-        Path path = Paths.get(filePath);
-        byte[] imageContent = Files.readAllBytes(path);
-        OutputStream outputStream = response.getOutputStream();
-        outputStream.write(imageContent);
-        outputStream.flush();
-        outputStream.close();
-        response.flushBuffer();
+        try{
+            String image = request.getParameter("image");
+            System.out.println("Sending Image :" + image);
+            response.setContentType("image/*");
+            String filePath = getServletContext().getRealPath("/images/"+image);
+            Path path = Paths.get(filePath);
+            byte[] imageContent = Files.readAllBytes(path);
+            OutputStream outputStream = response.getOutputStream();
+            outputStream.write(imageContent);
+            outputStream.flush();
+            outputStream.close();
+            response.flushBuffer();
+        }catch (Exception e){
+
+        }
+
         return;
     }
 
